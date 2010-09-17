@@ -14,6 +14,30 @@ public class OrderDB {
     // Anders
 
     // Lars
+		
+		/* Method for adding new dish to DB.
+		 * number in menu = dishIn.nr 
+		 * name of dish = dishIn.name
+		 * contents of dish = dishIn.contents 
+		 */
+	void newDish(Dish dishIn){
+		
+	}
+	
+		/*returns specified dish from MenuDB
+		 * 
+		 */
+	public Dish getDish(int menuNr){
+		Dish fromDB =null;
+		return fromDB;
+	}
+		
+		/*removes specified dish from menu DB
+		 * 
+		 */
+	void deleteDish(int menuNr){
+		
+	}
 
     // Audun
 
