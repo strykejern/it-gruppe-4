@@ -21,7 +21,7 @@ class Dish{
 		public String menuPrint; //String for printing menu
 		
 		public Menu(){
-		    while(getDish.nr)
+		  
 		}
 
 	}
