@@ -11,12 +11,18 @@ class Dish{
 	public String name;		//name of dish
 	public String contents;	//contents of dish
 
-		//creates new Dish-object
+	//creates new Dish-object
 	public Dish(int nrIn, String nameIn, String contentsIn){ 
 		this.nr=nrIn;
 		this.name=nameIn;
 		this.contents=contentsIn;
 	}
-	
-	
+	class Menu{
+		public String menuPrint; //String for printing menu
+		
+		public Menu(){
+		    while(getDish.nr)
+		}
+
+	}
 }
