@@ -1,3 +1,5 @@
+package system;
+
 import java.*;
 
 /* Class for editing menu-DB 
