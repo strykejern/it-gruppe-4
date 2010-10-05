@@ -1,21 +1,46 @@
 package system;
 
 import java.*;
+import java.util.ArrayList;
 
 /* Class for editing menu-DB 
  * 
  * @author Lars
  */
 public class Menu {
-    //String for printing menu
-
-    public String menuPrint = "Nr" + "\t" + "Name" + "\t" + "\t" + "Contents" +
-            "\n";
-
-    //constructs a menu and prints it
+    private ArrayList<Dish> menu;
+    
+    /**
+     * constructor
+     *
+     */
     public Menu() {
+         menu = new ArrayList<Dish>();
+         
 
     }
+
+    /**
+     * adds dish to menu arraylist
+     *
+     * @param fromDB Dish-object from DB
+     */
+    public void addDish(Dish fromDB){
+
+        menu.add(fromDB);
+    }
+
+    @Override
+    public String toString(){
+        String output = "";
+        for(int i = 0; i<menu.size(); i++){
+            output += menu.get(i);
+        }
+        return output;
+    }
+
+
+
 }
 
 
