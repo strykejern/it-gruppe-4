@@ -9,9 +9,8 @@ import system.OrderDB;
  */
 public class OrderDBTest {
     public static void main(String[] args){
-        OrderDB database;
         try {
-            database = new OrderDB(
+            OrderDB.initializeDB(
                     DBInfo.username, DBInfo.password,
                     "jdbc:mysql://mysql.stud.ntnu.no/andereie_itgrupp");
             out.println("Successful db connection!");

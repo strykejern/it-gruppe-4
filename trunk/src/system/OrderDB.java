@@ -3,7 +3,9 @@ package system;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 /**
  * Class for handling of database queries
@@ -19,31 +21,87 @@ public class OrderDB {
      */
 
     // Anders
-    private Connection dbConnection;
+    private static Connection dbConnection;
 
-    public OrderDB(String userName, String password, String databaseLocation)
+    /**
+     * Preventing instantiation
+     */
+    private OrderDB(){
+        
+    }
+
+    /**
+     * Initializer that creates the database connection
+     *
+     * @param userName Database username
+     * @param password Database password
+     * @param databaseLocation The whole database url
+     * @throws ClassNotFoundException
+     * @throws InstantiationException
+     * @throws IllegalAccessException
+     * @throws SQLException
+     */
+    public static void initializeDB(String userName, String password, String databaseLocation)
             throws ClassNotFoundException, InstantiationException,
             IllegalAccessException, SQLException{
 
+        if (dbConnection != null) {
+            dbConnection.close();
+        }
         Class.forName("com.mysql.jdbc.Driver").newInstance();
-        
+
         dbConnection = DriverManager.getConnection(
                 databaseLocation, userName, password);
     }
 
-    /**
-     * Close the database connection on exit
-     *
-     * If the database connection was successful,
-     * close it when class is destroyed
-     *
-     * @throws Throwable
-     */
-    @Override
-    protected void finalize() throws Throwable{
-        if (dbConnection != null){
-            dbConnection.close();
+    public static Menu getMenu() throws SQLException{
+        final String query = "SELECT * FROM menu";
+
+        Statement stat = dbConnection.createStatement();
+        stat.executeQuery(query);
+        ResultSet result = stat.getResultSet();
+
+        Menu m = new Menu();
+        while (result.next()){
+            int id          = result.getInt("id");
+            String name     = result.getString("name");
+            int price       = result.getInt("price");
+            String comment  = result.getString("comment");
+
+            m.addDish(new Dish(id, name, price, comment));
         }
+
+        result.close();
+        stat.close();
+
+        return m;
+    }
+
+    public static Object[] getCustomerByName(String name) {
+        String firstName = null;
+        String lastName = null;
+
+        String[] temp = name.split(" ");
+
+        if (temp.length > 1){
+            lastName = temp[temp.length-1];
+            firstName = "";
+            for (int i = temp.length-2; i >= 0; --i){
+                firstName += temp[i] + " ";
+            }
+            firstName.trim();
+        }
+        else{
+            lastName = name;
+        }
+
+        if (firstName != null){
+            String query = "SELECT * FROM customer " +
+                    "WHERE first_name='" + firstName +
+                    "' AND last_name='" + lastName + "'";
+        }
+
+        return null;
     }
     // Lars
 
