@@ -111,9 +111,12 @@ public class OrderDB {
      * contents of dish = dishIn.contents
      */
     void newDish(Dish dishIn) {
+
+
     }
 
-    /*returns specified dish from MenuDB
+    /**
+     * returns specified dish from MenuDB
      *
      */
     public Dish getDish(int menuNr) {
@@ -121,10 +124,16 @@ public class OrderDB {
         return fromDB;
     }
 
-    /*removes specified dish from menu DB
-     *
+    /**
+     * removes specified dish from menu DB
+     *@param query2 : querystring for deleting element in DB
      */
-    void deleteDish(int menuNr) {
+    public static void deleteDish(int menuNr) throws SQLException {
+
+        String query = "DELETE FROM menu WHERE dish_id='" + menuNr +"'";
+        Statement stat = dbConnection.createStatement();
+        stat.executeQuery(query);
+
     }
 
     // Audun
