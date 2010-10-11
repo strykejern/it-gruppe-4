@@ -4,12 +4,13 @@ import com.trolltech.qt.gui.QApplication;
 import com.trolltech.qt.gui.QWidget;
 import com.trolltech.qt.webkit.QWebView;
 
-/** This class creates a map using parameters containing the
+/** This class is supposed to create a map using parameters containing the
  * directions to the delivery place. It receives the delivery address 
  * from the Client Database.
+ * (http://maps.google.com/maps/api/directions/json?)
  * 
  * @author Audun
- * (http://maps.google.com/maps/api/directions/json?) */
+ *  */
 
 public class WebMap extends QWidget{
 
