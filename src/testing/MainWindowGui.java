@@ -1,7 +1,13 @@
 package testing;
 
 import com.trolltech.qt.gui.*;
-
+/**
+ * An early test of how the main window works, you will have to import qtjambi-4.5.2_01.jar and the qtjambi[yourOShere].jar to the local library
+ * to compile and run the class locally, they can all be found in a zip file uploaded to the google code SVN directory, under Downloads.
+ * 
+ * @author Audun
+ *
+ */
 public class MainWindowGui extends QMainWindow{
 	private QMenu fileMenu;
     private QTabWidget tabs = new QTabWidget(this);
