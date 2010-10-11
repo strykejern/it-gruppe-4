@@ -32,7 +32,7 @@ public class Menu {
 
     @Override
     public String toString(){
-        String output = "";
+        String output = "Nr\tName\t\t\tprice\n";
         for(int i = 0; i<menu.size(); i++){
             output += menu.get(i);
         }

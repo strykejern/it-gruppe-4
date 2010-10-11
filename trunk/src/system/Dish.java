@@ -19,7 +19,7 @@ public class Dish {
      * @param contentsIn - contents of dish
      * @param priceIn - price of dish
      */
-    public Dish(int nrIn, String nameIn, String contentsIn, int priceIn) {
+    public Dish(int nrIn, String nameIn, int priceIn, String contentsIn) {
         this.nr = nrIn;
         this.name = nameIn;
         this.contents = contentsIn;
@@ -31,8 +31,8 @@ public class Dish {
      */
     @Override
     public String toString(){
-        String streng = "id= " + nr + " navn= " + name + " innhold: " + contents
-                + " pris: "+ price;
+        String streng = nr +"\t" + name + "\t\t\t" + price + "\n" + "Contents: "
+                + contents + "\n";
         return streng;
     }
 }
