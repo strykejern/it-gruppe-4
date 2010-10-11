@@ -20,6 +20,9 @@ public class WebMap extends QWidget{
 	
 	public static void main(String[] args){
 		QApplication.initialize(args);
+		/*stringen som WebMap tar er absolutt, den må derfor forandres om man vil se
+		 * den på egen pc, til der workspacet ligger på pcen.
+		 */
 		WebMap window = new WebMap("file:///home/audun/workspace/guiTest/map.html");
 		window.resize(450, 390);
 		window.show();
