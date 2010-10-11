@@ -105,28 +105,40 @@ public class OrderDB {
     }
     // Lars
 
-    /* Method for adding new dish to DB.
-     * number in menu = dishIn.nr
-     * name of dish = dishIn.name
-     * contents of dish = dishIn.contents
-     */
-    void newDish(Dish dishIn) {
-
-
+   /**
+    * Method for adding new dish to DB
+    * @param dishIn - Dishobject
+    * @throws SQLException
+    */
+    void newDish(Dish dishIn) throws SQLException{
+        String query = "INSERT INTO menu(name,price,description) VALUES('" +
+                dishIn.name + "','" + dishIn.price + "','" +
+                dishIn.contents + "')";
+        Statement stat = dbConnection.createStatement();
+        stat.executeQuery(query);
     }
 
     /**
      * returns specified dish from MenuDB
      *
      */
-    public Dish getDish(int menuNr) {
-        Dish fromDB = null;
+    public Dish getDish(int menuNr) throws SQLException{
+        String query = "GET FROM menu WHERE dish_id='" + menuNr +"'";
+        Statement stat = dbConnection.createStatement();
+        stat.executeQuery(query);
+        ResultSet result = stat.getResultSet();
+        int id          = result.getInt("id");
+        String name     = result.getString("name");
+        int price       = result.getInt("price");
+        String comment  = result.getString("comment");
+
+        Dish fromDB = new Dish(id, name, price, comment);
         return fromDB;
     }
 
     /**
      * removes specified dish from menu DB
-     *@param query2 : querystring for deleting element in DB
+     *@param query : querystring for deleting element in DB
      */
     public static void deleteDish(int menuNr) throws SQLException {
 
