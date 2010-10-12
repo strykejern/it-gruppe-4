@@ -10,9 +10,11 @@ import com.trolltech.qt.gui.*;
  */
 public class MainWindowGui extends QMainWindow{
 	private QMenu fileMenu;
-    private QTabWidget tabs = new QTabWidget(this);
+    private QTabWidget tabs;
     private QAction exitAct;
     private QAction newCustomerAct;
+    private NewCustomerWidget window;
+    String[] newCustomer;
     
 
     public static void main(String[] args) {
@@ -45,7 +47,8 @@ public class MainWindowGui extends QMainWindow{
         newCustomerAct.triggered.connect(this, "nyKunde()");
     }
     private void createTabs(){
-    	tabs.addTab(new NewCustomerWidget(), "Ny Kunde");
+    	tabs = new QTabWidget(this);
+    	tabs.addTab(new QLabel("placeholder"), "Ny Kunde");
     	tabs.addTab(new WebMap("file:///home/audun/workspace/guiTest/map.html"), "Kart");
     	setCentralWidget(tabs);
     }
@@ -56,9 +59,17 @@ public class MainWindowGui extends QMainWindow{
         fileMenu.addAction(exitAct);
         fileMenu.addAction(newCustomerAct);
     }
-    public void nyKunde(){
-    	NewCustomerWidget window = new NewCustomerWidget();
-    	window.show();
+    private void nyKunde(){
+    	window = new NewCustomerWidget(this);
+    	window.exec();
+    	
+    }
+    private void addCustomerToDB(String prename, String lastname, String address, String zip){
+    	newCustomer = new String[4];
+    	newCustomer[0] = prename;
+    	newCustomer[1] = lastname;
+    	newCustomer[2] = address;
+    	newCustomer[3] = zip;
     	
     }
 }
