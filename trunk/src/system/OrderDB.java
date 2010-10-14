@@ -6,6 +6,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.StringTokenizer;
 
 /**
  * Class for handling of database queries
@@ -167,7 +168,7 @@ public class OrderDB {
     * @param dishIn - Dishobject
     * @throws SQLException
     */
-    void newDish(Dish dishIn) throws SQLException{
+    public void newDish(Dish dishIn) throws SQLException{
         String query = "INSERT INTO menu(name,price,description) VALUES('" +
                 dishIn.name + "','" + dishIn.price + "','" +
                 dishIn.contents + "')";
@@ -176,11 +177,13 @@ public class OrderDB {
     }
 
     /**
-     * returns specified dish from MenuDB
      *
+     * @param dishNr - specified dish from menu
+     * @return
+     * @throws SQLException
      */
-    public Dish getDish(int menuNr) throws SQLException{
-        String query = "GET FROM menu WHERE dish_id='" + menuNr +"'";
+    public static Dish getDish(int dishNr) throws SQLException{
+        String query = "GET FROM menu WHERE dish_id='" + dishNr +"'";
         Statement stat = dbConnection.createStatement();
         stat.executeQuery(query);
         ResultSet result = stat.getResultSet();
@@ -197,12 +200,30 @@ public class OrderDB {
      * removes specified dish from menu DB
      *@param query : querystring for deleting element in DB
      */
-    public static void deleteDish(int menuNr) throws SQLException {
+    public void deleteDish(int menuNr) throws SQLException {
 
         String query = "DELETE FROM menu WHERE dish_id='" + menuNr +"'";
         Statement stat = dbConnection.createStatement();
         stat.executeQuery(query);
 
+    }
+    /**
+     * @param orderNr - id for reciept
+     * @return
+     * @throws SQLException
+     */
+
+    public static Reciept buildReciept(int orderNr) throws SQLException{
+        String query = "GET FROM order WHERE order_id='" + orderNr +"'";
+        Statement stat = dbConnection.createStatement();
+        stat.executeQuery(query);
+        Reciept reciept = new Reciept();
+        ResultSet result = stat.getResultSet();
+        reciept.nr          = result.getInt("id");
+        reciept.orders   = result.getString("dishes");
+        reciept.customer =result.getInt("costumer_id");
+        reciept.delivery =result.getInt("delivery");
+        return reciept;
     }
 
     // Audun
