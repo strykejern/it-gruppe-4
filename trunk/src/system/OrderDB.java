@@ -41,7 +41,8 @@ public class OrderDB {
      * @throws IllegalAccessException
      * @throws SQLException
      */
-    public static void initializeDB(String userName, String password, String databaseLocation)
+    public static void initializeDB
+    		(String userName, String password, String databaseLocation)
             throws ClassNotFoundException, InstantiationException,
             IllegalAccessException, SQLException{
 
@@ -53,7 +54,13 @@ public class OrderDB {
         dbConnection = DriverManager.getConnection(
                 databaseLocation, userName, password);
     }
-
+    
+    /**
+     * Gets the menu from the database
+     * 
+     * @return Menu object with the loaded menu
+     * @throws SQLException
+     */
     public static Menu getMenu() throws SQLException{
         final String query = "SELECT * FROM menu";
 
@@ -76,33 +83,83 @@ public class OrderDB {
 
         return m;
     }
-
-    public static Object[] getCustomerByName(String name) {
-        String firstName = null;
-        String lastName = null;
-
-        String[] temp = name.split(" ");
-
-        if (temp.length > 1){
-            lastName = temp[temp.length-1];
-            firstName = "";
-            for (int i = temp.length-2; i >= 0; --i){
-                firstName += temp[i] + " ";
-            }
-            firstName.trim();
+    
+    public static Object getCustomerByName(String firstName, String lastName) 
+    		throws SQLException, Exception {
+    	String query = "SELECT * FROM customer " +
+        	"WHERE first_name='" + firstName +
+        	"' AND last_name='" + lastName + "'";
+    	
+    	Statement stat = dbConnection.createStatement();
+        stat.executeQuery(query);
+        
+        ResultSet result = stat.getResultSet();
+        
+        if (result.next()){
+        	// TODO: Create customer object to return
+        	String fName 	= result.getString("first_name");
+        	String lName 	= result.getString("last_name");
+        	int phone 		= result.getInt("phone_number");
+        	String address 	= result.getString("address");
+        	int postalCode 	= result.getInt("postal_code");
+        	String comment 	= result.getString("comment");
         }
-        else{
-            lastName = name;
+        else {
+        	throw new SQLException ("No rows fetched");
         }
-
-        if (firstName != null){
-            String query = "SELECT * FROM customer " +
-                    "WHERE first_name='" + firstName +
-                    "' AND last_name='" + lastName + "'";
+        
+        // Throw exception on more than one row result
+        if (result.next()){
+        	throw new Exception ("Multiple customer matched your search");
+        }
+    	
+    	return null;
+    }
+    
+    public static Object getCustomerByName(String lastName) 
+    		throws SQLException, Exception {
+    	String query = "SELECT * FROM customer " +
+        			"WHERE last_name='" + lastName + "'";
+        
+        Statement stat = dbConnection.createStatement();
+        stat.executeQuery(query);
+        
+        ResultSet result = stat.getResultSet();
+        
+        if (result.next()){
+        	// TODO: Create customer object to return
+        	String fName 	= result.getString("first_name");
+        	String lName 	= result.getString("last_name");
+        	int phone 		= result.getInt("phone_number");
+        	String address 	= result.getString("address");
+        	int postalCode 	= result.getInt("postal_code");
+        	String comment 	= result.getString("comment");
+        }
+        else {
+        	throw new SQLException ("No rows fetched");
+        }
+        
+        // Throw exception on more than one row result
+        if (result.next()){
+        	throw new Exception ("Multiple customer matched your search");
         }
 
         return null;
     }
+    
+    public static void createOrder(int customerId, boolean made, 
+    		boolean delivery, String deliveryAddress) throws SQLException{
+    	String query = "INSERT INTO 'orders' ('customer_id', 'made'," +
+    			" 'delivery', 'delivery_address') VALUES (" + customerId + 
+    			", " + (made ? 1 : 0) + ", " + (delivery ? 1 : 0) + 
+    			", '" + deliveryAddress + "')";
+    	
+    	Statement stat = dbConnection.createStatement();
+    	stat.executeQuery(query);
+    	
+    	// TODO: add dishes into dish_orders
+    }
+    
     // Lars
 
    /**
