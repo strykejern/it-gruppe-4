@@ -6,7 +6,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.StringTokenizer;
+import java.util.ArrayList;
 
 /**
  * Class for handling of database queries
@@ -159,6 +159,42 @@ public class OrderDB {
     	stat.executeQuery(query);
     	
     	// TODO: add dishes into dish_orders
+    }
+
+    public static void addCustomer(Customer customer) throws SQLException{
+        String query = "INSERT INTO 'customer' " +
+                "('first_name','last_name','phone_number'," +
+                "'address','postal_code','comment') VALUES " +
+                "('" + customer.firstName + "','" + customer.lastName + "'," +
+                customer.phoneNumber + ",'" + customer.address + "'," +
+                customer.postalCode + ",'" + customer.comment + "')";
+
+        Statement stat = dbConnection.createStatement();
+        stat.executeQuery(query);
+    }
+
+    public static ArrayList<Customer> getAllCustomers() throws SQLException{
+        String query = "SELECT * FROM 'customer'";
+
+        Statement stat = dbConnection.createStatement();
+        stat.executeQuery(query);
+
+        ResultSet result = stat.getResultSet();
+
+        ArrayList<Customer> customerList = new ArrayList<Customer>();
+        while (result.next()){
+            int id           = result.getInt("customer_id");
+            String firstName = result.getString("first_name");
+            String lastName  = result.getString("last_name");
+            int phoneNumber  = result.getInt("phone_number");
+            String address   = result.getString("address");
+            int postalCode   = result.getInt("postal_code");
+            String comment   = result.getString("comment");
+
+            customerList.add(new Customer(id, firstName, lastName, phoneNumber, address, postalCode, comment));
+        }
+
+        return customerList;
     }
     
     // Lars

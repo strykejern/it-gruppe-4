@@ -9,10 +9,12 @@ public class Customer {
     public String lastName;
     public String address;
     public String comment;
+    public int id;
     public int postalCode;
     public int phoneNumber;
 
-    public Customer(String firstName, String lastName, int phoneNumber, String address, int postalCode, String comment){
+    public Customer(int id, String firstName, String lastName, int phoneNumber, String address, int postalCode, String comment){
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.address = address;
