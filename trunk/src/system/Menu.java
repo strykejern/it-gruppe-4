@@ -16,10 +16,10 @@ public class Menu {
      */
     public Menu() {
          menu = new ArrayList<Dish>();
-         
-
     }
-
+    public ArrayList<Dish> getMenu(){
+        return menu;
+    }
     /**
      * adds dish to menu arraylist
      *

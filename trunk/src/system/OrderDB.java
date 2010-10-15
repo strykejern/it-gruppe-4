@@ -204,7 +204,7 @@ public class OrderDB {
     * @param dishIn - Dishobject
     * @throws SQLException
     */
-    public void newDish(Dish dishIn) throws SQLException{
+    public static void newDish(Dish dishIn) throws SQLException{
         String query = "INSERT INTO menu(name,price,description) VALUES('" +
                 dishIn.name + "','" + dishIn.price + "','" +
                 dishIn.contents + "')";
@@ -236,7 +236,7 @@ public class OrderDB {
      * removes specified dish from menu DB
      *@param query : querystring for deleting element in DB
      */
-    public void deleteDish(int menuNr) throws SQLException {
+    public static void deleteDish(int menuNr) throws SQLException {
 
         String query = "DELETE FROM menu WHERE dish_id='" + menuNr +"'";
         Statement stat = dbConnection.createStatement();
