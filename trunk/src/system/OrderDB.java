@@ -71,10 +71,10 @@ public class OrderDB {
 
         Menu m = new Menu();
         while (result.next()){
-            int id          = result.getInt("id");
+            int id          = result.getInt("dish_id");
             String name     = result.getString("name");
             int price       = result.getInt("price");
-            String comment  = result.getString("comment");
+            String comment  = result.getString("description");
 
             m.addDish(new Dish(id, name, price, comment));
         }
