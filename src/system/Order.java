@@ -15,15 +15,15 @@ public class Order {
 	boolean dishIsFinished = false;
 	boolean takeAway = false;
 	
-	Object customer = null;
+	Customer customer = null;
 	ArrayList<Dish> dishes; 
 	
 	public Order(){
 		dishes = new ArrayList<Dish>();
 	}
 
-	public void setCustomer(Object customer){ // TODO: Replace Object with Customer
-		// TODO: Set customer variable
+	public void setCustomer(Customer customer){ 
+		this.customer = customer;
 	}
 	
 	public void addDish(Dish dish){
