@@ -16,18 +16,18 @@ public class Order {
 	boolean takeAway = false;
 	
 	Customer customer = null;
-	ArrayList<Dish> dishes; 
+	ArrayList<DishOrder> dishOrder; 
 	
 	public Order(){
-		dishes = new ArrayList<Dish>();
+		dishOrder = new ArrayList<DishOrder>();
 	}
 
 	public void setCustomer(Customer customer){ 
 		this.customer = customer;
 	}
 	
-	public void addDish(Dish dish){
-		dishes.add(dish);
+	public void addDish(DishOrder dish){
+		dishOrder.add(dish);
 	}
 	
 	public void setDeliveryAddress(String address){
@@ -38,7 +38,7 @@ public class Order {
 		if(customer == null){
 			throw new Exception("Customer is not set");
 		}
-		if(dishes.isEmpty()){
+		if(dishOrder.isEmpty()){
 			throw new Exception("No dish is added");
 		}
 			// TODO: OrderDB.createOrder()
