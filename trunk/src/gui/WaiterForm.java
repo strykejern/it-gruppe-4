@@ -84,6 +84,8 @@ public class WaiterForm extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         dishOrderList = new javax.swing.JList();
         jPanel3 = new javax.swing.JPanel();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Waiter");
@@ -264,13 +266,11 @@ public class WaiterForm extends javax.swing.JFrame {
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                .addContainerGap(11, Short.MAX_VALUE)
-                .addComponent(btnAddToOrder)
-                .addContainerGap())
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(btnRemoveFromOrder)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(btnAddToOrder, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnRemoveFromOrder, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(11, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
@@ -280,7 +280,7 @@ public class WaiterForm extends javax.swing.JFrame {
                 .addComponent(btnAddToOrder)
                 .addGap(69, 69, 69)
                 .addComponent(btnRemoveFromOrder)
-                .addContainerGap(191, Short.MAX_VALUE))
+                .addContainerGap(196, Short.MAX_VALUE))
         );
 
         jPanel2.add(jPanel4);
@@ -297,18 +297,32 @@ public class WaiterForm extends javax.swing.JFrame {
 
         getContentPane().add(jPanel2);
 
-        jPanel3.setMaximumSize(new java.awt.Dimension(32767, 50));
-        jPanel3.setPreferredSize(new java.awt.Dimension(800, 50));
+        jPanel3.setMaximumSize(new java.awt.Dimension(32767, 45));
+        jPanel3.setPreferredSize(new java.awt.Dimension(800, 45));
+
+        jButton1.setText("Get last order");
+
+        jButton2.setText("Place order");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 830, Short.MAX_VALUE)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jButton1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 624, Short.MAX_VALUE)
+                .addComponent(jButton2)
+                .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 50, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 23, Short.MAX_VALUE)
+                    .addComponent(jButton2))
+                .addContainerGap())
         );
 
         getContentPane().add(jPanel3);
@@ -380,6 +394,8 @@ public class WaiterForm extends javax.swing.JFrame {
     private javax.swing.JCheckBox checkBoxCustomAddress;
     private javax.swing.JCheckBox checkBoxDelivery;
     private javax.swing.JList dishOrderList;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
