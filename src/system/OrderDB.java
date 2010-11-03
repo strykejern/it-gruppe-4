@@ -64,7 +64,7 @@ public class OrderDB {
      * @throws SQLException
      */
     public static Menu getMenu() throws SQLException{
-        final String query = "SELECT * FROM menu";
+        final String query = "SELECT * FROM menu ORDER BY dish_id ASC";
 
         Statement stat = dbConnection.createStatement();
         stat.executeQuery(query);
@@ -192,7 +192,10 @@ public class OrderDB {
             int postalCode   = result.getInt("postal_code");
             String comment   = result.getString("comment");
 
-            customerList.add(new Customer(id, firstName, lastName, phoneNumber, address, postalCode, comment));
+            customerList.add(
+                    new Customer(
+                    id, firstName, lastName, phoneNumber,
+                    address, postalCode, comment));
 
         }
 

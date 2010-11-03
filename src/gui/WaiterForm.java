@@ -16,6 +16,7 @@ import java.sql.SQLException;
 import javax.swing.DefaultListModel;
 import javax.swing.JCheckBox;
 import javax.swing.JTextField;
+import javax.swing.ListModel;
 
 import system.*;
 
@@ -249,6 +250,8 @@ public class WaiterForm extends javax.swing.JFrame {
             public int getSize() { return strings.length; }
             public Object getElementAt(int i) { return strings[i]; }
         });
+        menuList.setMaximumSize(null);
+        menuList.setMinimumSize(null);
         menuList.setPreferredSize(new java.awt.Dimension(200, 80));
         jScrollPane1.setViewportView(menuList);
 
@@ -259,8 +262,18 @@ public class WaiterForm extends javax.swing.JFrame {
         jPanel4.setPreferredSize(new java.awt.Dimension(70, 183));
 
         btnAddToOrder.setText("=>");
+        btnAddToOrder.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddToOrderActionPerformed(evt);
+            }
+        });
 
         btnRemoveFromOrder.setText("<=");
+        btnRemoveFromOrder.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRemoveFromOrderActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -286,7 +299,7 @@ public class WaiterForm extends javax.swing.JFrame {
         jPanel2.add(jPanel4);
 
         dishOrderList.setModel(new javax.swing.AbstractListModel() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            String[] strings = { "" };
             public int getSize() { return strings.length; }
             public Object getElementAt(int i) { return strings[i]; }
         });
@@ -387,6 +400,44 @@ public class WaiterForm extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_checkBoxCustomAddressEnabledChanged
+
+    private void btnAddToOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddToOrderActionPerformed
+        if (!menuList.isSelectionEmpty()){
+            ListModel model = dishOrderList.getModel();
+
+            DefaultListModel mod = convertToDefaultListModel(model);
+
+            Dish selectedDish = (Dish)menuList.getSelectedValue();
+
+            DishOrder toBeAdded = new DishOrder(selectedDish, 1, ""); // TODO: read comment from textBox
+
+            mod.addElement(toBeAdded);
+
+            dishOrderList.setModel(mod);
+        }
+    }//GEN-LAST:event_btnAddToOrderActionPerformed
+
+    private DefaultListModel convertToDefaultListModel(ListModel list){
+        DefaultListModel mod = new DefaultListModel();
+
+        for (int i = 0; i < list.getSize(); ++i) {
+            mod.addElement(list.getElementAt(i));
+        }
+
+        return mod;
+    }
+
+    private void btnRemoveFromOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveFromOrderActionPerformed
+        if (!dishOrderList.isSelectionEmpty()) {
+            ListModel list = dishOrderList.getModel();
+
+            DefaultListModel mod = convertToDefaultListModel(list);
+
+            mod.removeElementAt(dishOrderList.getSelectedIndex());
+
+            dishOrderList.setModel(mod);
+        }
+    }//GEN-LAST:event_btnRemoveFromOrderActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAddToOrder;
