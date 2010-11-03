@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+
 /**
  * Class for handling of database queries
  *
@@ -174,7 +175,7 @@ public class OrderDB {
     }
 
     public static ArrayList<Customer> getAllCustomers() throws SQLException{
-        String query = "SELECT * FROM 'customer'";
+        String query = "SELECT * FROM customer";
 
         Statement stat = dbConnection.createStatement();
         stat.executeQuery(query);
@@ -192,6 +193,7 @@ public class OrderDB {
             String comment   = result.getString("comment");
 
             customerList.add(new Customer(id, firstName, lastName, phoneNumber, address, postalCode, comment));
+
         }
 
         return customerList;
@@ -205,11 +207,20 @@ public class OrderDB {
     * @throws SQLException
     */
     public static void newDish(Dish dishIn) throws SQLException{
-        String query = "INSERT INTO menu(name,price,description) VALUES('" +
-                dishIn.name + "','" + dishIn.price + "','" +
-                dishIn.contents + "')";
+                /**INSERT INTO  `menu` (  `dish_id` ,  `name` ,  `price` ,
+                 * `description` )
+                VALUES ('4',  'navn',  '345',  'innhold');
+
+                 **/
+
+        String query = "INSERT INTO `menu` "
+                + "VALUES (`" +
+                dishIn.nr +"`,`" +
+                dishIn.name + "`," +
+                dishIn.price + ",`" +
+                dishIn.description + "`);";
         Statement stat = dbConnection.createStatement();
-        stat.executeQuery(query);
+        stat.executeUpdate(query);
     }
 
     /**
@@ -219,14 +230,15 @@ public class OrderDB {
      * @throws SQLException
      */
     public static Dish getDish(int dishNr) throws SQLException{
-        String query = "GET FROM menu WHERE dish_id='" + dishNr +"'";
+        String query = "SELECT * FROM `menu` WHERE dish_id=" + dishNr;
         Statement stat = dbConnection.createStatement();
         stat.executeQuery(query);
         ResultSet result = stat.getResultSet();
-        int id          = result.getInt("id");
+        result.next();
+        int id          = result.getInt("dish_id");
         String name     = result.getString("name");
         int price       = result.getInt("price");
-        String comment  = result.getString("comment");
+        String comment  = result.getString("description");
 
         Dish fromDB = new Dish(id, name, price, comment);
         return fromDB;
@@ -238,9 +250,9 @@ public class OrderDB {
      */
     public static void deleteDish(int menuNr) throws SQLException {
 
-        String query = "DELETE FROM menu WHERE dish_id='" + menuNr +"'";
+        String query = "DELETE FROM menu WHERE dish_id=" + menuNr;
         Statement stat = dbConnection.createStatement();
-        stat.executeQuery(query);
+        stat.executeUpdate(query);
 
     }
     /**
@@ -248,18 +260,23 @@ public class OrderDB {
      * @return
      * @throws SQLException
      */
-
-    public static Reciept buildReciept(int orderNr) throws SQLException{
-        String query = "GET FROM order WHERE order_id='" + orderNr +"'";
+    public static Order getOrder(int orderNr) throws SQLException {
+        String query = "SELECT * FROM dish_orders WHERE order_id='" + orderNr + "'";
         Statement stat = dbConnection.createStatement();
         stat.executeQuery(query);
-        Reciept reciept = new Reciept();
+        Order order = new Order();
         ResultSet result = stat.getResultSet();
-        reciept.nr          = result.getInt("id");
-        reciept.orders   = result.getString("dishes");
-        reciept.customer =result.getInt("costumer_id");
-        reciept.delivery =result.getInt("delivery");
-        return reciept;
+        while (result.next()) {
+
+            int id = result.getInt("order_id");
+            int dish = result.getInt("dish_id");
+            int amount = result.getInt("amount");
+            String comment = result.getString("comment");
+
+            order.dishOrder.add(new DishOrder(id, amount, comment));
+        }
+
+        return order;
     }
 
     // Audun
