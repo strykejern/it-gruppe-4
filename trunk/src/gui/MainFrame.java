@@ -12,6 +12,7 @@
 package gui;
 
 import java.awt.Dimension;
+import system.*;
 
 /**
  *
@@ -22,6 +23,15 @@ public class MainFrame extends javax.swing.JFrame {
     /** Creates new form MainFrame */
     public MainFrame() {
         initComponents();
+
+
+        try {
+            // Initialize DB
+            OrderDB.initializeDB(testing.DBInfo.username, testing.DBInfo.password, "jdbc:mysql://mysql.stud.ntnu.no/andereie_itgrupp");
+        }
+        catch (Exception e){
+            System.out.println(e);
+        }
     }
 
     /** This method is called from within the constructor to
@@ -35,11 +45,11 @@ public class MainFrame extends javax.swing.JFrame {
 
         jPanel2 = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
+        btnSelectUserWaiter = new javax.swing.JButton();
         btnSelectUserChef = new javax.swing.JButton();
         btnSelectUserAdmin = new javax.swing.JButton();
         btnSelectUserDriver = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
-        btnSelectUserWaiter = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -66,6 +76,14 @@ public class MainFrame extends javax.swing.JFrame {
         jPanel1.setMinimumSize(new java.awt.Dimension(235, 0));
         jPanel1.setPreferredSize(new java.awt.Dimension(235, 600));
 
+        btnSelectUserWaiter.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
+        btnSelectUserWaiter.setText("Waiter");
+        btnSelectUserWaiter.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSelectUserWaiterActionPerformed(evt);
+            }
+        });
+
         btnSelectUserChef.setFont(btnSelectUserWaiter.getFont());
         btnSelectUserChef.setText("Chef");
 
@@ -74,14 +92,6 @@ public class MainFrame extends javax.swing.JFrame {
 
         btnSelectUserDriver.setFont(btnSelectUserWaiter.getFont());
         btnSelectUserDriver.setText("Driver");
-
-        btnSelectUserWaiter.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
-        btnSelectUserWaiter.setText("Waiter");
-        btnSelectUserWaiter.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSelectUserWaiterActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -138,8 +148,7 @@ public class MainFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSelectUserWaiterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelectUserWaiterActionPerformed
-        WaiterForm form = new WaiterForm(this);
-        form.setVisible(true);
+        new WaiterForm(this).setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_btnSelectUserWaiterActionPerformed
 
