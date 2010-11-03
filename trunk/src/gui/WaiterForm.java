@@ -13,6 +13,7 @@ package gui;
 
 import java.awt.Color;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import javax.swing.DefaultListModel;
 import javax.swing.JCheckBox;
 import javax.swing.JTextField;
@@ -50,6 +51,7 @@ public class WaiterForm extends javax.swing.JFrame {
             }
 
             menuList.setModel(mod);
+            dishOrderList.setModel(new DefaultListModel());
         }
         catch (SQLException e){
             System.out.println(e);
@@ -85,8 +87,8 @@ public class WaiterForm extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         dishOrderList = new javax.swing.JList();
         jPanel3 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        btnGetLastOrder = new javax.swing.JButton();
+        btnPlaceOrder = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Waiter");
@@ -299,7 +301,7 @@ public class WaiterForm extends javax.swing.JFrame {
         jPanel2.add(jPanel4);
 
         dishOrderList.setModel(new javax.swing.AbstractListModel() {
-            String[] strings = { "" };
+            String[] strings = { "Item1", "Item2" };
             public int getSize() { return strings.length; }
             public Object getElementAt(int i) { return strings[i]; }
         });
@@ -313,9 +315,14 @@ public class WaiterForm extends javax.swing.JFrame {
         jPanel3.setMaximumSize(new java.awt.Dimension(32767, 45));
         jPanel3.setPreferredSize(new java.awt.Dimension(800, 45));
 
-        jButton1.setText("Get last order");
+        btnGetLastOrder.setText("Get last order");
 
-        jButton2.setText("Place order");
+        btnPlaceOrder.setText("Place order");
+        btnPlaceOrder.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPlaceOrderActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -323,9 +330,9 @@ public class WaiterForm extends javax.swing.JFrame {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jButton1)
+                .addComponent(btnGetLastOrder)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 624, Short.MAX_VALUE)
-                .addComponent(jButton2)
+                .addComponent(btnPlaceOrder)
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
@@ -333,8 +340,8 @@ public class WaiterForm extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 23, Short.MAX_VALUE)
-                    .addComponent(jButton2))
+                    .addComponent(btnGetLastOrder, javax.swing.GroupLayout.DEFAULT_SIZE, 23, Short.MAX_VALUE)
+                    .addComponent(btnPlaceOrder))
                 .addContainerGap())
         );
 
@@ -439,14 +446,44 @@ public class WaiterForm extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnRemoveFromOrderActionPerformed
 
+    private void btnPlaceOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPlaceOrderActionPerformed
+        ListModel list = dishOrderList.getModel();
+        
+        if (list.getSize() > 0){
+            ArrayList<DishOrder> listOrders = new ArrayList<DishOrder>();
+
+            for (int i = 0; i < list.getSize(); i++){
+                dishOrderList.setSelectedIndex(i);
+                listOrders.add((DishOrder)dishOrderList.getSelectedValue());
+            }
+
+            ArrayList<DishOrder> mergedListOrders = new ArrayList<DishOrder>();
+
+            mainLoop: for (DishOrder order : listOrders){
+                for (DishOrder compareOrder : mergedListOrders){
+                    if (order.dishID == compareOrder.dishID &&
+                            order.comments.equals(compareOrder.comments)){
+                        compareOrder.amount++;
+                        continue mainLoop;
+                    }
+                }
+                mergedListOrders.add(order);
+            }
+
+            for (DishOrder tmp : mergedListOrders){
+                System.out.println(tmp);
+            }
+        }
+    }//GEN-LAST:event_btnPlaceOrderActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAddToOrder;
+    private javax.swing.JButton btnGetLastOrder;
+    private javax.swing.JButton btnPlaceOrder;
     private javax.swing.JButton btnRemoveFromOrder;
     private javax.swing.JCheckBox checkBoxCustomAddress;
     private javax.swing.JCheckBox checkBoxDelivery;
     private javax.swing.JList dishOrderList;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
