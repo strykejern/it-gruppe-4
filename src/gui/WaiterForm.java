@@ -11,6 +11,14 @@
 
 package gui;
 
+import java.awt.Color;
+import java.sql.SQLException;
+import javax.swing.DefaultListModel;
+import javax.swing.JCheckBox;
+import javax.swing.JTextField;
+
+import system.*;
+
 /**
  *
  * @author Anders
@@ -24,6 +32,30 @@ public class WaiterForm extends javax.swing.JFrame {
         this.parent = parent;
 
         initComponents();
+
+        init();
+    }
+
+    private void init(){
+
+        try {
+
+            Menu menu = OrderDB.getMenu();
+
+            DefaultListModel mod = new DefaultListModel();
+
+            for (Dish dish : menu.getMenu()){
+                mod.addElement(dish);
+            }
+
+            menuList.setModel(mod);
+        }
+        catch (SQLException e){
+            System.out.println(e);
+        }
+        catch (Exception e){
+            System.out.println(e);
+        }
     }
 
     /** This method is called from within the constructor to
@@ -36,12 +68,21 @@ public class WaiterForm extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
+        txtCustomerFirstName = new javax.swing.JTextField();
+        txtCustomerLastName = new javax.swing.JTextField();
+        txtCustomerPhone = new javax.swing.JTextField();
+        txtCustomerAddress = new javax.swing.JTextField();
+        checkBoxDelivery = new javax.swing.JCheckBox();
+        checkBoxCustomAddress = new javax.swing.JCheckBox();
+        txtCustomAddress = new javax.swing.JTextField();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList();
+        menuList = new javax.swing.JList();
         jPanel4 = new javax.swing.JPanel();
+        btnAddToOrder = new javax.swing.JButton();
+        btnRemoveFromOrder = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jList2 = new javax.swing.JList();
+        dishOrderList = new javax.swing.JList();
         jPanel3 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -54,57 +95,203 @@ public class WaiterForm extends javax.swing.JFrame {
         });
         getContentPane().setLayout(new javax.swing.BoxLayout(getContentPane(), javax.swing.BoxLayout.PAGE_AXIS));
 
-        jPanel1.setMaximumSize(new java.awt.Dimension(32767, 100));
-        jPanel1.setPreferredSize(new java.awt.Dimension(800, 100));
+        jPanel1.setMaximumSize(new java.awt.Dimension(32767, 75));
+        jPanel1.setPreferredSize(new java.awt.Dimension(800, 75));
+
+        txtCustomerFirstName.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtCustomerFirstName.setForeground(java.awt.Color.lightGray);
+        txtCustomerFirstName.setText("First Name");
+        txtCustomerFirstName.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        txtCustomerFirstName.setMinimumSize(new java.awt.Dimension(150, 20));
+        txtCustomerFirstName.setName("First Name"); // NOI18N
+        txtCustomerFirstName.setPreferredSize(new java.awt.Dimension(150, 20));
+        txtCustomerFirstName.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txtCustomerFieldFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtCustomerFieldFocusLost(evt);
+            }
+        });
+
+        txtCustomerLastName.setFont(txtCustomerFirstName.getFont());
+        txtCustomerLastName.setForeground(txtCustomerFirstName.getForeground());
+        txtCustomerLastName.setText("Last Name");
+        txtCustomerLastName.setBorder(txtCustomerFirstName.getBorder());
+        txtCustomerLastName.setMinimumSize(new java.awt.Dimension(150, 20));
+        txtCustomerLastName.setName("Last Name"); // NOI18N
+        txtCustomerLastName.setPreferredSize(new java.awt.Dimension(150, 20));
+        txtCustomerLastName.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txtCustomerFieldFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtCustomerFieldFocusLost(evt);
+            }
+        });
+
+        txtCustomerPhone.setFont(txtCustomerFirstName.getFont());
+        txtCustomerPhone.setForeground(txtCustomerFirstName.getForeground());
+        txtCustomerPhone.setText("Phone Number");
+        txtCustomerPhone.setBorder(txtCustomerFirstName.getBorder());
+        txtCustomerPhone.setMinimumSize(new java.awt.Dimension(150, 20));
+        txtCustomerPhone.setName("Phone Number"); // NOI18N
+        txtCustomerPhone.setPreferredSize(new java.awt.Dimension(150, 20));
+        txtCustomerPhone.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txtCustomerFieldFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtCustomerFieldFocusLost(evt);
+            }
+        });
+
+        txtCustomerAddress.setFont(txtCustomerFirstName.getFont());
+        txtCustomerAddress.setForeground(txtCustomerFirstName.getForeground());
+        txtCustomerAddress.setText("Address");
+        txtCustomerAddress.setBorder(txtCustomerFirstName.getBorder());
+        txtCustomerAddress.setName("Address"); // NOI18N
+        txtCustomerAddress.setPreferredSize(new java.awt.Dimension(105, 20));
+        txtCustomerAddress.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txtCustomerFieldFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtCustomerFieldFocusLost(evt);
+            }
+        });
+
+        checkBoxDelivery.setFont(txtCustomerFirstName.getFont());
+        checkBoxDelivery.setText("Delivery");
+        checkBoxDelivery.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                checkBoxDeliveryStateChanged(evt);
+            }
+        });
+
+        checkBoxCustomAddress.setFont(txtCustomerFirstName.getFont());
+        checkBoxCustomAddress.setText("Custom address");
+        checkBoxCustomAddress.setEnabled(false);
+        checkBoxCustomAddress.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                checkBoxCustomAddressEnabledChanged(evt);
+            }
+        });
+        checkBoxCustomAddress.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                checkBoxCustomAddressStateChanged(evt);
+            }
+        });
+
+        txtCustomAddress.setFont(txtCustomerFirstName.getFont());
+        txtCustomAddress.setForeground(java.awt.Color.lightGray);
+        txtCustomAddress.setText("Custom Address");
+        txtCustomAddress.setBorder(txtCustomerFirstName.getBorder());
+        txtCustomAddress.setEnabled(false);
+        txtCustomAddress.setName("Custom Address"); // NOI18N
+        txtCustomAddress.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txtCustomerFieldFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtCustomerFieldFocusLost(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 810, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(checkBoxDelivery)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(checkBoxCustomAddress)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtCustomAddress, javax.swing.GroupLayout.DEFAULT_SIZE, 608, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(txtCustomerFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtCustomerLastName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtCustomerPhone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtCustomerAddress, javax.swing.GroupLayout.DEFAULT_SIZE, 342, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtCustomerFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtCustomerLastName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtCustomerPhone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtCustomerAddress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(checkBoxDelivery)
+                    .addComponent(checkBoxCustomAddress)
+                    .addComponent(txtCustomAddress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(11, Short.MAX_VALUE))
         );
 
         getContentPane().add(jPanel1);
 
         jPanel2.setLayout(new javax.swing.BoxLayout(jPanel2, javax.swing.BoxLayout.LINE_AXIS));
 
-        jList1.setModel(new javax.swing.AbstractListModel() {
+        menuList.setModel(new javax.swing.AbstractListModel() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
             public Object getElementAt(int i) { return strings[i]; }
         });
-        jList1.setPreferredSize(new java.awt.Dimension(200, 80));
-        jScrollPane1.setViewportView(jList1);
+        menuList.setPreferredSize(new java.awt.Dimension(200, 80));
+        jScrollPane1.setViewportView(menuList);
 
         jPanel2.add(jScrollPane1);
 
-        jPanel4.setMaximumSize(new java.awt.Dimension(50, 32767));
-        jPanel4.setPreferredSize(new java.awt.Dimension(50, 183));
+        jPanel4.setMaximumSize(new java.awt.Dimension(70, 32767));
+        jPanel4.setMinimumSize(new java.awt.Dimension(70, 0));
+        jPanel4.setPreferredSize(new java.awt.Dimension(70, 183));
+
+        btnAddToOrder.setText("=>");
+
+        btnRemoveFromOrder.setText("<=");
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 50, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                .addContainerGap(11, Short.MAX_VALUE)
+                .addComponent(btnAddToOrder)
+                .addContainerGap())
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(btnRemoveFromOrder)
+                .addContainerGap(11, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 401, Short.MAX_VALUE)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGap(120, 120, 120)
+                .addComponent(btnAddToOrder)
+                .addGap(69, 69, 69)
+                .addComponent(btnRemoveFromOrder)
+                .addContainerGap(191, Short.MAX_VALUE))
         );
 
         jPanel2.add(jPanel4);
 
-        jList2.setModel(new javax.swing.AbstractListModel() {
+        dishOrderList.setModel(new javax.swing.AbstractListModel() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
             public Object getElementAt(int i) { return strings[i]; }
         });
-        jList2.setPreferredSize(new java.awt.Dimension(200, 80));
-        jScrollPane2.setViewportView(jList2);
+        dishOrderList.setPreferredSize(new java.awt.Dimension(200, 80));
+        jScrollPane2.setViewportView(dishOrderList);
 
         jPanel2.add(jScrollPane2);
 
@@ -117,7 +304,7 @@ public class WaiterForm extends javax.swing.JFrame {
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 810, Short.MAX_VALUE)
+            .addGap(0, 830, Short.MAX_VALUE)
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -133,15 +320,78 @@ public class WaiterForm extends javax.swing.JFrame {
         parent.setVisible(true);
     }//GEN-LAST:event_WaiterFormClosed
 
+    private void txtCustomerFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtCustomerFieldFocusGained
+        JTextField focusedTextField = (JTextField)evt.getSource();
+
+        if (focusedTextField.getText().equals(focusedTextField.getName())){
+            focusedTextField.setText("");
+            focusedTextField.setForeground(Color.black);
+        }
+    }//GEN-LAST:event_txtCustomerFieldFocusGained
+
+    private void txtCustomerFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtCustomerFieldFocusLost
+        JTextField focusedTextField = (JTextField)evt.getSource();
+
+        if (focusedTextField.getText().equals("")){
+            focusedTextField.setText(focusedTextField.getName());
+            focusedTextField.setForeground(Color.lightGray);
+        }
+    }//GEN-LAST:event_txtCustomerFieldFocusLost
+
+    private void checkBoxDeliveryStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_checkBoxDeliveryStateChanged
+        JCheckBox check = (JCheckBox)evt.getSource();
+
+        if (check.isSelected()){
+            checkBoxCustomAddress.setEnabled(true);
+        }
+        else {
+            checkBoxCustomAddress.setEnabled(false);
+            txtCustomAddress.setEnabled(false);
+        }
+    }//GEN-LAST:event_checkBoxDeliveryStateChanged
+
+    private void checkBoxCustomAddressStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_checkBoxCustomAddressStateChanged
+        JCheckBox check = (JCheckBox)evt.getSource();
+
+        if (check.isEnabled()) {
+            if (check.isSelected()) {
+                txtCustomAddress.setEnabled(true);
+            } else {
+                txtCustomAddress.setEnabled(false);
+            }
+        }
+    }//GEN-LAST:event_checkBoxCustomAddressStateChanged
+
+    private void checkBoxCustomAddressEnabledChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_checkBoxCustomAddressEnabledChanged
+        JCheckBox check = (JCheckBox)evt.getSource();
+
+        if (check.isEnabled()) {
+            if (check.isSelected()) {
+                txtCustomAddress.setEnabled(true);
+            } else {
+                txtCustomAddress.setEnabled(false);
+            }
+        }
+    }//GEN-LAST:event_checkBoxCustomAddressEnabledChanged
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JList jList1;
-    private javax.swing.JList jList2;
+    private javax.swing.JButton btnAddToOrder;
+    private javax.swing.JButton btnRemoveFromOrder;
+    private javax.swing.JCheckBox checkBoxCustomAddress;
+    private javax.swing.JCheckBox checkBoxDelivery;
+    private javax.swing.JList dishOrderList;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JList menuList;
+    private javax.swing.JTextField txtCustomAddress;
+    private javax.swing.JTextField txtCustomerAddress;
+    private javax.swing.JTextField txtCustomerFirstName;
+    private javax.swing.JTextField txtCustomerLastName;
+    private javax.swing.JTextField txtCustomerPhone;
     // End of variables declaration//GEN-END:variables
 
 }
