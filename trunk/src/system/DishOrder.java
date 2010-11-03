@@ -1,5 +1,10 @@
 package system;
 
+/**
+ * Sets the ID, amount and comments of dishes in an order.
+ * 
+ * @author Håvard
+ */
 public class DishOrder {
 	
 	int dishID;
@@ -34,9 +39,6 @@ public class DishOrder {
 
 	public void setComments(String comments) {
 		this.comments = comments;
-	}
-	
-	
-	
+	}	
 
 }
