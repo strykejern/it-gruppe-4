@@ -6,13 +6,14 @@
 package system;
 
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 
 /**
  * Creating printable reciept
  * @author Lars
  */
 public class Reciept {
-
+    static DecimalFormat toDes = new DecimalFormat("0.00");
     static double mva = 0.25; //TODO: create other class with statics
     static boolean delivery;
     static int deliveryPrice = 50;
@@ -24,11 +25,11 @@ public class Reciept {
      * @param order the order one creates a reciept for
      * @return string with reciept
      */
-    public String toReciept(Order order) {
-
-        String print = "Reciept for: " + order.customer + "\nDish \t\t Amount "
-                + "\t\t Price \n";
+    public static String toReciept(Order order) {
+        String print = "Reciept for: " + order.customer + "\nDish \t\tAmount "
+                + "  Price \n";
         Dish dish2;
+        Double localMva;
         for (DishOrder dish : order.dishOrder) {
             try {
                 dish2 = OrderDB.getDish(dish.dishID);
@@ -45,10 +46,11 @@ public class Reciept {
                 total += deliveryPrice;
                 print += "\t\t\t" + deliveryPrice;
             }
-        } 
-        print += "Total: \t\t\t" + total + "\n";
+        }
+        localMva = (total-total/(1+mva));
+        print += "\nTotal: \t\t       " + toDes.format(total) + "\n";
         
-        print += "Mva: \t\t\t"  + total/(1+mva) + "\n";
+        print += "Mva: \t\t\t "  + toDes.format(localMva) + "\n";
         return print;
     }
 }

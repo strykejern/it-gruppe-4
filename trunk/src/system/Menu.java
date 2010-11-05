@@ -17,8 +17,14 @@ public class Menu {
     public Menu() {
          menu = new ArrayList<Dish>();
     }
+
+    /**
+     * returns a menuobject (arrayList)
+     * @return
+     */
     public ArrayList<Dish> getMenu(){
         return menu;
+
     }
     /**
      * adds dish to menu arraylist
@@ -30,9 +36,18 @@ public class Menu {
         menu.add(fromDB);
     }
 
+    public Dish getDish(int nr){
+        for(Dish dish : menu){
+            if(dish.nr == nr){
+                return dish;
+            }
+        }
+        return null;
+    }
+
     @Override
     public String toString(){
-        String output = "Nr\tName\t\t\tprice\n";
+        String output = "Nr\tName\t    Price\n";
         for(int i = 0; i<menu.size(); i++){
             output += menu.get(i);
         }
