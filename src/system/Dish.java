@@ -1,10 +1,13 @@
 package system;
 
+import java.text.DecimalFormat;
+
 /**
  * Dish class for building dish-objects
  * @author Lars
  */
 public class Dish {
+
 
     public int nr;		//number in menu
     public String name;		//name of dish
@@ -31,8 +34,15 @@ public class Dish {
      */
     @Override
     public String toString() {
-        String streng = nr + "\t" + name + "\t\t\t" + price + "\n" + "Contents: "
-                + description;
+        DecimalFormat toDes=new DecimalFormat("0.00");
+        String spaces="";
+        if(name.length()<16){
+            for(int i=0;i<(16-name.length()); i++){
+                spaces+=" ";
+            }
+        }
+        String streng = nr + "\t" + name + spaces +  toDes.format(price) +
+                "\n" + "Contents: " + description +"\n";
         return streng;
     }
 
@@ -41,16 +51,19 @@ public class Dish {
      * @param amount
      * @return String with name, amount and price
      */
-    public String forReciept(int amount) { //TODO: get correct variable
+    public String forReciept(int amount) {
+        DecimalFormat toDes=new DecimalFormat("0.00");
         String print;
-        
-        if (amount == 1) {
-            print = this.name + "\t\t" + "\t\t" + this.price + "\n";
-        } 
-        else {
-            int total = amount * this.price;
-            print = this.name + "\t\t" + amount + "*" + total + "\n";
+        String spaces="";
+        if(name.length()<16){
+            for(int i=0;i<(16-name.length()); i++){
+                spaces+=" ";
+            }
         }
+        int total = amount * this.price;
+        print = this.name + spaces + "\t" + amount + "     " + 
+                toDes.format(total) + "\n";
+        
         return print;
     }
 }
