@@ -12,9 +12,12 @@ import java.text.DecimalFormat;
  * Creating printable reciept
  * @author Lars
  */
+
+//TODO: create table in DB where statics are stored
+
 public class Reciept {
     static DecimalFormat toDes = new DecimalFormat("0.00");
-    static double mva = 0.25; //TODO: create other class with statics
+    static double mva = 0.25; 
     static boolean delivery;
     static int deliveryPrice = 50;
     static int maxtot = 500;
