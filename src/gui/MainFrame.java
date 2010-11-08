@@ -76,7 +76,7 @@ public class MainFrame extends javax.swing.JFrame {
         jPanel1.setMinimumSize(new java.awt.Dimension(235, 0));
         jPanel1.setPreferredSize(new java.awt.Dimension(235, 600));
 
-        btnSelectUserWaiter.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
+        btnSelectUserWaiter.setFont(new java.awt.Font("Tahoma", 1, 36));
         btnSelectUserWaiter.setText("Waiter");
         btnSelectUserWaiter.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -86,6 +86,11 @@ public class MainFrame extends javax.swing.JFrame {
 
         btnSelectUserChef.setFont(btnSelectUserWaiter.getFont());
         btnSelectUserChef.setText("Chef");
+        btnSelectUserChef.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSelectUserChefActionPerformed(evt);
+            }
+        });
 
         btnSelectUserAdmin.setFont(btnSelectUserWaiter.getFont());
         btnSelectUserAdmin.setText("Admin");
@@ -151,6 +156,11 @@ public class MainFrame extends javax.swing.JFrame {
         new WaiterForm(this).setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_btnSelectUserWaiterActionPerformed
+
+    private void btnSelectUserChefActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelectUserChefActionPerformed
+        new CookFrame(this).setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_btnSelectUserChefActionPerformed
 
     /**
     * @param args the command line arguments
