@@ -86,67 +86,49 @@ public class OrderDB {
         return m;
     }
     
-    public static Object getCustomerByName(String firstName, String lastName) 
-    		throws SQLException, Exception {
-    	String query = "SELECT * FROM customer " +
-        	"WHERE first_name='" + firstName +
-        	"' AND last_name='" + lastName + "'";
-    	
-    	Statement stat = dbConnection.createStatement();
-        stat.executeQuery(query);
-        
-        ResultSet result = stat.getResultSet();
-        
-        if (result.next()){
-        	// TODO: Create customer object to return
-        	String fName 	= result.getString("first_name");
-        	String lName 	= result.getString("last_name");
-        	int phone 		= result.getInt("phone_number");
-        	String address 	= result.getString("address");
-        	int postalCode 	= result.getInt("postal_code");
-        	String comment 	= result.getString("comment");
-        }
-        else {
-        	throw new SQLException ("No rows fetched");
-        }
-        
-        // Throw exception on more than one row result
-        if (result.next()){
-        	throw new Exception ("Multiple customer matched your search");
-        }
-    	
-    	return null;
+    public static Object getCustomerByName(String firstName, String lastName)
+            throws SQLException {
+        String query = "SELECT * FROM customer "
+                + "WHERE first_name='" + firstName
+                + "' AND last_name='" + lastName + "'";
+
+        return getCustomerByNameSimplifier(query);
     }
-    
-    public static Object getCustomerByName(String lastName) 
-    		throws SQLException, Exception {
-    	String query = "SELECT * FROM customer " +
-        			"WHERE last_name='" + lastName + "'";
-        
+
+    public static ArrayList<Customer> getCustomersByName(String lastName)
+            throws SQLException {
+        String query = "SELECT * FROM customer "
+                + "WHERE last_name='" + lastName + "'";
+
+        return getCustomerByNameSimplifier(query);
+    }
+
+    private static ArrayList<Customer> getCustomerByNameSimplifier(String query)
+            throws SQLException{
+        ArrayList<Customer> customers = new ArrayList<Customer>();
+
         Statement stat = dbConnection.createStatement();
         stat.executeQuery(query);
-        
+
         ResultSet result = stat.getResultSet();
-        
-        if (result.next()){
-        	// TODO: Create customer object to return
-        	String fName 	= result.getString("first_name");
-        	String lName 	= result.getString("last_name");
-        	int phone 		= result.getInt("phone_number");
-        	String address 	= result.getString("address");
-        	int postalCode 	= result.getInt("postal_code");
-        	String comment 	= result.getString("comment");
-        }
-        else {
-        	throw new SQLException ("No rows fetched");
-        }
-        
-        // Throw exception on more than one row result
-        if (result.next()){
-        	throw new Exception ("Multiple customer matched your search");
+
+        if (result.next()) {
+            // TODO: Create customer object to return
+            int id          = result.getInt("customer_id");
+            String fName    = result.getString("first_name");
+            String lName    = result.getString("last_name");
+            int phone       = result.getInt("phone_number");
+            String address  = result.getString("address");
+            int postalCode  = result.getInt("postal_code");
+            String comment  = result.getString("comment");
+
+            customers.add(new Customer(id, fName, lName, phone, address, postalCode, comment));
+
+        } else {
+            throw new SQLException("No rows fetched");
         }
 
-        return null;
+        return customers;
     }
     
     public static void createOrder(int customerId, boolean made, 
@@ -200,6 +182,51 @@ public class OrderDB {
         }
 
         return customerList;
+    }
+
+    public static ArrayList<FetchedOrder> getCooksOrders() throws SQLException {
+        String query = "SELECT * FROM orders WHERE made=0";
+
+        ArrayList<FetchedOrder> orders = new ArrayList<FetchedOrder>();
+
+        Statement stat = dbConnection.createStatement();
+        stat.executeQuery(query);
+
+        ResultSet result = stat.getResultSet();
+        while (result.next()) {
+            int orderId             = result.getInt("order_id");
+            int customerId          = result.getInt("customer_id");
+            String deliveryAddress  = result.getString("delivery_address");
+
+            FetchedOrder order = new FetchedOrder(orderId, customerId, deliveryAddress);
+
+            order.setDishes(getDishOrders(orderId));
+
+            orders.add(order);
+        }
+
+        return orders;
+    }
+
+    public static ArrayList<DishOrder> getDishOrders(int orderId) throws SQLException{
+        String query = "SELECT * FROM dish_orders WHERE order_id=" + orderId;
+
+        ArrayList<DishOrder> dishes = new ArrayList<DishOrder>();
+
+        Statement stat = dbConnection.createStatement();
+        stat.executeQuery(query);
+
+        ResultSet result = stat.getResultSet();
+        while (result.next()) {
+            
+            int dishId      = result.getInt("dish_id");
+            int amount      = result.getInt("amount");
+            String comment  = result.getString("comment");
+
+            dishes.add(new DishOrder(dishId, amount, comment));
+        }
+
+        return dishes;
     }
     
     // Lars

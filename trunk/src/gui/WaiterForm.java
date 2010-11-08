@@ -16,8 +16,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.swing.DefaultListModel;
 import javax.swing.JCheckBox;
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
 import javax.swing.JTextField;
 import javax.swing.ListModel;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 import system.*;
 
@@ -59,6 +63,25 @@ public class WaiterForm extends javax.swing.JFrame {
         catch (Exception e){
             System.out.println(e);
         }
+
+        bindTocustomerTextChanged(txtCustomerFirstName);
+        bindTocustomerTextChanged(txtCustomerLastName);
+        bindTocustomerTextChanged(txtCustomerPhone);
+        bindTocustomerTextChanged(txtCustomerAddress);
+    }
+
+    private void bindTocustomerTextChanged(final JTextField field){
+        field.getDocument().addDocumentListener(new DocumentListener() {
+            public void insertUpdate(DocumentEvent e) {
+                customerTextChanged(field);
+            }
+            public void removeUpdate(DocumentEvent e) {
+                customerTextChanged(field);
+            }
+            public void changedUpdate(DocumentEvent e) {
+                customerTextChanged(field);
+            }
+        });
     }
 
     /** This method is called from within the constructor to
@@ -70,6 +93,7 @@ public class WaiterForm extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        popupCustomer = new javax.swing.JPopupMenu();
         jPanel1 = new javax.swing.JPanel();
         txtCustomerFirstName = new javax.swing.JTextField();
         txtCustomerLastName = new javax.swing.JTextField();
@@ -90,6 +114,9 @@ public class WaiterForm extends javax.swing.JFrame {
         btnGetLastOrder = new javax.swing.JButton();
         btnPlaceOrder = new javax.swing.JButton();
 
+        popupCustomer.setToolTipText("");
+        popupCustomer.setFocusable(false);
+
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Waiter");
         setMinimumSize(new java.awt.Dimension(800, 600));
@@ -103,13 +130,18 @@ public class WaiterForm extends javax.swing.JFrame {
         jPanel1.setMaximumSize(new java.awt.Dimension(32767, 75));
         jPanel1.setPreferredSize(new java.awt.Dimension(800, 75));
 
-        txtCustomerFirstName.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtCustomerFirstName.setFont(new java.awt.Font("Tahoma", 0, 14));
         txtCustomerFirstName.setForeground(java.awt.Color.lightGray);
         txtCustomerFirstName.setText("First Name");
         txtCustomerFirstName.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         txtCustomerFirstName.setMinimumSize(new java.awt.Dimension(150, 20));
         txtCustomerFirstName.setName("First Name"); // NOI18N
         txtCustomerFirstName.setPreferredSize(new java.awt.Dimension(150, 20));
+        txtCustomerFirstName.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                txtCustomerFieldMouseClicked(evt);
+            }
+        });
         txtCustomerFirstName.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 txtCustomerFieldFocusGained(evt);
@@ -126,6 +158,11 @@ public class WaiterForm extends javax.swing.JFrame {
         txtCustomerLastName.setMinimumSize(new java.awt.Dimension(150, 20));
         txtCustomerLastName.setName("Last Name"); // NOI18N
         txtCustomerLastName.setPreferredSize(new java.awt.Dimension(150, 20));
+        txtCustomerLastName.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                txtCustomerFieldMouseClicked(evt);
+            }
+        });
         txtCustomerLastName.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 txtCustomerFieldFocusGained(evt);
@@ -142,6 +179,11 @@ public class WaiterForm extends javax.swing.JFrame {
         txtCustomerPhone.setMinimumSize(new java.awt.Dimension(150, 20));
         txtCustomerPhone.setName("Phone Number"); // NOI18N
         txtCustomerPhone.setPreferredSize(new java.awt.Dimension(150, 20));
+        txtCustomerPhone.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                txtCustomerFieldMouseClicked(evt);
+            }
+        });
         txtCustomerPhone.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 txtCustomerFieldFocusGained(evt);
@@ -157,6 +199,11 @@ public class WaiterForm extends javax.swing.JFrame {
         txtCustomerAddress.setBorder(txtCustomerFirstName.getBorder());
         txtCustomerAddress.setName("Address"); // NOI18N
         txtCustomerAddress.setPreferredSize(new java.awt.Dimension(105, 20));
+        txtCustomerAddress.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                txtCustomerFieldMouseClicked(evt);
+            }
+        });
         txtCustomerAddress.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 txtCustomerFieldFocusGained(evt);
@@ -361,6 +408,8 @@ public class WaiterForm extends javax.swing.JFrame {
             focusedTextField.setText("");
             focusedTextField.setForeground(Color.black);
         }
+
+        customerTextChanged(focusedTextField);
     }//GEN-LAST:event_txtCustomerFieldFocusGained
 
     private void txtCustomerFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtCustomerFieldFocusLost
@@ -370,6 +419,8 @@ public class WaiterForm extends javax.swing.JFrame {
             focusedTextField.setText(focusedTextField.getName());
             focusedTextField.setForeground(Color.lightGray);
         }
+
+        popupCustomer.setVisible(false);
     }//GEN-LAST:event_txtCustomerFieldFocusLost
 
     private void checkBoxDeliveryStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_checkBoxDeliveryStateChanged
@@ -434,6 +485,31 @@ public class WaiterForm extends javax.swing.JFrame {
         return mod;
     }
 
+    private void customerTextChanged(JTextField invoker){
+        if (invoker.hasFocus() && invoker.getText().length() > 0){
+            try {
+                ArrayList<Customer> customers = OrderDB.getAllCustomers(); // TODO: search for customers in the database
+
+                if (customers.size() > 0){
+                    popupCustomer.removeAll();
+
+                    for (Customer cust : customers){
+                        JMenuItem item = new JMenuItem(cust.toString());
+                        item.setName(cust.id + ""); // TODO: maybe a cleaner way to do this ?
+                        popupCustomer.add(item);
+                    }
+
+                    popupCustomer.setVisible(false);
+                    popupCustomer.show(txtCustomerFirstName, 0, 20);
+                    //invoker.requestFocusInWindow();
+                }
+            }
+            catch (SQLException e){
+
+            }
+        }
+    }
+
     private void btnRemoveFromOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveFromOrderActionPerformed
         if (!dishOrderList.isSelectionEmpty()) {
             ListModel list = dishOrderList.getModel();
@@ -476,6 +552,11 @@ public class WaiterForm extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnPlaceOrderActionPerformed
 
+    private void txtCustomerFieldMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtCustomerFieldMouseClicked
+        JTextField focusedTextField = (JTextField)evt.getSource();
+        customerTextChanged(focusedTextField);
+    }//GEN-LAST:event_txtCustomerFieldMouseClicked
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAddToOrder;
     private javax.swing.JButton btnGetLastOrder;
@@ -491,6 +572,7 @@ public class WaiterForm extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JList menuList;
+    private javax.swing.JPopupMenu popupCustomer;
     private javax.swing.JTextField txtCustomAddress;
     private javax.swing.JTextField txtCustomerAddress;
     private javax.swing.JTextField txtCustomerFirstName;

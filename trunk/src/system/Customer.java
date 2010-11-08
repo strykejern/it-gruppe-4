@@ -22,4 +22,8 @@ public class Customer {
         this.postalCode = postalCode;
         this.phoneNumber = phoneNumber;
     }
+
+    public String toString(){
+        return firstName + " " + lastName;
+    }
 }
