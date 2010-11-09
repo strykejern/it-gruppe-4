@@ -230,6 +230,22 @@ public class OrderDB {
 
         return dishes;
     }
+
+    public static void setOrderAsMade(int orderId) throws SQLException{
+        String query = "UPDATE orders SET made=1 WHERE order_id=" + orderId;
+
+        Statement stat = dbConnection.createStatement();
+
+        stat.executeUpdate(query);
+    }
+
+    public static void undoSetOrderAsMade(int orderId) throws SQLException{
+        String query = "UPDATE orders SET made=0 WHERE order_id=" + orderId;
+
+        Statement stat = dbConnection.createStatement();
+
+        stat.executeUpdate(query);
+    }
     
     // Lars
 

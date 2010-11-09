@@ -210,11 +210,17 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Get last order"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnLastOrderActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="btnOrderDone">
       <Properties>
         <Property name="text" type="java.lang.String" value="Done with order"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnOrderDoneActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>
