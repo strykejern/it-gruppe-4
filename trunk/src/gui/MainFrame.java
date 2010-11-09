@@ -11,7 +11,7 @@
 
 package gui;
 
-import java.awt.Dimension;
+import javax.swing.UIManager;
 import system.*;
 
 /**
@@ -31,6 +31,13 @@ public class MainFrame extends javax.swing.JFrame {
         }
         catch (Exception e){
             System.out.println(e);
+        }
+
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        }
+        catch (Exception e){
+            
         }
     }
 
