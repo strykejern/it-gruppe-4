@@ -8,6 +8,7 @@ package system;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
 
+
 /**
  * Creating printable reciept
  * @author Lars

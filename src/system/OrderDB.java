@@ -327,6 +327,10 @@ public class OrderDB {
         return order;
     }
 
+    public void setProperties(double mva, int deliveryPrice, int maxTot){
+        //TODO query to DB setting parameters
+    }
+
     // Audun
 
     // Haavard
