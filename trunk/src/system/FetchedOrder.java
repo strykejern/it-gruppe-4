@@ -27,5 +27,12 @@ public class FetchedOrder {
         return dishes;
     }
 
-    
+    public boolean equals(FetchedOrder other){
+        return other.orderId == orderId;
+    }
+
+    @Override
+    public String toString(){
+        return orderId + "";
+    }
 }
