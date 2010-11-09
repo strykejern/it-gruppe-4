@@ -32,6 +32,10 @@ public class FetchedOrder {
 
     public void setDishes(ArrayList<DishOrder> dishes) {
         this.dishes = dishes;
+         if(this.viewedBy==View.CHEF){
+            for(int i = 0;i<this.dishes.size();i++)
+                this.dishes.get(i).setViewedByChef();
+        }
     }
 
     public ArrayList<DishOrder> getDishes() {
