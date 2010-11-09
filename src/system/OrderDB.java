@@ -9,6 +9,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 
+
 /**
  * Class for handling of database queries
  *
@@ -198,7 +199,8 @@ public class OrderDB {
             int customerId          = result.getInt("customer_id");
             String deliveryAddress  = result.getString("delivery_address");
 
-            FetchedOrder order = new FetchedOrder(orderId, customerId, deliveryAddress);
+
+            FetchedOrder order = new FetchedOrder(orderId, customerId, deliveryAddress, FetchedOrder.View.CHEF);
 
             order.setDishes(getDishOrders(orderId));
 
