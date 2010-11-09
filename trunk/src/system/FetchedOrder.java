@@ -46,6 +46,10 @@ public class FetchedOrder {
         return other.orderId == orderId;
     }
 
+    public int getId(){
+        return this.orderId;
+    }
+
     @Override
     public String toString(){
         String FetchedOrderPrint = "";
