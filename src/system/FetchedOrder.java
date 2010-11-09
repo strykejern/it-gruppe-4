@@ -10,13 +10,19 @@ public class FetchedOrder {
     private int orderId;
     private int customerId;
     private String deliveryAddress;
+    public enum View{CHEF, DRIVER};
+    private View viewedBy;
 
     private ArrayList<DishOrder> dishes;
 
-    public FetchedOrder(int orderId, int customerId, String deliveryAddress) {
+    public FetchedOrder(int orderId, int customerId, String deliveryAddress, View view) {
         this.orderId = orderId;
         this.customerId = customerId;
         this.deliveryAddress = deliveryAddress;
+        this.viewedBy = view;
+
+
+
     }
 
     public void setDishes(ArrayList<DishOrder> dishes) {
@@ -33,6 +39,14 @@ public class FetchedOrder {
 
     @Override
     public String toString(){
-        return orderId + "";
+        String FetchedOrderPrint = "Order: ";
+        switch (viewedBy){
+            case CHEF: FetchedOrderPrint+=this.orderId;
+            case DRIVER: FetchedOrderPrint+= this.orderId + " to " +
+                    this.customerId + " at " + this.deliveryAddress;
+
+
+        }
+        return FetchedOrderPrint;
     }
 }
