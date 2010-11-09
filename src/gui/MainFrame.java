@@ -32,13 +32,6 @@ public class MainFrame extends javax.swing.JFrame {
         catch (Exception e){
             System.out.println(e);
         }
-
-        try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }
-        catch (Exception e){
-            
-        }
     }
 
     /** This method is called from within the constructor to
@@ -175,6 +168,11 @@ public class MainFrame extends javax.swing.JFrame {
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
+                try {
+                    UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+                } catch (Exception e) {
+                }
+                
                 new MainFrame().setVisible(true);
             }
         });
