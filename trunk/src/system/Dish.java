@@ -41,8 +41,7 @@ public class Dish {
                 spaces+=" ";
             }
         }
-        String streng = nr + "\t" + name + spaces +  toDes.format(price) +
-                "\n" + "Contents: " + description +"\n";
+        String streng = nr + " " + name + spaces +  toDes.format(price);
         return streng;
     }
 
