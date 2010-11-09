@@ -23,8 +23,8 @@ public class UpdaterThread extends Thread {
             listener.updateGUI();
 
             try {
-                Thread.sleep(
-                        updateInterval - (System.currentTimeMillis() - time));
+                Thread.sleep(Math.max(0,
+                        updateInterval - (System.currentTimeMillis() - time)));
             }
             catch (InterruptedException e){
 

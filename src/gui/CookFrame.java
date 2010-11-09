@@ -13,10 +13,15 @@ package gui;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Enumeration;
+import javax.swing.DefaultListModel;
+import javax.swing.JList;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreePath;
 import system.DishOrder;
 import system.FetchedOrder;
+import system.Order;
 import system.OrderDB;
 
 /**
@@ -38,54 +43,43 @@ public class CookFrame extends javax.swing.JFrame implements GUIUpdater{
     }
 
     private void init(){
-        try {
-            DefaultMutableTreeNode root = new DefaultMutableTreeNode();
-
-            ArrayList<FetchedOrder> orders = OrderDB.getCooksOrders();
-
-            for (FetchedOrder order : orders){
-                DefaultMutableTreeNode orderNode = new DefaultMutableTreeNode(order);
-
-                for (DishOrder dish : order.getDishes()){
-                    DefaultMutableTreeNode dishNode = new DefaultMutableTreeNode(dish, false);
-                    orderNode.add(dishNode);
-                }
-
-                root.add(orderNode);
-            }
-
-            DefaultTreeModel model = new DefaultTreeModel(root);
-            orderTree.setModel(model);
-        }
-        catch (SQLException e) {
-            
-        }
-
         updater = new UpdaterThread(this, 10 * 1000); // GUI updater with 10 second interval
         updater.start();
     }
 
     public void updateGUI() {
-        // TODO: keep expanded trees and selection
-
         try {
-            DefaultMutableTreeNode root = new DefaultMutableTreeNode();
+            JList focused = null;
+            if (orderList.hasFocus()) focused = orderList;
+            else if (dishList.hasFocus()) focused = dishList;
 
             ArrayList<FetchedOrder> orders = OrderDB.getCooksOrders();
+            FetchedOrder selectedOrder = (FetchedOrder)orderList.getSelectedValue();
+
+            DefaultListModel orderModel = new DefaultListModel();
 
             for (FetchedOrder order : orders){
-                DefaultMutableTreeNode orderNode = new DefaultMutableTreeNode(order);
 
-                for (DishOrder dish : order.getDishes()){
-                    DefaultMutableTreeNode dishNode = new DefaultMutableTreeNode(dish, false);
-                    orderNode.add(dishNode);
+                orderModel.addElement(order);
+
+                if (selectedOrder != null && order.equals(selectedOrder)) {
+                    DishOrder selectedDish = (DishOrder)dishList.getSelectedValue();
+
+                    DefaultListModel dishModel = new DefaultListModel();
+                    for (DishOrder dish : order.getDishes()) {
+                        dishModel.addElement(dish);
+                    }
+                    dishList.setModel(dishModel);
+                    dishList.setSelectedValue(selectedDish, false);
                 }
-
-                root.add(orderNode);
             }
 
-            DefaultTreeModel model = new DefaultTreeModel(root);
-            orderTree.setModel(model);
+            orderList.setModel(orderModel);
+            orderList.setSelectedValue(selectedOrder, false);
+
+            if (focused != null){
+                focused.requestFocusInWindow();
+            }
         }
         catch (SQLException e) {
 
@@ -103,9 +97,13 @@ public class CookFrame extends javax.swing.JFrame implements GUIUpdater{
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jScrollPane1 = new javax.swing.JScrollPane();
-        orderTree = new javax.swing.JTree();
         orderInfoPanel = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        orderList = new javax.swing.JList();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        dishList = new javax.swing.JList();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -113,33 +111,6 @@ public class CookFrame extends javax.swing.JFrame implements GUIUpdater{
                 formWindowClosed(evt);
             }
         });
-
-        javax.swing.tree.DefaultMutableTreeNode treeNode1 = new javax.swing.tree.DefaultMutableTreeNode("JTree");
-        javax.swing.tree.DefaultMutableTreeNode treeNode2 = new javax.swing.tree.DefaultMutableTreeNode("colors");
-        javax.swing.tree.DefaultMutableTreeNode treeNode3 = new javax.swing.tree.DefaultMutableTreeNode("blue");
-        treeNode2.add(treeNode3);
-        treeNode3 = new javax.swing.tree.DefaultMutableTreeNode("violet");
-        treeNode2.add(treeNode3);
-        treeNode3 = new javax.swing.tree.DefaultMutableTreeNode("red");
-        treeNode2.add(treeNode3);
-        treeNode3 = new javax.swing.tree.DefaultMutableTreeNode("yellow");
-        treeNode2.add(treeNode3);
-        treeNode1.add(treeNode2);
-        treeNode2 = new javax.swing.tree.DefaultMutableTreeNode("sports");
-        treeNode1.add(treeNode2);
-        treeNode2 = new javax.swing.tree.DefaultMutableTreeNode("food");
-        treeNode3 = new javax.swing.tree.DefaultMutableTreeNode("hot dogs");
-        treeNode2.add(treeNode3);
-        treeNode3 = new javax.swing.tree.DefaultMutableTreeNode("pizza");
-        treeNode2.add(treeNode3);
-        treeNode3 = new javax.swing.tree.DefaultMutableTreeNode("ravioli");
-        treeNode2.add(treeNode3);
-        treeNode3 = new javax.swing.tree.DefaultMutableTreeNode("bananas");
-        treeNode2.add(treeNode3);
-        treeNode1.add(treeNode2);
-        orderTree.setModel(new javax.swing.tree.DefaultTreeModel(treeNode1));
-        orderTree.setRootVisible(false);
-        jScrollPane1.setViewportView(orderTree);
 
         orderInfoPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         orderInfoPanel.setMaximumSize(new java.awt.Dimension(350, 32767));
@@ -157,24 +128,48 @@ public class CookFrame extends javax.swing.JFrame implements GUIUpdater{
             .addGap(0, 576, Short.MAX_VALUE)
         );
 
+        orderList.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                orderListValueChanged(evt);
+            }
+        });
+        jScrollPane1.setViewportView(orderList);
+
+        jScrollPane2.setViewportView(dishList);
+
+        jLabel1.setText("Orders");
+
+        jLabel2.setText("Dishes");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 410, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 410, Short.MAX_VALUE)
+                    .addComponent(jLabel1)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 410, Short.MAX_VALUE)
+                    .addComponent(jLabel2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(orderInfoPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 364, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(orderInfoPanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 578, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 277, Short.MAX_VALUE))
+                    .addComponent(orderInfoPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -186,10 +181,26 @@ public class CookFrame extends javax.swing.JFrame implements GUIUpdater{
         updater.end();
     }//GEN-LAST:event_formWindowClosed
 
+    private void orderListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_orderListValueChanged
+        FetchedOrder selectedOrder = (FetchedOrder)orderList.getSelectedValue();
+        if (selectedOrder != null) {
+
+            DefaultListModel dishModel = new DefaultListModel();
+            for (DishOrder dish : selectedOrder.getDishes()) {
+                dishModel.addElement(dish);
+            }
+            dishList.setModel(dishModel);
+        }
+    }//GEN-LAST:event_orderListValueChanged
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JList dishList;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JPanel orderInfoPanel;
-    private javax.swing.JTree orderTree;
+    private javax.swing.JList orderList;
     // End of variables declaration//GEN-END:variables
 
 }
