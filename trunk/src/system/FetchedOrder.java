@@ -12,7 +12,7 @@ public class FetchedOrder {
     private String deliveryAddress;
     public enum View{CHEF, DRIVER};
     public View viewedBy;
-    private String timeStamp = "00.00.00";
+    private String timeStamp = "";
 
     private ArrayList<DishOrder> dishes;
 
@@ -22,6 +22,7 @@ public class FetchedOrder {
         this.customerId = customerId;
         this.deliveryAddress = deliveryAddress;
         this.viewedBy = view;
+        //this.timeStamp; TODO: get correct variable from DB
         if(viewedBy == View.DRIVER){
             if(deliveryAddress==null){
                 String getAddress = ""; //TODO create query
@@ -43,12 +44,12 @@ public class FetchedOrder {
 
     @Override
     public String toString(){
-        String FetchedOrderPrint = "Order: ";
+        String FetchedOrderPrint = "";
         if(viewedBy == View.CHEF){
-            FetchedOrderPrint+=this.orderId + timeStamp ;
+            FetchedOrderPrint+=this.orderId + " ordered at " + timeStamp ;
             }
         if(viewedBy == View.DRIVER){
-            FetchedOrderPrint+= this.orderId + " to " +
+            FetchedOrderPrint+= "Order: " + this.orderId + " to " +
                     this.customerId + " at " + this.deliveryAddress;
 
 
