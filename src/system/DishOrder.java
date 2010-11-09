@@ -70,14 +70,14 @@ public class DishOrder {
             + dish.name + "  "
             + dish.price + "kr  x"
             + amount + " \n";
-            if(comments!=null){retStr += "*comment*";}
+            if(comments!=null || comments.equals("")){retStr += "*comment*";}
         }
     
         if(viewedByChef){
             retStr = dish.nr + "  "
             + dish.name + "  "
             + amount + " \n";
-            if(comments!=null){retStr += "*comment*";}
+            if(comments!=null || comments.equals("")){retStr += "*comment*";}
         }
         return retStr;
     }
