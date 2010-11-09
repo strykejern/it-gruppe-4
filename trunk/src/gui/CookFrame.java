@@ -15,6 +15,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import system.DishOrder;
 import system.FetchedOrder;
 import system.OrderDB;
@@ -27,6 +28,8 @@ public class CookFrame extends javax.swing.JFrame implements GUIUpdater{
 
     private MainFrame parent;
     private UpdaterThread updater;
+
+    private FetchedOrder lastMade;
 
     /** Creates new form CookFrame */
     public CookFrame(MainFrame parent) {
@@ -172,8 +175,18 @@ public class CookFrame extends javax.swing.JFrame implements GUIUpdater{
         jLabel2.setText("Dishes");
 
         btnLastOrder.setText("Get last order");
+        btnLastOrder.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLastOrderActionPerformed(evt);
+            }
+        });
 
         btnOrderDone.setText("Done with order");
+        btnOrderDone.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnOrderDoneActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -247,6 +260,38 @@ public class CookFrame extends javax.swing.JFrame implements GUIUpdater{
             }
         }
     }//GEN-LAST:event_dishListValueChanged
+
+    private void btnOrderDoneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOrderDoneActionPerformed
+        FetchedOrder selectedOrder = (FetchedOrder)orderList.getSelectedValue();
+        if (selectedOrder != null){
+            try {
+                lastMade = selectedOrder;
+                OrderDB.setOrderAsMade(selectedOrder.getId());
+                dishList.setModel(new DefaultListModel());
+                updateGUI();
+            } catch (SQLException e) {
+                System.out.println(e);
+            }
+        }
+        else {
+            JOptionPane.showMessageDialog(this, "No order selected");
+        }
+    }//GEN-LAST:event_btnOrderDoneActionPerformed
+
+    private void btnLastOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLastOrderActionPerformed
+        if (lastMade != null){
+            try {
+                OrderDB.undoSetOrderAsMade(lastMade.getId());
+                updateGUI();
+                lastMade = null;
+            } catch (SQLException e) {
+                System.out.println(e);
+            }
+        }
+        else {
+            JOptionPane.showMessageDialog(this, "No previous order to fetch");
+        }
+    }//GEN-LAST:event_btnLastOrderActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnLastOrder;
