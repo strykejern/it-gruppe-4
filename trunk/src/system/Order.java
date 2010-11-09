@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 /*
  * Bestillingsklasse
- * Håvard
+ * Hï¿½vard
  */
 
 public class Order {
