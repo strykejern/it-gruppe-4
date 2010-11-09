@@ -63,9 +63,13 @@ public class DishOrder {
         String retStr = dish.nr + "  "
                 + dish.name + "  "
                 + dish.price + "kr  x"
-                + amount + " \n"
-                + comments;
+                + amount + " \n";
+                if(comments!=null){retStr += "*comment*";}
 
         return retStr;
+    }
+
+    public String getComment(){
+        return this.comments;
     }
 }
