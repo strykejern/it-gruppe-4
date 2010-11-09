@@ -13,6 +13,7 @@ public class Dish {
     public String name;		//name of dish
     public String description;	//contents of dish
     public int price;           //price of dish
+    public DecimalFormat Format = new DecimalFormat("00");
 
     /**
      * Constructor for creating dish-object
@@ -41,7 +42,7 @@ public class Dish {
                 spaces+=" ";
             }
         }
-        String streng = nr + " " + name + spaces +  toDes.format(price);
+        String streng = Format.format(nr) + " " + name + spaces +  toDes.format(price);
         return streng;
     }
 
