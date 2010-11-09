@@ -25,6 +25,10 @@ public class Order {
 	public void setCustomer(Customer customer){ 
 		this.customer = customer;
 	}
+
+        public Customer getCustomer(){
+            return customer;
+        }
 	
 	public void addDish(DishOrder dish){
 		dishOrder.add(dish);

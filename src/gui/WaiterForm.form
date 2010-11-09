@@ -73,7 +73,11 @@
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="txtCustomerPhone" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="txtCustomerAddress" pref="342" max="32767" attributes="0"/>
+                          <Component id="txtCustomerAddress" pref="222" max="32767" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="btnEdit" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="btnClear" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
@@ -89,6 +93,8 @@
                       <Component id="txtCustomerLastName" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="txtCustomerPhone" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="txtCustomerAddress" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="btnClear" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="btnEdit" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
@@ -96,7 +102,7 @@
                       <Component id="checkBoxCustomAddress" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="txtCustomAddress" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="11" max="32767" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -247,6 +253,22 @@
           <Events>
             <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="txtCustomerFieldFocusGained"/>
             <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="txtCustomerFieldFocusLost"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JButton" name="btnClear">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Clear"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnClearActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JButton" name="btnEdit">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Edit"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnEditActionPerformed"/>
           </Events>
         </Component>
       </SubComponents>

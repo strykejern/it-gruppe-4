@@ -93,7 +93,7 @@ public class OrderDB {
                 + "WHERE first_name='" + firstName
                 + "' AND last_name='" + lastName + "'";
 
-        return getCustomerByNameSimplifier(query);
+        return getCustomerSimplifier(query);
     }
 
     public static ArrayList<Customer> getCustomersByName(String lastName)
@@ -101,10 +101,16 @@ public class OrderDB {
         String query = "SELECT * FROM customer "
                 + "WHERE last_name='" + lastName + "'";
 
-        return getCustomerByNameSimplifier(query);
+        return getCustomerSimplifier(query);
     }
 
-    private static ArrayList<Customer> getCustomerByNameSimplifier(String query)
+    public static Customer getCustomerById(int customerId) throws SQLException{
+        String query = "SELECT * FROM customer WHERE customer_id=" + customerId;
+
+        return getCustomerSimplifier(query).get(0);
+    }
+
+    private static ArrayList<Customer> getCustomerSimplifier(String query)
             throws SQLException{
         ArrayList<Customer> customers = new ArrayList<Customer>();
 

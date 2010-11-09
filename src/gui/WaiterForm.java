@@ -33,6 +33,9 @@ public class WaiterForm extends javax.swing.JFrame {
 
     private MainFrame parent;
 
+    private Order order;
+    private boolean editCustomer;
+
     /** Creates new form WaiterForm */
     public WaiterForm(MainFrame parent) {
         this.parent = parent;
@@ -68,6 +71,9 @@ public class WaiterForm extends javax.swing.JFrame {
         bindTocustomerTextChanged(txtCustomerLastName);
         bindTocustomerTextChanged(txtCustomerPhone);
         bindTocustomerTextChanged(txtCustomerAddress);
+
+        order = new Order();
+        editCustomer = false;
     }
 
     private void bindTocustomerTextChanged(final JTextField field){
@@ -102,6 +108,8 @@ public class WaiterForm extends javax.swing.JFrame {
         checkBoxDelivery = new javax.swing.JCheckBox();
         checkBoxCustomAddress = new javax.swing.JCheckBox();
         txtCustomAddress = new javax.swing.JTextField();
+        btnClear = new javax.swing.JButton();
+        btnEdit = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         menuList = new javax.swing.JList();
@@ -250,6 +258,20 @@ public class WaiterForm extends javax.swing.JFrame {
             }
         });
 
+        btnClear.setText("Clear");
+        btnClear.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnClearActionPerformed(evt);
+            }
+        });
+
+        btnEdit.setText("Edit");
+        btnEdit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -270,7 +292,11 @@ public class WaiterForm extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtCustomerPhone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtCustomerAddress, javax.swing.GroupLayout.DEFAULT_SIZE, 342, Short.MAX_VALUE)))
+                        .addComponent(txtCustomerAddress, javax.swing.GroupLayout.DEFAULT_SIZE, 222, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnEdit)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnClear)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -281,13 +307,15 @@ public class WaiterForm extends javax.swing.JFrame {
                     .addComponent(txtCustomerFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtCustomerLastName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtCustomerPhone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtCustomerAddress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtCustomerAddress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnClear)
+                    .addComponent(btnEdit))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(checkBoxDelivery)
                     .addComponent(checkBoxCustomAddress)
                     .addComponent(txtCustomAddress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(11, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         getContentPane().add(jPanel1);
@@ -399,8 +427,8 @@ public class WaiterForm extends javax.swing.JFrame {
 
         if (focusedTextField.getText().equals(focusedTextField.getName())){
             focusedTextField.setText("");
-            focusedTextField.setForeground(Color.black);
         }
+        focusedTextField.setForeground(Color.black);
 
         customerTextChanged(focusedTextField);
     }//GEN-LAST:event_txtCustomerFieldFocusGained
@@ -489,6 +517,13 @@ public class WaiterForm extends javax.swing.JFrame {
                     for (Customer cust : customers){
                         JMenuItem item = new JMenuItem(cust.toString());
                         item.setName(cust.id + ""); // TODO: maybe a cleaner way to do this ?
+
+                        item.addActionListener(new java.awt.event.ActionListener() {
+                            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                                popupMenuItemSelected((JMenuItem)evt.getSource());
+                            }
+                        });
+
                         popupCustomer.add(item);
                     }
 
@@ -500,6 +535,28 @@ public class WaiterForm extends javax.swing.JFrame {
             catch (SQLException e){
 
             }
+        }
+    }
+
+    private void popupMenuItemSelected(JMenuItem item){
+        try {
+            int customerId = Integer.parseInt(item.getName());
+            Customer customer = OrderDB.getCustomerById(customerId);
+            
+            txtCustomerFirstName.setEnabled(false);
+            txtCustomerLastName.setEnabled(false);
+            txtCustomerPhone.setEnabled(false);
+            txtCustomerAddress.setEnabled(false);
+
+            txtCustomerFirstName.setText(customer.firstName);
+            txtCustomerLastName.setText(customer.lastName);
+            txtCustomerPhone.setText(customer.phoneNumber + "");
+            txtCustomerAddress.setText(customer.address);
+
+            order.setCustomer(customer);
+        }
+        catch (SQLException e) {
+
         }
     }
 
@@ -550,8 +607,47 @@ public class WaiterForm extends javax.swing.JFrame {
         customerTextChanged(focusedTextField);
     }//GEN-LAST:event_txtCustomerFieldMouseClicked
 
+    private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearActionPerformed
+        order.setCustomer(null);
+
+        txtCustomerFirstName.setEnabled(true);
+        txtCustomerLastName.setEnabled(true);
+        txtCustomerPhone.setEnabled(true);
+        txtCustomerAddress.setEnabled(true);
+
+        txtCustomerFirstName.setText("");
+        txtCustomerLastName.setText("");
+        txtCustomerPhone.setText("");
+        txtCustomerAddress.setText("");
+
+        txtCustomerAddress.requestFocusInWindow();
+        txtCustomerLastName.requestFocusInWindow();
+        txtCustomerPhone.requestFocusInWindow();
+        txtCustomerFirstName.requestFocusInWindow();
+
+        editCustomer = false;
+    }//GEN-LAST:event_btnClearActionPerformed
+
+    private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
+        if (order.getCustomer() != null) {
+            txtCustomerFirstName.setEnabled(true);
+            txtCustomerLastName.setEnabled(true);
+            txtCustomerPhone.setEnabled(true);
+            txtCustomerAddress.setEnabled(true);
+
+            txtCustomerAddress.requestFocusInWindow();
+            txtCustomerLastName.requestFocusInWindow();
+            txtCustomerPhone.requestFocusInWindow();
+            txtCustomerFirstName.requestFocusInWindow();
+
+            editCustomer = true;
+        }
+    }//GEN-LAST:event_btnEditActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAddToOrder;
+    private javax.swing.JButton btnClear;
+    private javax.swing.JButton btnEdit;
     private javax.swing.JButton btnGetLastOrder;
     private javax.swing.JButton btnPlaceOrder;
     private javax.swing.JButton btnRemoveFromOrder;
