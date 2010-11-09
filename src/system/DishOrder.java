@@ -13,6 +13,7 @@ public class DishOrder {
     public int amount;
     public String comments;
     public Dish dish;
+    private boolean viewedByChef = false;
 
     public DishOrder(int dishID, int amount, String comments) {
         this.dishID = dishID;
@@ -30,8 +31,11 @@ public class DishOrder {
         this.dishID = dish.nr;
         this.amount = amount;
         this.comments = comments;
-
         this.dish = dish;
+    }
+
+    public void setViewedByChef(){
+        this.viewedByChef=true;
     }
 
     public int getDishID() {
@@ -60,15 +64,24 @@ public class DishOrder {
 
     @Override
     public String toString() {
-        String retStr = dish.nr + "  "
-                + dish.name + "  "
-                + dish.price + "kr  x"
-                + amount + " \n";
-                if(comments!=null){retStr += "*comment*";}
-
+        String retStr="";
+        if(!viewedByChef){
+            retStr = dish.nr + "  "
+            + dish.name + "  "
+            + dish.price + "kr  x"
+            + amount + " \n";
+            if(comments!=null){retStr += "*comment*";}
+        }
+    
+        if(viewedByChef){
+            retStr = dish.nr + "  "
+            + dish.name + "  "
+            + amount + " \n";
+            if(comments!=null){retStr += "*comment*";}
+        }
         return retStr;
     }
-
+    
     public String getComment(){
         return this.comments;
     }
