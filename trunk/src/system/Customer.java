@@ -23,6 +23,28 @@ public class Customer {
         this.phoneNumber = phoneNumber;
     }
 
+    public Customer(String firstName, String lastName, String phoneNumber, String address, String comment) throws IllegalArgumentException { // TODO: postal code?
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.address = address;
+        this.comment = comment;
+        try {
+            this.phoneNumber = Integer.parseInt(phoneNumber);
+        }
+        catch (IllegalArgumentException e){
+            throw new IllegalArgumentException("Invalid phonenumber");
+        }
+
+        validate();
+    }
+
+    public void validate() throws IllegalArgumentException {
+        if (firstName == null || firstName.length() < 2)    throw new IllegalArgumentException("Invalid first name");
+        if (lastName == null || lastName.length() < 2)      throw new IllegalArgumentException("Invalid last name");
+        if (address == null || address.length() < 2)        throw new IllegalArgumentException("Invalid address");
+        if (phoneNumber < 10000000)                         throw new IllegalArgumentException("Ivalid phonenumber");
+    }
+
     public String toString(){
         return firstName + " " + lastName;
     }

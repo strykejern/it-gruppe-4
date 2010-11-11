@@ -36,6 +36,10 @@ public class Order {
         dishOrder = dishes;
     }
 
+    public void setToBeDelivered(){
+        takeAway = true;
+    }
+
     public void setDeliveryAddress(String address) {
         deliveryAddress = address;
     }

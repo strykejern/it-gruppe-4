@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import javax.swing.DefaultListModel;
 import javax.swing.JCheckBox;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.JTextField;
 import javax.swing.ListModel;
@@ -33,7 +34,7 @@ public class WaiterForm extends javax.swing.JFrame {
 
     private MainFrame parent;
 
-    private Order order;
+    private Order currentOrder;
     private boolean editCustomer;
 
     /** Creates new form WaiterForm */
@@ -72,7 +73,7 @@ public class WaiterForm extends javax.swing.JFrame {
         bindTocustomerTextChanged(txtCustomerPhone);
         bindTocustomerTextChanged(txtCustomerAddress);
 
-        order = new Order();
+        currentOrder = new Order();
         editCustomer = false;
     }
 
@@ -553,7 +554,7 @@ public class WaiterForm extends javax.swing.JFrame {
             txtCustomerPhone.setText(customer.phoneNumber + "");
             txtCustomerAddress.setText(customer.address);
 
-            order.setCustomer(customer);
+            currentOrder.setCustomer(customer);
         }
         catch (SQLException e) {
 
@@ -593,14 +594,82 @@ public class WaiterForm extends javax.swing.JFrame {
                         continue mainLoop;
                     }
                 }
-                mergedListOrders.add(order);
+                mergedListOrders.add(order.clone());
             }
+
+            if (currentOrder.getCustomer() == null){
+                try {
+                    basicValidateCustomer();
+
+                    Customer newCustomer = new Customer(txtCustomerFirstName.getText(), txtCustomerLastName.getText(), txtCustomerPhone.getText(), txtCustomerAddress.getText(), null);
+
+                    currentOrder.setCustomer(newCustomer);
+                }
+                catch (IllegalArgumentException e){
+                    JOptionPane.showMessageDialog(this, e.getMessage());
+                    return;
+                }
+            }
+            else if (editCustomer){
+                try {
+                    basicValidateCustomer();
+                }
+                catch (IllegalArgumentException e){
+                    JOptionPane.showMessageDialog(this, e.getMessage());
+                    return;
+                }
+
+                Customer tmpCustomer = new Customer(
+                        currentOrder.getCustomer().id,
+                        txtCustomerFirstName.getText(),
+                        txtCustomerLastName.getText(),
+                        Integer.parseInt(txtCustomerPhone.getText()),
+                        txtCustomerAddress.getText(),
+                        0000, currentOrder.getCustomer().comment);
+
+                String updateRequest = "Are you sure you want to edit customer:\n" +
+                        currentOrder.getCustomer() + "\nTo:\n" +
+                        tmpCustomer; // TODO: set to the update request
+
+                int answer = JOptionPane.showConfirmDialog(this, updateRequest, "Update customer", JOptionPane.OK_CANCEL_OPTION);
+
+                if (answer == JOptionPane.OK_OPTION){
+                    // TODO: update current customer in database
+                }
+                else {
+                    return;
+                }
+            }
+            // otherwise just keep the selected customer
+
+            currentOrder.setDishes(mergedListOrders);
+
+            if (checkBoxDelivery.isSelected()){
+                currentOrder.setToBeDelivered();
+
+                if (checkBoxCustomAddress.isSelected() &&
+                        txtCustomAddress.getText().length() > 1){ // TODO: maybe more?
+                    currentOrder.setDeliveryAddress(txtCustomAddress.getText());
+                }
+            }
+
+            // TODO: place the order
 
             for (DishOrder tmp : mergedListOrders){
                 System.out.println(tmp);
             }
         }
+        else {
+            JOptionPane.showMessageDialog(this, "You need to order something");
+        }
     }//GEN-LAST:event_btnPlaceOrderActionPerformed
+
+    private void basicValidateCustomer(){
+        if (txtCustomerFirstName.getText().equals(txtCustomerFirstName.getName())) throw new IllegalArgumentException("You need to fill in the first name");
+        if (txtCustomerLastName.getText().equals(txtCustomerLastName.getName())) throw new IllegalArgumentException("You need to fill in the last name");
+        if (txtCustomerPhone.getText().equals(txtCustomerPhone.getName())) throw new IllegalArgumentException("You need to fill in the phonenumber");
+        if (txtCustomerAddress.getText().equals(txtCustomerAddress.getName())) throw new IllegalArgumentException("You need to fill in the address");
+    }
 
     private void txtCustomerFieldMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtCustomerFieldMouseClicked
         JTextField focusedTextField = (JTextField)evt.getSource();
@@ -608,7 +677,7 @@ public class WaiterForm extends javax.swing.JFrame {
     }//GEN-LAST:event_txtCustomerFieldMouseClicked
 
     private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearActionPerformed
-        order.setCustomer(null);
+        currentOrder.setCustomer(null);
 
         txtCustomerFirstName.setEnabled(true);
         txtCustomerLastName.setEnabled(true);
@@ -629,7 +698,7 @@ public class WaiterForm extends javax.swing.JFrame {
     }//GEN-LAST:event_btnClearActionPerformed
 
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
-        if (order.getCustomer() != null) {
+        if (currentOrder.getCustomer() != null) {
             txtCustomerFirstName.setEnabled(true);
             txtCustomerLastName.setEnabled(true);
             txtCustomerPhone.setEnabled(true);

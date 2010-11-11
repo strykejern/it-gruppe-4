@@ -87,4 +87,9 @@ public class DishOrder {
     public String getComment(){
         return this.comments;
     }
+
+    @Override
+    public DishOrder clone(){
+        return new DishOrder(dishID, amount, comments);
+    }
 }
