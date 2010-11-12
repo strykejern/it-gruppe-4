@@ -11,7 +11,8 @@ public class Customer {
     public int id;
     public int phoneNumber;
 
-    public Customer(int id, String firstName, String lastName, int phoneNumber, String address){
+    public Customer(int id, String firstName, String lastName, int phoneNumber,
+                String address){
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -19,7 +20,8 @@ public class Customer {
         this.phoneNumber = phoneNumber;
     }
 
-    public Customer(String firstName, String lastName, String phoneNumber, String address) throws IllegalArgumentException { // TODO: postal code?
+    public Customer(String firstName, String lastName, String phoneNumber,
+                String address) throws IllegalArgumentException {
         this.firstName = firstName;
         this.lastName = lastName;
         this.address = address;
@@ -34,13 +36,19 @@ public class Customer {
     }
 
     public void validate() throws IllegalArgumentException {
-        if (firstName == null || firstName.length() < 2)    throw new IllegalArgumentException("Invalid first name");
-        if (lastName == null || lastName.length() < 2)      throw new IllegalArgumentException("Invalid last name");
-        if (address == null || address.length() < 2)        throw new IllegalArgumentException("Invalid address");
-        if (phoneNumber < 10000000)                         throw new IllegalArgumentException("Ivalid phonenumber");
+        if (firstName == null || firstName.length() < 2)
+                throw new IllegalArgumentException("Invalid first name");
+        if (lastName == null || lastName.length() < 2)
+                throw new IllegalArgumentException("Invalid last name");
+        if (address == null || address.length() < 2)
+                throw new IllegalArgumentException("Invalid address");
+        if (phoneNumber < 10000000)
+                throw new IllegalArgumentException("Ivalid phonenumber");
     }
 
+    @Override
     public String toString(){
-        return firstName + " " + lastName;
+        return firstName + " " + lastName + "     Num: (" + phoneNumber +
+                ")     Addr: (" + address + ")";
     }
 }
