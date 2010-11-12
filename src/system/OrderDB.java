@@ -86,6 +86,38 @@ public class OrderDB {
 
         return m;
     }
+
+    public static ArrayList<Customer> searchCustomer(String firstName, String lastName, String phone, String address) throws SQLException{
+        int phoneNumber = -1;
+        try {
+            phoneNumber = Integer.parseInt(phone);
+        }
+        catch (Exception e) {
+
+        }
+        String query = "SELECT * FROM customer WHERE ";
+
+        if (firstName != null && firstName.length() > 1){
+            query += "first_name LIKE '" + firstName + "%' ";
+        }
+        if (lastName != null && lastName.length() > 1){
+            if (query.length() > 30) query += "OR ";
+
+            query += "last_name LIKE '" + lastName + "%' ";
+        }
+        if (phoneNumber > 0){
+            if (query.length() > 30) query += "OR ";
+
+            query += "phone_number LIKE " + phoneNumber + " ";
+        }
+        if (address != null && address.length() > 1){
+            if (query.length() > 30) query += "OR ";
+
+            query += "address LIKE '" + address + "%'";
+        }
+
+        return getCustomerSimplifier(query);
+    }
     
     public static Object getCustomerByName(String firstName, String lastName)
             throws SQLException {
@@ -126,10 +158,8 @@ public class OrderDB {
             String lName    = result.getString("last_name");
             int phone       = result.getInt("phone_number");
             String address  = result.getString("address");
-            int postalCode  = result.getInt("postal_code");
-            String comment  = result.getString("comment");
 
-            customers.add(new Customer(id, fName, lName, phone, address, postalCode, comment));
+            customers.add(new Customer(id, fName, lName, phone, address));
 
         } else {
             throw new SQLException("No rows fetched");
@@ -138,29 +168,46 @@ public class OrderDB {
         return customers;
     }
     
-    public static void createOrder(int customerId, boolean made, 
-    		boolean delivery, String deliveryAddress) throws SQLException{
-    	String query = "INSERT INTO 'orders' ('customer_id', 'made'," +
-    			" 'delivery', 'delivery_address') VALUES (" + customerId + 
-    			", " + (made ? 1 : 0) + ", " + (delivery ? 1 : 0) + 
-    			", '" + deliveryAddress + "')";
+    public static void createOrder(Order order) throws SQLException{
+    	String query = "INSERT INTO orders (customer_id, made," +
+    			" delivery, delivery_address, time) VALUES " +
+                        "(" + order.getCustomer().id +
+    			", 0, " + (order.takeAway ? 1 : 0) +
+    			", '" + (order.deliveryAddress != null ? order.deliveryAddress : "") + "', NOW())";
     	
     	Statement stat = dbConnection.createStatement();
-    	stat.executeQuery(query);
+    	stat.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
+
+        ResultSet keys = stat.getGeneratedKeys();
+
+        if (!keys.next()) throw new SQLException("Failed to retrieve key");
+        int orderId = keys.getInt(1);
     	
-    	// TODO: add dishes into dish_orders
+        for (DishOrder dish : order.dishOrder){
+            addDishOrder(dish, orderId);
+        }
     }
 
-    public static void addCustomer(Customer customer) throws SQLException{
-        String query = "INSERT INTO 'customer' " +
-                "('first_name','last_name','phone_number'," +
-                "'address','postal_code','comment') VALUES " +
-                "('" + customer.firstName + "','" + customer.lastName + "'," +
-                customer.phoneNumber + ",'" + customer.address + "'," +
-                customer.postalCode + ",'" + customer.comment + "')";
+    private static void addDishOrder(DishOrder dish, int orderId) throws SQLException {
+        String query = "INSERT INTO dish_orders (order_id, dish_id, amount, comment) " +
+                "VALUES (" + orderId + ", " + dish.dishID + ", " + dish.amount + ", " +
+                (dish.comments != null && dish.comments.length() > 1 ? dish.comments : "''") +
+                ")";
 
         Statement stat = dbConnection.createStatement();
-        stat.executeQuery(query);
+
+        stat.executeUpdate(query);
+    }
+
+    public static void newCustomer(Customer customer) throws SQLException{
+        String query = "INSERT INTO customer " +
+                "(first_name, last_name, phone_number," +
+                " address) VALUES " +
+                "('" + customer.firstName + "','" + customer.lastName + "'," +
+                customer.phoneNumber + ",'" + customer.address + "')";
+
+        Statement stat = dbConnection.createStatement();
+        stat.executeUpdate(query);
     }
 
     public static ArrayList<Customer> getAllCustomers() throws SQLException{
@@ -178,13 +225,11 @@ public class OrderDB {
             String lastName  = result.getString("last_name");
             int phoneNumber  = result.getInt("phone_number");
             String address   = result.getString("address");
-            int postalCode   = result.getInt("postal_code");
-            String comment   = result.getString("comment");
 
             customerList.add(
                     new Customer(
                     id, firstName, lastName, phoneNumber,
-                    address, postalCode, comment));
+                    address));
 
         }
 
