@@ -5,19 +5,41 @@
 
 package system;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+
+
+
 /**
  *
  * @author Lars
  */
 public class Properties {
-    static double mva;
-    static int deliveryPrice = 50;
-    static int maxTot = 500;
+    private static Connection dbConnection;
+    public static double mva;
+    public static int deliveryPrice;
+    public static int maxTot;
 
-    public Properties(double mva, int deliveryPrice, int maxtot){
-        Properties.mva = mva;
-        Properties.deliveryPrice = deliveryPrice;
-        Properties.maxTot = maxtot;
+
+    public static void initializeDB
+    		(String userName, String password, String databaseLocation)
+            throws ClassNotFoundException, InstantiationException,
+            IllegalAccessException, SQLException{
+
+        if (dbConnection != null) {
+            dbConnection.close();
+        }
+        Class.forName("com.mysql.jdbc.Driver").newInstance();
+
+        dbConnection = DriverManager.getConnection(
+                databaseLocation, userName, password);
+    }
+
+    private Properties(){
 
     }
 
@@ -34,6 +56,7 @@ public class Properties {
     }
 
     public void storeProperties(){
-        //call method setProperties in OrderDB
+        //TODO: SQL query storing info in DB
+        //TODO: Table in DB for storing info
     }
 }
