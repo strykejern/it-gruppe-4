@@ -249,9 +249,11 @@ public class OrderDB {
             int orderId             = result.getInt("order_id");
             int customerId          = result.getInt("customer_id");
             String deliveryAddress  = result.getString("delivery_address");
+            String time             = result.getString("time");
 
 
-            FetchedOrder order = new FetchedOrder(orderId, customerId, deliveryAddress, FetchedOrder.View.CHEF);
+            FetchedOrder order = new FetchedOrder(orderId, customerId, 
+                    deliveryAddress, FetchedOrder.View.CHEF, time);
 
             order.setDishes(getDishOrders(orderId));
 

@@ -17,12 +17,12 @@ public class FetchedOrder {
     private ArrayList<DishOrder> dishes;
 
     public FetchedOrder(int orderId, int customerId, String deliveryAddress,
-            View view) {
+            View view, String time) {
         this.orderId = orderId;
         this.customerId = customerId;
         this.deliveryAddress = deliveryAddress;
         this.viewedBy = view;
-        //this.timeStamp; TODO: get correct variable from DB
+        this.timeStamp = time; 
         if(viewedBy == View.DRIVER){
             if(deliveryAddress==null){
                 String getAddress = ""; //TODO create query
