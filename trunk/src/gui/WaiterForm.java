@@ -117,6 +117,10 @@ public class WaiterForm extends javax.swing.JFrame {
         jPanel4 = new javax.swing.JPanel();
         btnAddToOrder = new javax.swing.JButton();
         btnRemoveFromOrder = new javax.swing.JButton();
+        btnEditComment = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        txtDishComment = new javax.swing.JTextArea();
         jScrollPane2 = new javax.swing.JScrollPane();
         dishOrderList = new javax.swing.JList();
         jPanel3 = new javax.swing.JPanel();
@@ -329,9 +333,9 @@ public class WaiterForm extends javax.swing.JFrame {
 
         jPanel2.add(jScrollPane1);
 
-        jPanel4.setMaximumSize(new java.awt.Dimension(70, 32767));
+        jPanel4.setMaximumSize(new java.awt.Dimension(100, 32767));
         jPanel4.setMinimumSize(new java.awt.Dimension(70, 0));
-        jPanel4.setPreferredSize(new java.awt.Dimension(70, 183));
+        jPanel4.setPreferredSize(new java.awt.Dimension(100, 183));
 
         btnAddToOrder.setText("=>");
         btnAddToOrder.addActionListener(new java.awt.event.ActionListener() {
@@ -347,18 +351,47 @@ public class WaiterForm extends javax.swing.JFrame {
             }
         });
 
+        btnEditComment.setText("Comment");
+        btnEditComment.setEnabled(false);
+        btnEditComment.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditCommentActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setText("Comments:");
+
+        jScrollPane3.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        jScrollPane3.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+
+        txtDishComment.setBackground(javax.swing.UIManager.getDefaults().getColor("Panel.background"));
+        txtDishComment.setColumns(20);
+        txtDishComment.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        txtDishComment.setLineWrap(true);
+        txtDishComment.setRows(5);
+        jScrollPane3.setViewportView(txtDishComment);
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(btnAddToOrder))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                         .addGap(11, 11, 11)
-                        .addComponent(btnRemoveFromOrder, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(btnRemoveFromOrder, javax.swing.GroupLayout.DEFAULT_SIZE, 79, Short.MAX_VALUE))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(btnEditComment, javax.swing.GroupLayout.DEFAULT_SIZE, 80, Short.MAX_VALUE))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(btnAddToOrder, javax.swing.GroupLayout.DEFAULT_SIZE, 80, Short.MAX_VALUE))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel1))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 80, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
@@ -368,13 +401,24 @@ public class WaiterForm extends javax.swing.JFrame {
                 .addComponent(btnAddToOrder)
                 .addGap(68, 68, 68)
                 .addComponent(btnRemoveFromOrder)
-                .addContainerGap(197, Short.MAX_VALUE))
+                .addGap(58, 58, 58)
+                .addComponent(btnEditComment)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(21, Short.MAX_VALUE))
         );
 
         jPanel2.add(jPanel4);
 
         dishOrderList.setFont(new java.awt.Font("Courier New", 0, 12)); // NOI18N
         dishOrderList.setPreferredSize(new java.awt.Dimension(200, 80));
+        dishOrderList.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                dishOrderListSelectionChanged(evt);
+            }
+        });
         jScrollPane2.setViewportView(dishOrderList);
 
         jPanel2.add(jScrollPane2);
@@ -721,22 +765,93 @@ public class WaiterForm extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnEditActionPerformed
 
+    private void dishOrderListSelectionChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_dishOrderListSelectionChanged
+        if (dishOrderList.getSelectedIndices().length > 0){
+            btnEditComment.setEnabled(true);
+            Object[] dishes = dishOrderList.getSelectedValues();
+            if (dishes.length > 1){
+                DishOrder dish = (DishOrder)dishes[0];
+                String bufferComment = dish.comments;
+                for (Object o : dishes){
+                    dish = (DishOrder)o;
+                    if (bufferComment == null){
+                        if (dish.comments != null){
+                            txtDishComment.setText("Multiple comments found");
+                            return;
+                        }
+                    }
+                    else if (!dish.comments.equals(bufferComment)){
+                        txtDishComment.setText("Multiple comments found");
+                        return;
+                    }
+                }
+                txtDishComment.setText(bufferComment != null && bufferComment.length() > 1 ? bufferComment : "No comment");
+            }
+            else {
+                DishOrder dish = (DishOrder)dishes[0];
+                txtDishComment.setText(dish.comments != null && dish.comments.length() > 1 ? dish.comments : "No comment");
+            }
+        }
+        else {
+            btnEditComment.setEnabled(false);
+            txtDishComment.setText("No dishes selected");
+        }
+    }//GEN-LAST:event_dishOrderListSelectionChanged
+
+    private void btnEditCommentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditCommentActionPerformed
+        if (dishOrderList.getSelectedIndices().length > 0){
+            ArrayList<DishOrder> dishes = new ArrayList<DishOrder>();
+
+            String commonComment;
+
+            Object[] elements = dishOrderList.getSelectedValues();
+            DishOrder dish = (DishOrder)elements[0];
+            if (dish.comments == null){
+                commonComment = "";
+            }
+            else {
+                commonComment = dish.comments;
+                for (int i = 1; i < elements.length; i++) {
+                    dish = (DishOrder)elements[i];
+                    if (dish.comments == null || !dish.comments.equals(commonComment)){
+                        commonComment = "";
+                        break;
+                    }
+                }
+            }
+
+            String comment = JOptionPane.showInputDialog(this, "Write the comment for the selected dishes");
+
+            for (Object o : elements){
+                dish = (DishOrder)o;
+                dish.setComments(comment);
+                dishes.add(dish);
+            }
+
+            dishOrderList.setSelectedIndices(dishOrderList.getSelectedIndices());
+            //dishOrderList.updateUI();
+        }
+    }//GEN-LAST:event_btnEditCommentActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAddToOrder;
     private javax.swing.JButton btnClear;
     private javax.swing.JButton btnEdit;
+    private javax.swing.JButton btnEditComment;
     private javax.swing.JButton btnGetLastOrder;
     private javax.swing.JButton btnPlaceOrder;
     private javax.swing.JButton btnRemoveFromOrder;
     private javax.swing.JCheckBox checkBoxCustomAddress;
     private javax.swing.JCheckBox checkBoxDelivery;
     private javax.swing.JList dishOrderList;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JList menuList;
     private javax.swing.JPopupMenu popupCustomer;
     private javax.swing.JTextField txtCustomAddress;
@@ -744,6 +859,7 @@ public class WaiterForm extends javax.swing.JFrame {
     private javax.swing.JTextField txtCustomerFirstName;
     private javax.swing.JTextField txtCustomerLastName;
     private javax.swing.JTextField txtCustomerPhone;
+    private javax.swing.JTextArea txtDishComment;
     // End of variables declaration//GEN-END:variables
 
 }

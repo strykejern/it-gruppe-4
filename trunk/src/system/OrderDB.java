@@ -190,9 +190,9 @@ public class OrderDB {
 
     private static void addDishOrder(DishOrder dish, int orderId) throws SQLException {
         String query = "INSERT INTO dish_orders (order_id, dish_id, amount, comment) " +
-                "VALUES (" + orderId + ", " + dish.dishID + ", " + dish.amount + ", " +
-                (dish.comments != null && dish.comments.length() > 1 ? dish.comments : "''") +
-                ")";
+                "VALUES (" + orderId + ", " + dish.dishID + ", " + dish.amount + ", '" +
+                (dish.comments != null && dish.comments.length() > 1 ? dish.comments : "") +
+                "')";
 
         Statement stat = dbConnection.createStatement();
 
