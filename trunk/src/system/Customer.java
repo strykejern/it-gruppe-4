@@ -8,26 +8,21 @@ public class Customer {
     public String firstName;
     public String lastName;
     public String address;
-    public String comment;
     public int id;
-    public int postalCode;
     public int phoneNumber;
 
-    public Customer(int id, String firstName, String lastName, int phoneNumber, String address, int postalCode, String comment){
+    public Customer(int id, String firstName, String lastName, int phoneNumber, String address){
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.address = address;
-        this.comment = comment;
-        this.postalCode = postalCode;
         this.phoneNumber = phoneNumber;
     }
 
-    public Customer(String firstName, String lastName, String phoneNumber, String address, String comment) throws IllegalArgumentException { // TODO: postal code?
+    public Customer(String firstName, String lastName, String phoneNumber, String address) throws IllegalArgumentException { // TODO: postal code?
         this.firstName = firstName;
         this.lastName = lastName;
         this.address = address;
-        this.comment = comment;
         try {
             this.phoneNumber = Integer.parseInt(phoneNumber);
         }

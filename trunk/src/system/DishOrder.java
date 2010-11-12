@@ -70,7 +70,7 @@ public class DishOrder {
             + dish.name + "  "
             + dish.price + "kr  x"
             + amount + " \n";
-            if(comments!=null || !comments.equals("")){
+            if(comments!=null && !comments.equals("")){
                 retStr += "*comment*";}
         }
     
@@ -78,7 +78,7 @@ public class DishOrder {
             retStr = dish.nr + "  "
             + dish.name + "  "
             + amount + " \n";
-            if(comments!=null || !comments.equals("")){
+            if(comments!=null && !comments.equals("")){
                 retStr += "*comment*";}
         }
         return retStr;

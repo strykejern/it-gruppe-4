@@ -83,7 +83,7 @@ public class WaiterForm extends javax.swing.JFrame {
                 customerTextChanged(field);
             }
             public void removeUpdate(DocumentEvent e) {
-                customerTextChanged(field);
+                
             }
             public void changedUpdate(DocumentEvent e) {
                 customerTextChanged(field);
@@ -510,7 +510,7 @@ public class WaiterForm extends javax.swing.JFrame {
     private void customerTextChanged(JTextField invoker){
         if (invoker.hasFocus() && invoker.getText().length() > 0){
             try {
-                ArrayList<Customer> customers = OrderDB.getAllCustomers(); // TODO: search for customers in the database
+                ArrayList<Customer> customers = OrderDB.searchCustomer(txtCustomerFirstName.getText(), txtCustomerLastName.getText(), txtCustomerPhone.getText(), txtCustomerAddress.getText());
 
                 if (customers.size() > 0){
                     popupCustomer.removeAll();
@@ -530,7 +530,6 @@ public class WaiterForm extends javax.swing.JFrame {
 
                     popupCustomer.setVisible(false);
                     popupCustomer.show(txtCustomerFirstName, 0, 20);
-                    //invoker.requestFocusInWindow();
                 }
             }
             catch (SQLException e){
@@ -601,7 +600,15 @@ public class WaiterForm extends javax.swing.JFrame {
                 try {
                     basicValidateCustomer();
 
-                    Customer newCustomer = new Customer(txtCustomerFirstName.getText(), txtCustomerLastName.getText(), txtCustomerPhone.getText(), txtCustomerAddress.getText(), null);
+                    Customer newCustomer = new Customer(txtCustomerFirstName.getText(), txtCustomerLastName.getText(), txtCustomerPhone.getText(), txtCustomerAddress.getText());
+
+                    try {
+                        OrderDB.newCustomer(newCustomer);
+                    }
+                    catch (SQLException e) {
+                        // TODO: catch ?
+                        System.out.println(e);
+                    }
 
                     currentOrder.setCustomer(newCustomer);
                 }
@@ -624,8 +631,7 @@ public class WaiterForm extends javax.swing.JFrame {
                         txtCustomerFirstName.getText(),
                         txtCustomerLastName.getText(),
                         Integer.parseInt(txtCustomerPhone.getText()),
-                        txtCustomerAddress.getText(),
-                        0000, currentOrder.getCustomer().comment);
+                        txtCustomerAddress.getText());
 
                 String updateRequest = "Are you sure you want to edit customer:\n" +
                         currentOrder.getCustomer() + "\nTo:\n" +
@@ -654,9 +660,11 @@ public class WaiterForm extends javax.swing.JFrame {
             }
 
             // TODO: place the order
-
-            for (DishOrder tmp : mergedListOrders){
-                System.out.println(tmp);
+            try {
+            OrderDB.createOrder(currentOrder);
+            }
+            catch (SQLException e){
+                System.out.println("Failed to place order:\n" + e);
             }
         }
         else {
