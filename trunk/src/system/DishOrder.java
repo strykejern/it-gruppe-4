@@ -16,6 +16,12 @@ public class DishOrder {
     public Dish dish;
     private boolean viewedByChef = false;
 
+    /**
+     *
+     * @param dishID - nr of the dish in menu
+     * @param amount - amount of this dish ordered
+     * @param comments - comments for this dish
+     */
     public DishOrder(int dishID, int amount, String comments) {
         this.dishID = dishID;
         this.amount = amount;
@@ -28,6 +34,12 @@ public class DishOrder {
         }
     }
 
+    /**
+     *
+     * @param dish - Dish-object
+     * @param amount - amount of that object in this order
+     * @param comments - comments about dish
+     */
     public DishOrder(Dish dish, int amount, String comments) {
         this.dishID = dish.nr;
         this.amount = amount;
@@ -35,21 +47,31 @@ public class DishOrder {
         this.dish = dish;
     }
 
+    /**
+     * sets boolean to define toStrings for specific viewer
+     */
     public void setViewedByChef(){
         this.viewedByChef=true;
     }
 
+    /**
+     *
+     * @return the ID of this DishOrders dish
+     */
     public int getDishID() {
         return dishID;
     }
+
 
     public void setDishID(int dishID) {
         this.dishID = dishID;
     }
 
+
     public int getAmount() {
         return amount;
     }
+
 
     public void setAmount(int amount) {
         this.amount = amount;
@@ -63,8 +85,11 @@ public class DishOrder {
         this.comments = comments;
     }
 
+    /**
+     *
+     * @return String with DishOrder info, setup either for chef or waiter
+     */
     @Override
-    
     public String toString() {
         String retStr="";
         String id=Integer.toString(dish.nr);
@@ -102,7 +127,7 @@ public class DishOrder {
         if(viewedByChef){
             retStr = spaces + id + " "
             + dish.name + priceSpaces
-            + amount2 + " \n";
+            + "x" + amount2 + " \n";
             if(comments!=null && !comments.equals("")){
                 retStr += "*comment*";}
         }
