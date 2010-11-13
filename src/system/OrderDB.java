@@ -87,7 +87,10 @@ public class OrderDB {
         return m;
     }
 
-    public static ArrayList<Customer> searchCustomer(String firstName, String lastName, String phone, String address) throws SQLException{
+    public static ArrayList<Customer> searchCustomer(String firstName,
+            String lastName, String phone, String address)
+            throws SQLException{
+        
         int phoneNumber = -1;
         try {
             phoneNumber = Integer.parseInt(phone);
@@ -173,7 +176,9 @@ public class OrderDB {
     			" delivery, delivery_address, time) VALUES " +
                         "(" + order.getCustomer().id +
     			", 0, " + (order.takeAway ? 1 : 0) +
-    			", '" + (order.deliveryAddress != null ? order.deliveryAddress : "") + "', NOW())";
+    			", '" + 
+                        (order.deliveryAddress != null ? order.deliveryAddress
+                        : "") + "', NOW())";
     	
     	Statement stat = dbConnection.createStatement();
     	stat.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
@@ -188,10 +193,12 @@ public class OrderDB {
         }
     }
 
-    private static void addDishOrder(DishOrder dish, int orderId) throws SQLException {
-        String query = "INSERT INTO dish_orders (order_id, dish_id, amount, comment) " +
-                "VALUES (" + orderId + ", " + dish.dishID + ", " + dish.amount + ", '" +
-                (dish.comments != null && dish.comments.length() > 1 ? dish.comments : "") +
+    private static void addDishOrder(DishOrder dish, int orderId)
+            throws SQLException {
+        String query = "INSERT INTO dish_orders (order_id, dish_id, amount, "
+                + "comment) " + "VALUES (" + orderId + ", " + dish.dishID + ", "
+                + dish.amount + ", '" + (dish.comments != null &&
+                dish.comments.length() > 1 ? dish.comments : "") +
                 "')";
 
         Statement stat = dbConnection.createStatement();
@@ -263,7 +270,8 @@ public class OrderDB {
         return orders;
     }
 
-    public static ArrayList<DishOrder> getDishOrders(int orderId) throws SQLException{
+    public static ArrayList<DishOrder> getDishOrders(int orderId)
+            throws SQLException{
         String query = "SELECT * FROM dish_orders WHERE order_id=" + orderId;
 
         ArrayList<DishOrder> dishes = new ArrayList<DishOrder>();

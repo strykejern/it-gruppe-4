@@ -11,11 +11,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-
-
-
 /**
- *
+ * Class for admin
  * @author Lars
  */
 public class Properties {
@@ -23,6 +20,7 @@ public class Properties {
     public static double mva;
     public static int deliveryPrice;
     public static int maxTot;
+    private static String password;
 
 
     public static void initializeDB
@@ -53,6 +51,10 @@ public class Properties {
 
     public void setMaxTot(int newMaxTot){
         Properties.maxTot = newMaxTot;
+    }
+
+    private void setPassw(String passw){
+        Properties.password = passw;
     }
 
     public void storeProperties(){

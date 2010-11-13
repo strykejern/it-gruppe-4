@@ -9,19 +9,20 @@ import java.sql.SQLException;
 import java.text.DecimalFormat;
 
 
+
 /**
  * Creating printable reciept
  * @author Lars
  */
 
-//TODO: create table in DB where statics are stored
+
 
 public class Reciept {
     static DecimalFormat toDes = new DecimalFormat("0.00");
-    static double mva = 0.25; 
+    static double mva = Properties.mva;
     static boolean delivery;
-    static int deliveryPrice = 50;
-    static int maxtot = 500;
+    static int deliveryPrice = Properties.deliveryPrice;
+    static int maxTot = Properties.maxTot;
     static double total;
 
     /**
@@ -29,7 +30,7 @@ public class Reciept {
      * @param order the order one creates a reciept for
      * @return string with reciept
      */
-    public static String toReciept(Order order) {
+    public static String toString(Order order) {
         String print = "Reciept for: " + order.customer + "\nDish \t\tAmount "
                 + "  Price \n";
         Dish dish2;
@@ -44,7 +45,7 @@ public class Reciept {
         }
         if (delivery) {
             print += "Delivery: ";
-            if (total >= maxtot) {
+            if (total >= maxTot) {
                 print += "\t\t\t 0.0";
             } else {
                 total += deliveryPrice;
@@ -58,5 +59,5 @@ public class Reciept {
         return print;
     }
 }
-//
+
 
