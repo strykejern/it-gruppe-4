@@ -319,6 +319,26 @@ public class OrderDB {
 
         stat.executeUpdate(query);
     }
+
+    public static void updateDish(Dish updated, int originalId) throws SQLException{
+        String query = "UPDATE menu SET " +
+                "name='" + updated.name + "', " +
+                "price=" + updated.price + ", " +
+                "description='" + updated.description + "' " +
+                "WHERE dish_id=" + originalId;
+
+        Statement stat = dbConnection.createStatement();
+
+        stat.executeUpdate(query);
+    }
+
+    public static void deleteDish(Dish removing) throws SQLException {
+        String query = "DELETE FROM menu WHERE dish_id=" + removing.nr;
+
+        Statement stat = dbConnection.createStatement();
+
+        stat.executeUpdate(query);
+    }
     
     // Lars
 
@@ -334,12 +354,12 @@ public class OrderDB {
 
                  **/
 
-        String query = "INSERT INTO `menu` "
-                + "VALUES (`" +
-                dishIn.nr +"`,`" +
-                dishIn.name + "`," +
-                dishIn.price + ",`" +
-                dishIn.description + "`);";
+        String query = "INSERT INTO menu "
+                + "VALUES (" +
+                dishIn.nr +", '" +
+                dishIn.name + "'," +
+                dishIn.price + ",'" +
+                dishIn.description + "');";
         Statement stat = dbConnection.createStatement();
         stat.executeUpdate(query);
     }

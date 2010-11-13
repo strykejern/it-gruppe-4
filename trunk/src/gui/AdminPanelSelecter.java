@@ -76,6 +76,11 @@ public class AdminPanelSelecter extends javax.swing.JFrame {
 
         btnMenu.setFont(new java.awt.Font("Tahoma", 1, 36));
         btnMenu.setText("Menu");
+        btnMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMenuActionPerformed(evt);
+            }
+        });
 
         btnCustomer.setFont(btnMenu.getFont());
         btnCustomer.setText("Customers");
@@ -149,6 +154,11 @@ public class AdminPanelSelecter extends javax.swing.JFrame {
         new AdminCustomerEditor(this).setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_btnCustomerActionPerformed
+
+    private void btnMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuActionPerformed
+        new AdminMenuEditor(this).setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_btnMenuActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCurrentOrders;

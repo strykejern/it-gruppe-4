@@ -30,6 +30,27 @@ public class Dish {
         this.price = priceIn;
     }
 
+    public Dish(String dishId, String name, String price, String comment) throws IllegalArgumentException{
+        try {
+            nr = Integer.parseInt(dishId);
+        }
+        catch (NumberFormatException e) {
+            throw new IllegalArgumentException("Invalid dish-ID");
+        }
+
+        if (name == null || name.length() < 2) throw new IllegalArgumentException("Invalid dish-name");
+        this.name = name;
+
+        try {
+            this.price = Integer.parseInt(price);
+        }
+        catch (NumberFormatException e) {
+            throw new IllegalArgumentException("Invalid price for the dish");
+        }
+
+        description = comment;
+    }
+
     /**
      *
      * @return String with Dish parameters
