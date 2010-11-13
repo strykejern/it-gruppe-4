@@ -155,6 +155,7 @@ public class CookFrame extends javax.swing.JFrame implements GUIUpdater{
                 .addContainerGap())
         );
 
+        orderList.setFont(new java.awt.Font("Courier New", 0, 12)); // NOI18N
         orderList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         orderList.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
             public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
@@ -163,6 +164,7 @@ public class CookFrame extends javax.swing.JFrame implements GUIUpdater{
         });
         jScrollPane1.setViewportView(orderList);
 
+        dishList.setFont(new java.awt.Font("Courier New", 0, 12)); // NOI18N
         dishList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         dishList.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
             public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
