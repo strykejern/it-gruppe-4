@@ -53,11 +53,20 @@ public class FetchedOrder {
     @Override
     public String toString(){
         String FetchedOrderPrint = "";
+        String spaces=" ";
+        if(this.orderId<99){
+            spaces+=" ";
+        }
+        if(this.orderId<10){
+            spaces+=" ";
+        }
+
         if(viewedBy == View.CHEF){
-            FetchedOrderPrint+=this.orderId + " ordered at " + timeStamp ;
+            FetchedOrderPrint+=spaces + this.orderId + " ordered at " +
+                    timeStamp ;
             }
         if(viewedBy == View.DRIVER){
-            FetchedOrderPrint+= "Order: " + this.orderId + " to " +
+            FetchedOrderPrint+= "Order:"+ spaces + this.orderId + " to " +
                     this.customerId + " at " + this.deliveryAddress;
 
 

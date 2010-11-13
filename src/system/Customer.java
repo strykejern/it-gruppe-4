@@ -48,7 +48,16 @@ public class Customer {
 
     @Override
     public String toString(){
-        return firstName + " " + lastName + "     Num: (" + phoneNumber +
+        String spaces1=" ";
+        String spaces2=" ";
+        int nameLength=firstName.length()+lastName.length();
+        if(nameLength<30){
+            for(int i =0;i<30-nameLength;i++){
+                spaces1+=" ";
+            }
+
+        }
+        return firstName + " " + lastName + spaces1 + "Num: (" + phoneNumber +
                 ")     Addr: (" + address + ")";
     }
 }
