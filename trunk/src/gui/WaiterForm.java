@@ -127,6 +127,7 @@ public class WaiterForm extends javax.swing.JFrame {
         btnGetLastOrder = new javax.swing.JButton();
         btnPlaceOrder = new javax.swing.JButton();
 
+        popupCustomer.setFont(txtCustomerFirstName.getFont());
         popupCustomer.setToolTipText("");
         popupCustomer.setFocusable(false);
 
@@ -327,7 +328,7 @@ public class WaiterForm extends javax.swing.JFrame {
 
         jPanel2.setLayout(new javax.swing.BoxLayout(jPanel2, javax.swing.BoxLayout.LINE_AXIS));
 
-        menuList.setFont(new java.awt.Font("Courier New", 0, 12)); // NOI18N
+        menuList.setFont(new java.awt.Font("Courier New", 0, 12));
         menuList.setPreferredSize(new java.awt.Dimension(200, 80));
         jScrollPane1.setViewportView(menuList);
 
@@ -366,6 +367,7 @@ public class WaiterForm extends javax.swing.JFrame {
 
         txtDishComment.setBackground(javax.swing.UIManager.getDefaults().getColor("Panel.background"));
         txtDishComment.setColumns(20);
+        txtDishComment.setEditable(false);
         txtDishComment.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
         txtDishComment.setLineWrap(true);
         txtDishComment.setRows(5);
@@ -412,7 +414,7 @@ public class WaiterForm extends javax.swing.JFrame {
 
         jPanel2.add(jPanel4);
 
-        dishOrderList.setFont(new java.awt.Font("Courier New", 0, 12)); // NOI18N
+        dishOrderList.setFont(new java.awt.Font("Courier New", 0, 12));
         dishOrderList.setPreferredSize(new java.awt.Dimension(200, 80));
         dishOrderList.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
             public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
@@ -562,6 +564,8 @@ public class WaiterForm extends javax.swing.JFrame {
                     for (Customer cust : customers){
                         JMenuItem item = new JMenuItem(cust.toString());
                         item.setName(cust.id + ""); // TODO: maybe a cleaner way to do this ?
+
+                        item.setFont(txtCustomerFirstName.getFont());
 
                         item.addActionListener(new java.awt.event.ActionListener() {
                             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -829,7 +833,6 @@ public class WaiterForm extends javax.swing.JFrame {
             }
 
             dishOrderList.setSelectedIndices(dishOrderList.getSelectedIndices());
-            //dishOrderList.updateUI();
         }
     }//GEN-LAST:event_btnEditCommentActionPerformed
 

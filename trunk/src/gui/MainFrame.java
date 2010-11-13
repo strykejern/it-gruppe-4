@@ -94,6 +94,11 @@ public class MainFrame extends javax.swing.JFrame {
 
         btnSelectUserAdmin.setFont(btnSelectUserWaiter.getFont());
         btnSelectUserAdmin.setText("Admin");
+        btnSelectUserAdmin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSelectUserAdminActionPerformed(evt);
+            }
+        });
 
         btnSelectUserDriver.setFont(btnSelectUserWaiter.getFont());
         btnSelectUserDriver.setText("Driver");
@@ -161,6 +166,11 @@ public class MainFrame extends javax.swing.JFrame {
         new CookFrame(this).setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_btnSelectUserChefActionPerformed
+
+    private void btnSelectUserAdminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelectUserAdminActionPerformed
+        new AdminPanelSelecter(this).setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_btnSelectUserAdminActionPerformed
 
     /**
     * @param args the command line arguments

@@ -154,7 +154,7 @@ public class OrderDB {
 
         ResultSet result = stat.getResultSet();
 
-        if (result.next()) {
+        while (result.next()) {
             // TODO: Create customer object to return
             int id          = result.getInt("customer_id");
             String fName    = result.getString("first_name");
@@ -164,11 +164,25 @@ public class OrderDB {
 
             customers.add(new Customer(id, fName, lName, phone, address));
 
-        } else {
+        }
+        if (customers.size() == 0) {
             throw new SQLException("No rows fetched");
         }
 
         return customers;
+    }
+
+    public static void editCustomer(Customer updated, int originalId) throws SQLException{
+        String query = "UPDATE customer SET " +
+                "first_name='" + updated.firstName + "', " +
+                "last_name='" + updated.lastName + "', " +
+                "phone_number='" + updated.phoneNumber + "', " +
+                "address='" + updated.address + "' " +
+                "WHERE customer_id=" + originalId;
+
+        Statement stat = dbConnection.createStatement();
+
+        stat.executeUpdate(query);
     }
     
     public static void createOrder(Order order) throws SQLException{
@@ -220,27 +234,25 @@ public class OrderDB {
     public static ArrayList<Customer> getAllCustomers() throws SQLException{
         String query = "SELECT * FROM customer";
 
-        Statement stat = dbConnection.createStatement();
-        stat.executeQuery(query);
+        return getCustomerSimplifier(query);
+    }
 
-        ResultSet result = stat.getResultSet();
+    public enum CustomerOrder {
+        ID, FIRST_NAME, LAST_NAME, PHONE_NUMBER, ADDRESS
+    }
 
-        ArrayList<Customer> customerList = new ArrayList<Customer>();
-        while (result.next()){
-            int id           = result.getInt("customer_id");
-            String firstName = result.getString("first_name");
-            String lastName  = result.getString("last_name");
-            int phoneNumber  = result.getInt("phone_number");
-            String address   = result.getString("address");
+    public static ArrayList<Customer> getAllCustomersOrdered(CustomerOrder orderBy) throws SQLException{
+        String query = "SELECT * FROM customer ORDER BY ";
 
-            customerList.add(
-                    new Customer(
-                    id, firstName, lastName, phoneNumber,
-                    address));
+        if (orderBy == CustomerOrder.ID) query += "customer_id";
+        else if (orderBy == CustomerOrder.FIRST_NAME) query += "first_name";
+        else if (orderBy == CustomerOrder.LAST_NAME) query += "last_name";
+        else if (orderBy == CustomerOrder.PHONE_NUMBER) query += "phone_number";
+        else if (orderBy == CustomerOrder.ADDRESS) query += "address";
 
-        }
+        query += " DESC";
 
-        return customerList;
+        return getCustomerSimplifier(query);
     }
 
     public static ArrayList<FetchedOrder> getCooksOrders() throws SQLException {
