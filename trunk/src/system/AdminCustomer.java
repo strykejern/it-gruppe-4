@@ -12,6 +12,9 @@ public class AdminCustomer extends Customer {
 
     @Override
     public String toString(){
-        return "Your text here";
+        return "Id: " + this.id
+                + " Name: " + this.firstName + " " + this.lastName
+                + " Tel: " + this.phoneNumber
+                + " Address: " + this.address;
     }
 }
