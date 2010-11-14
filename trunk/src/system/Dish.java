@@ -13,7 +13,13 @@ public class Dish {
     public String name;		//name of dish
     public String description;	//contents of dish
     public int price;           //price of dish
-    
+
+    protected Dish(Dish dish){
+        this.nr = dish.nr;
+        this.name = dish.name;
+        this.description = dish.description;
+        this.price = dish.price;
+    }
 
     /**
      * Constructor for creating dish-object
@@ -23,11 +29,11 @@ public class Dish {
      * @param contentsIn - contents of dish
      * @param priceIn - price of dish
      */
-    public Dish(int nrIn, String nameIn, int priceIn, String contentsIn) {
-        this.nr = nrIn;
-        this.name = nameIn;
-        this.description = contentsIn;
-        this.price = priceIn;
+    public Dish(int nr, String name, int price, String description) {
+        this.nr = nr;
+        this.name = name;
+        this.description = description;
+        this.price = price;
     }
 
     public Dish(String dishId, String name, String price, String comment) throws IllegalArgumentException{
