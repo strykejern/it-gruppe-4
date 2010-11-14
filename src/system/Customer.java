@@ -11,6 +11,14 @@ public class Customer {
     public int id;
     public int phoneNumber;
 
+    protected Customer(Customer customer){
+        this.id = customer.id;
+        this.firstName = customer.firstName;
+        this.lastName = customer.lastName;
+        this.address = customer.address;
+        this.phoneNumber = customer.phoneNumber;
+    }
+
     public Customer(int id, String firstName, String lastName, int phoneNumber,
                 String address){
         this.id = id;
