@@ -56,6 +56,8 @@ public class CookFrame extends javax.swing.JFrame implements GUIUpdater{
 
             DefaultListModel orderModel = new DefaultListModel();
 
+            dishList.setModel(new DefaultListModel());
+
             for (FetchedOrder order : orders){
 
                 orderModel.addElement(order);
