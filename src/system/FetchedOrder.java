@@ -19,6 +19,20 @@ public class FetchedOrder {
 
     private ArrayList<DishOrder> dishes;
 
+    protected FetchedOrder(FetchedOrder orig){
+        this.orderId = orig.orderId;
+        this.customerId = orig.customer.id;
+        this.customer = orig.customer;
+        this.deliveryAddress = orig.deliveryAddress;
+        this.viewedBy = orig.viewedBy;
+        this.timeStamp = orig.timeStamp;
+        if(viewedBy == View.DRIVER){
+            if(deliveryAddress==null){
+                String getAddress = ""; //TODO create query
+            }
+        }
+    }
+
     public FetchedOrder(int orderId, int customerId, String deliveryAddress,
             View view, String time) {
         this.orderId = orderId;

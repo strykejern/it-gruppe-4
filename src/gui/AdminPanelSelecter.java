@@ -41,7 +41,6 @@ public class AdminPanelSelecter extends javax.swing.JFrame {
         btnMenu = new javax.swing.JButton();
         btnCustomer = new javax.swing.JButton();
         btnCurrentOrders = new javax.swing.JButton();
-        btnOldOrders = new javax.swing.JButton();
         btnProperties = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
 
@@ -99,9 +98,6 @@ public class AdminPanelSelecter extends javax.swing.JFrame {
             }
         });
 
-        btnOldOrders.setFont(btnMenu.getFont());
-        btnOldOrders.setText("Old orders");
-
         btnProperties.setFont(btnMenu.getFont());
         btnProperties.setText("Properties");
 
@@ -112,8 +108,7 @@ public class AdminPanelSelecter extends javax.swing.JFrame {
             .addComponent(btnMenu, javax.swing.GroupLayout.DEFAULT_SIZE, 350, Short.MAX_VALUE)
             .addComponent(btnCustomer, javax.swing.GroupLayout.DEFAULT_SIZE, 350, Short.MAX_VALUE)
             .addComponent(btnCurrentOrders, javax.swing.GroupLayout.DEFAULT_SIZE, 350, Short.MAX_VALUE)
-            .addComponent(btnOldOrders, javax.swing.GroupLayout.DEFAULT_SIZE, 350, Short.MAX_VALUE)
-            .addComponent(btnProperties, javax.swing.GroupLayout.DEFAULT_SIZE, 350, Short.MAX_VALUE)
+            .addComponent(btnProperties, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 350, Short.MAX_VALUE)
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -124,10 +119,8 @@ public class AdminPanelSelecter extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnCurrentOrders, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnOldOrders)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnProperties)
-                .addGap(32, 32, 32))
+                .addGap(91, 91, 91))
         );
 
         getContentPane().add(jPanel3);
@@ -174,7 +167,6 @@ public class AdminPanelSelecter extends javax.swing.JFrame {
     private javax.swing.JButton btnCurrentOrders;
     private javax.swing.JButton btnCustomer;
     private javax.swing.JButton btnMenu;
-    private javax.swing.JButton btnOldOrders;
     private javax.swing.JButton btnProperties;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
