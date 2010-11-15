@@ -88,9 +88,9 @@ public class DishOrder {
         this.comments = comments;
     }
 
-    /**
+    /** Builds a String with Dishorder-info formatted for viewer
      *
-     * @return String with DishOrder info, setup either for chef or waiter
+     * @return DishOrder info, setup either for chef or waiter
      */
     @Override
     public String toString() {
@@ -100,18 +100,20 @@ public class DishOrder {
         String name=dish.name;
         String priceSpaces=" ";
         String amount2=Integer.toString(amount);
-        String amountSpaces=" ";
         DecimalFormat toDes = new DecimalFormat("0.00");
+
         if(id.length()<3){
             for(int i=0;i<(3-id.length()); i++){
                 spaces+=" ";
             }
         }
+
         if(name.length()<16){
             for(int i=0;i<(16-name.length()); i++){
                 priceSpaces+=" ";
             }
         }
+
         if(amount2.length()<3){
             for(int i=0;i<(3-name.length()); i++){
                 spaces+=" ";
@@ -134,7 +136,6 @@ public class DishOrder {
             if(comments!=null && !comments.equals("")){
                 retStr += "*comment*";}
         }
-
 
         return retStr;
     }
