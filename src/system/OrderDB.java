@@ -374,6 +374,12 @@ public class OrderDB {
         return getOrdersSimplifier(query, true);
     }
 
+    public static ArrayList<FetchedOrder> getDriverOrders() throws SQLException {
+        String query = "SELECT * FROM orders, customer WHERE done=0 AND made=1 AND delivery=1 AND orders.customer_id=customer.customer_id";
+
+        return getOrdersSimplifier(query, true);
+    }
+
     public static ArrayList<FetchedOrder> getOrdersSimplifier(String query, boolean withCustomer) throws SQLException{
         ArrayList<FetchedOrder> orders = new ArrayList<FetchedOrder>();
 
