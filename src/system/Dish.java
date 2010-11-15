@@ -36,7 +36,8 @@ public class Dish {
         this.price = price;
     }
 
-    public Dish(String dishId, String name, String price, String comment) throws IllegalArgumentException{
+    public Dish(String dishId, String name, String price, String comment)
+            throws IllegalArgumentException{
         try {
             nr = Integer.parseInt(dishId);
         }
@@ -44,7 +45,8 @@ public class Dish {
             throw new IllegalArgumentException("Invalid dish-ID");
         }
 
-        if (name == null || name.length() < 2) throw new IllegalArgumentException("Invalid dish-name");
+        if (name == null || name.length() < 2)
+            throw new IllegalArgumentException("Invalid dish-name");
         this.name = name;
 
         try {
@@ -57,7 +59,8 @@ public class Dish {
         description = comment;
     }
 
-    /**
+    /** Method builds a String with dish parameters and formats it to fit well
+     * in a list of several dishes
      *
      * @return String with Dish parameters
      */
@@ -77,18 +80,17 @@ public class Dish {
                numSpace+=" ";
             }
         }
-        String streng = numSpace + id + " " + name + spaces +  toDes.format(price) + "\n";
-        return streng;
+        return numSpace + id + " " + name + spaces + toDes.format(price) + "\n";
     }
 
-    /**
+    /** Returns a String of parameters in Dish-object. Formated for a print
+     * of a reciept
      *
      * @param amount
      * @return String with name, amount and price
      */
     public String forReciept(int amount) {
         DecimalFormat toDes=new DecimalFormat("0.00");
-        String print;
         String spaces="";
         if(name.length()<16){
             for(int i=0;i<(16-name.length()); i++){
@@ -96,9 +98,9 @@ public class Dish {
             }
         }
         int total = amount * this.price;
-        print = this.name + spaces + "\t" + amount + "     " + 
+
+        return this.name + spaces + "\t"
+                + amount + "     " +
                 toDes.format(total) + "\n";
-        
-        return print;
     }
 }

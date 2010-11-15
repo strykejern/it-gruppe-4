@@ -1,6 +1,5 @@
 package system;
 
-import java.*;
 import java.util.ArrayList;
 
 /* Class for editing menu-DB 

@@ -31,10 +31,13 @@ public class Reciept {
      * @return string with reciept
      */
     public static String toString(Order order) {
-        String print = "Reciept for: " + order.customer + "\nDish \t\tAmount "
+        String print = "Reciept for: " 
+                + order.customer
+                + "\nDish \t\tAmount "
                 + "  Price \n";
         Dish dish2;
         Double localMva;
+
         for (DishOrder dish : order.dishOrder) {
             try {
                 dish2 = OrderDB.getDish(dish.dishID);
@@ -43,6 +46,7 @@ public class Reciept {
             } catch (SQLException e) {
             }
         }
+
         if (delivery) {
             print += "Delivery: ";
             if (total >= maxTot) {
@@ -52,6 +56,7 @@ public class Reciept {
                 print += "\t\t\t" + deliveryPrice;
             }
         }
+
         localMva = (total-total/(1+mva));
         print += "\nTotal: \t\t       " + toDes.format(total) + "\n";
         

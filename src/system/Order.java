@@ -51,6 +51,6 @@ public class Order {
         if (dishOrder.isEmpty()) {
             throw new Exception("No dish is added");
         }
-        // TODO: OrderDB.createOrder()
+        
     }
 }
