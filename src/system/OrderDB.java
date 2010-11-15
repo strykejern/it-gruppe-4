@@ -261,6 +261,21 @@ public class OrderDB {
         Statement stat = dbConnection.createStatement();
 
         stat.executeUpdate(query);
+
+        deleteCustomersOrders(deleting.id);
+    }
+
+    private static void deleteCustomersOrders(int customerId) throws SQLException{
+        String query = "SELECT order_id FROM order WHERE customer_id=" + customerId;
+
+        Statement stat = dbConnection.createStatement();
+
+        stat.execute(query);
+
+        ResultSet result = stat.getResultSet();
+        while (result.next()){
+            deleteOrder(result.getInt("order_id"));
+        }
     }
 
     public static ArrayList<FetchedOrder> getCooksOrders() throws SQLException {
@@ -352,7 +367,7 @@ public class OrderDB {
     public static ArrayList<FetchedOrder> getAdminOrders (int count, String time, boolean before) throws SQLException{
         String query = "SELECT customer.*, orders.* FROM customer, orders WHERE " +
                 "time" + (before ? "<" : ">") + "'" + time + "' " +
-                "AND customer.customer_id=orders.customer_id ";
+                "AND orders.customer_id=customer.customer_id ";
 
         if (count > 0) query += "LIMIT 0, " + count;
 
@@ -371,7 +386,7 @@ public class OrderDB {
             int orderId             = result.getInt("order_id");
             int customerId          = result.getInt("customer_id");
             String deliveryAddress  = result.getString("delivery_address");
-            String time             = result.getString("time");
+            String time             = result.getString("time").substring(0, 19);
 
             FetchedOrder order;
             if (withCustomer) {
@@ -398,24 +413,49 @@ public class OrderDB {
         return orders;
     }
 
-    public static void deleteOrder(FetchedOrder order) throws SQLException{
-        String query = "DELETE FROM orders WHERE order_id=" + order.getId();
+    public static void deleteOrder(FetchedOrder deleting) throws SQLException{
+        deleteOrder(deleting.getId());
+    }
+
+    private static void deleteOrder(int orderId) throws SQLException{
+        String query = "DELETE FROM orders WHERE order_id=" + orderId;
 
         Statement stat = dbConnection.createStatement();
 
         stat.executeUpdate(query);
 
-        for (DishOrder dish : order.getDishes()){
-            deleteDishOrder(dish.dishOrderId);
-        }
+        deleteDishOrders(orderId);
     }
 
-    public static void deleteDishOrder(int dishOrderId) throws SQLException{
+    private static void deleteDishOrders(int orderId) throws SQLException{
+        String query = "DELETE FROM dish_orders WHERE order_id=" + orderId;
+
+        Statement stat = dbConnection.createStatement();
+
+        stat.executeUpdate(query);
+    }
+
+    private static void deleteDishOrder(int dishOrderId) throws SQLException{
         String query = "DELETE FROM dish_orders WHERE dish_order_id=" + dishOrderId;
 
         Statement stat = dbConnection.createStatement();
 
         stat.executeUpdate(query);
+    }
+
+    public static String getReciept(int orderId) throws SQLException{
+        String query = "SELECT reciept FROM orders WHERE order_id=" + orderId;
+
+        Statement stat = dbConnection.createStatement();
+
+        stat.execute(query);
+
+        ResultSet result = stat.getResultSet();
+        if (result.next()){
+            String reciept = result.getString("reciept");
+            if (reciept.length() > 1) return reciept;
+        }
+        throw new SQLException("The order does not have a reciept yet");
     }
 
     // Lars
