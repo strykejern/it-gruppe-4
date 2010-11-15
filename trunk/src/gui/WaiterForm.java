@@ -368,7 +368,7 @@ public class WaiterForm extends javax.swing.JFrame {
         txtDishComment.setBackground(javax.swing.UIManager.getDefaults().getColor("Panel.background"));
         txtDishComment.setColumns(20);
         txtDishComment.setEditable(false);
-        txtDishComment.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        txtDishComment.setFont(new java.awt.Font("Tahoma", 0, 10));
         txtDishComment.setLineWrap(true);
         txtDishComment.setRows(5);
         jScrollPane3.setViewportView(txtDishComment);
@@ -431,6 +431,11 @@ public class WaiterForm extends javax.swing.JFrame {
         jPanel3.setPreferredSize(new java.awt.Dimension(800, 45));
 
         btnGetLastOrder.setText("Get last order");
+        btnGetLastOrder.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGetLastOrderActionPerformed(evt);
+            }
+        });
 
         btnPlaceOrder.setText("Place order");
         btnPlaceOrder.addActionListener(new java.awt.event.ActionListener() {
@@ -835,6 +840,11 @@ public class WaiterForm extends javax.swing.JFrame {
             dishOrderList.setSelectedIndices(dishOrderList.getSelectedIndices());
         }
     }//GEN-LAST:event_btnEditCommentActionPerformed
+
+    private void btnGetLastOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGetLastOrderActionPerformed
+        new WaiterGetOldOrdersChooser(this).setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_btnGetLastOrderActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAddToOrder;

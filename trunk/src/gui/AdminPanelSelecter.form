@@ -70,8 +70,7 @@
               <Component id="btnMenu" alignment="0" pref="350" max="32767" attributes="0"/>
               <Component id="btnCustomer" alignment="0" pref="350" max="32767" attributes="0"/>
               <Component id="btnCurrentOrders" alignment="0" pref="350" max="32767" attributes="0"/>
-              <Component id="btnOldOrders" alignment="0" pref="350" max="32767" attributes="0"/>
-              <Component id="btnProperties" alignment="0" pref="350" max="32767" attributes="0"/>
+              <Component id="btnProperties" alignment="1" pref="350" max="32767" attributes="0"/>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
@@ -83,10 +82,8 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="btnCurrentOrders" min="-2" pref="53" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="btnOldOrders" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace max="-2" attributes="0"/>
                   <Component id="btnProperties" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="91" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -127,14 +124,6 @@
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnCurrentOrdersActionPerformed"/>
           </Events>
-        </Component>
-        <Component class="javax.swing.JButton" name="btnOldOrders">
-          <Properties>
-            <Property name="font" type="java.awt.Font" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection component="btnMenu" name="font" type="property"/>
-            </Property>
-            <Property name="text" type="java.lang.String" value="Old orders"/>
-          </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="btnProperties">
           <Properties>

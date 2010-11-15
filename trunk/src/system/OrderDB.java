@@ -413,6 +413,12 @@ public class OrderDB {
         return orders;
     }
 
+    public static ArrayList<FetchedOrder> getLatestOrders() throws SQLException {
+        String query = "SELECT * FROM orders, customer WHERE made=0 AND orders.customer_id=customer.customer_id";
+
+        return getOrdersSimplifier(query, true);
+    }
+
     public static void deleteOrder(FetchedOrder deleting) throws SQLException{
         deleteOrder(deleting.getId());
     }
