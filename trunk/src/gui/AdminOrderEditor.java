@@ -12,7 +12,6 @@
 package gui;
 
 import java.sql.SQLException;
-import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -21,6 +20,7 @@ import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
+import javax.swing.ListSelectionModel;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import system.AdminCustomer;
@@ -71,9 +71,6 @@ public class AdminOrderEditor extends javax.swing.JFrame implements GUIUpdater {
 
     public void updateGUI() {
         try {
-            JList focused = null;
-            if (orderList.hasFocus()) focused = orderList;
-            else if (dishList.hasFocus()) focused = dishList;
 
             int count = 0;
             int index = selectNumRows.getSelectedIndex();
@@ -84,6 +81,9 @@ public class AdminOrderEditor extends javax.swing.JFrame implements GUIUpdater {
             boolean before = selectBeforeAfter.getSelectedIndex() == 0;
 
             format.parse(txtDate.getText());
+
+            ListSelectionModel orderSelection = orderList.getSelectionModel();
+            ListSelectionModel dishSelection = dishList.getSelectionModel();
 
             ArrayList<FetchedOrder> orders = OrderDB.getAdminOrders(count, txtDate.getText() + " " + selectTime.getSelectedItem(), before); // TODO: use input
             FetchedOrder selectedOrder = (FetchedOrder)orderList.getSelectedValue();
@@ -102,16 +102,13 @@ public class AdminOrderEditor extends javax.swing.JFrame implements GUIUpdater {
                         dishModel.addElement(dish);
                     }
                     dishList.setModel(dishModel);
-                    dishList.setSelectedValue(selectedDish, false);
+                    dishList.setSelectionModel(dishSelection);
                 }
             }
 
             orderList.setModel(orderModel);
-            orderList.setSelectedValue(selectedOrder, false);
 
-            if (focused != null){
-                focused.requestFocusInWindow();
-            }
+            orderList.setSelectionModel(orderSelection);
         }
         catch (SQLException e) {
             
@@ -167,6 +164,7 @@ public class AdminOrderEditor extends javax.swing.JFrame implements GUIUpdater {
         });
 
         orderList.setFont(new java.awt.Font("Courier New", 0, 11)); // NOI18N
+        orderList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         orderList.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
             public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
                 orderListValueChanged(evt);
@@ -175,6 +173,7 @@ public class AdminOrderEditor extends javax.swing.JFrame implements GUIUpdater {
         jScrollPane1.setViewportView(orderList);
 
         dishList.setFont(new java.awt.Font("Courier New", 0, 11)); // NOI18N
+        dishList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         dishList.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
             public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
                 dishListValueChanged(evt);
@@ -184,7 +183,7 @@ public class AdminOrderEditor extends javax.swing.JFrame implements GUIUpdater {
 
         jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11));
         jLabel1.setText("Orders");
 
         selectNumRows.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "20", "40", "80", "All" }));
@@ -265,9 +264,10 @@ public class AdminOrderEditor extends javax.swing.JFrame implements GUIUpdater {
         jScrollPane3.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         jScrollPane3.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
 
+        txtDishComment.setBackground(javax.swing.UIManager.getDefaults().getColor("Panel.background"));
         txtDishComment.setColumns(20);
         txtDishComment.setEditable(false);
-        txtDishComment.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        txtDishComment.setFont(new java.awt.Font("Tahoma", 0, 11)); // NOI18N
         txtDishComment.setLineWrap(true);
         txtDishComment.setRows(5);
         jScrollPane3.setViewportView(txtDishComment);
@@ -281,9 +281,9 @@ public class AdminOrderEditor extends javax.swing.JFrame implements GUIUpdater {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel4)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(124, Short.MAX_VALUE))
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 303, Short.MAX_VALUE)
+                    .addComponent(jLabel4))
+                .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -291,13 +291,13 @@ public class AdminOrderEditor extends javax.swing.JFrame implements GUIUpdater {
                 .addContainerGap()
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(57, Short.MAX_VALUE))
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 81, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         jPanel3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        jLabel5.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel5.setFont(new java.awt.Font("Tahoma", 1, 11));
         jLabel5.setText("Selected order info");
 
         jLabel6.setText("Customer:");
@@ -320,6 +320,11 @@ public class AdminOrderEditor extends javax.swing.JFrame implements GUIUpdater {
         });
 
         btnReciept.setText("Show reciept");
+        btnReciept.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRecieptActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -389,18 +394,18 @@ public class AdminOrderEditor extends javax.swing.JFrame implements GUIUpdater {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane2)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 355, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 567, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 567, Short.MAX_VALUE)))
+                .addContainerGap())
         );
 
         pack();
@@ -465,8 +470,28 @@ public class AdminOrderEditor extends javax.swing.JFrame implements GUIUpdater {
         int answer = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete the currently selected order?", "Delete order", JOptionPane.OK_CANCEL_OPTION);
         if (answer == JOptionPane.CANCEL_OPTION) return;
 
-        // TODO: delete currently selected order
+        try {
+            OrderDB.deleteOrder(order);
+
+            guiUpdater.manualUpdate();
+        }
+        catch (SQLException e) {
+
+        }
     }//GEN-LAST:event_btnDeleteOrderActionPerformed
+
+    private void btnRecieptActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRecieptActionPerformed
+        FetchedOrder order = (FetchedOrder)orderList.getSelectedValue();
+        if (order == null) return;
+
+        try {
+            String reciept = OrderDB.getReciept(order.getId());
+            JOptionPane.showMessageDialog(this, reciept);
+        }
+        catch (SQLException e){
+            JOptionPane.showMessageDialog(this, e.getMessage());
+        }
+    }//GEN-LAST:event_btnRecieptActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnDeleteOrder;
