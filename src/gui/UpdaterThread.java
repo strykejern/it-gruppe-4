@@ -32,6 +32,10 @@ public class UpdaterThread extends Thread {
         }
     }
 
+    public void manualUpdate(){
+        this.interrupt();
+    }
+
     public void end(){
         running = false;
     }

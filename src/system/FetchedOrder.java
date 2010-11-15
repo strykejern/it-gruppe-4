@@ -1,5 +1,6 @@
 package system;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
@@ -14,6 +15,8 @@ public class FetchedOrder {
     public View viewedBy;
     private String timeStamp = "";
 
+    private Customer customer;
+
     private ArrayList<DishOrder> dishes;
 
     public FetchedOrder(int orderId, int customerId, String deliveryAddress,
@@ -23,6 +26,21 @@ public class FetchedOrder {
         this.deliveryAddress = deliveryAddress;
         this.viewedBy = view;
         this.timeStamp = time; 
+        if(viewedBy == View.DRIVER){
+            if(deliveryAddress==null){
+                String getAddress = ""; //TODO create query
+            }
+        }
+    }
+
+    public FetchedOrder(int orderId, Customer customer, String deliveryAddress,
+            View view, String time) {
+        this.orderId = orderId;
+        this.customerId = customer.id;
+        this.customer = customer;
+        this.deliveryAddress = deliveryAddress;
+        this.viewedBy = view;
+        this.timeStamp = time;
         if(viewedBy == View.DRIVER){
             if(deliveryAddress==null){
                 String getAddress = ""; //TODO create query
@@ -48,6 +66,15 @@ public class FetchedOrder {
 
     public int getId(){
         return this.orderId;
+    }
+
+    public Customer getCustomer() throws SQLException{
+        if (customer == null) customer = OrderDB.getCustomerById(customerId);
+        return customer;
+    }
+
+    public String getTimeStamp(){
+        return timeStamp;
     }
 
     @Override

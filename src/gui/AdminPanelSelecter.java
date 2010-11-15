@@ -93,6 +93,11 @@ public class AdminPanelSelecter extends javax.swing.JFrame {
         btnCurrentOrders.setFont(btnMenu.getFont());
         btnCurrentOrders.setText("Current orders");
         btnCurrentOrders.setPreferredSize(new java.awt.Dimension(350, 67));
+        btnCurrentOrders.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCurrentOrdersActionPerformed(evt);
+            }
+        });
 
         btnOldOrders.setFont(btnMenu.getFont());
         btnOldOrders.setText("Old orders");
@@ -159,6 +164,11 @@ public class AdminPanelSelecter extends javax.swing.JFrame {
         new AdminMenuEditor(this).setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_btnMenuActionPerformed
+
+    private void btnCurrentOrdersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCurrentOrdersActionPerformed
+        new AdminOrderEditor(this).setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_btnCurrentOrdersActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCurrentOrders;

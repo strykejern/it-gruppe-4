@@ -255,6 +255,14 @@ public class OrderDB {
         return getCustomerSimplifier(query);
     }
 
+    public static void deleteCustomer(Customer deleting) throws SQLException{
+        String query = "DELETE FROM customer WHERE customer_id=" + deleting.id;
+
+        Statement stat = dbConnection.createStatement();
+
+        stat.executeUpdate(query);
+    }
+
     public static ArrayList<FetchedOrder> getCooksOrders() throws SQLException {
         String query = "SELECT * FROM orders WHERE made=0";
 
@@ -293,12 +301,13 @@ public class OrderDB {
 
         ResultSet result = stat.getResultSet();
         while (result.next()) {
-            
+
+            int dishOrderId = result.getInt("dish_order_id");
             int dishId      = result.getInt("dish_id");
             int amount      = result.getInt("amount");
             String comment  = result.getString("comment");
 
-            dishes.add(new DishOrder(dishId, amount, comment));
+            dishes.add(new DishOrder(dishOrderId, dishId, amount, comment));
         }
 
         return dishes;
@@ -339,7 +348,76 @@ public class OrderDB {
 
         stat.executeUpdate(query);
     }
-    
+
+    public static ArrayList<FetchedOrder> getAdminOrders (int count, String time, boolean before) throws SQLException{
+        String query = "SELECT customer.*, orders.* FROM customer, orders WHERE " +
+                "time" + (before ? "<" : ">") + "'" + time + "' " +
+                "AND customer.customer_id=orders.customer_id ";
+
+        if (count > 0) query += "LIMIT 0, " + count;
+
+        return getOrdersSimplifier(query, true);
+    }
+
+    public static ArrayList<FetchedOrder> getOrdersSimplifier(String query, boolean withCustomer) throws SQLException{
+        ArrayList<FetchedOrder> orders = new ArrayList<FetchedOrder>();
+
+        Statement stat = dbConnection.createStatement();
+
+        stat.execute(query);
+
+        ResultSet result = stat.getResultSet();
+        while (result.next()){
+            int orderId             = result.getInt("order_id");
+            int customerId          = result.getInt("customer_id");
+            String deliveryAddress  = result.getString("delivery_address");
+            String time             = result.getString("time");
+
+            FetchedOrder order;
+            if (withCustomer) {
+                int id          = result.getInt("customer_id");
+                String fName    = result.getString("first_name");
+                String lName    = result.getString("last_name");
+                int phone       = result.getInt("phone_number");
+                String address  = result.getString("address");
+
+                Customer customer = new Customer(id, fName, lName, phone, address);
+
+                order = new FetchedOrder(orderId, customer, deliveryAddress, FetchedOrder.View.CHEF, time);
+            }
+            else {
+                order = new FetchedOrder(orderId, customerId,
+                        deliveryAddress, FetchedOrder.View.CHEF, time);
+            }
+
+            order.setDishes(getDishOrders(orderId));
+
+            orders.add(order);
+        }
+
+        return orders;
+    }
+
+    public static void deleteOrder(FetchedOrder order) throws SQLException{
+        String query = "DELETE FROM orders WHERE order_id=" + order.getId();
+
+        Statement stat = dbConnection.createStatement();
+
+        stat.executeUpdate(query);
+
+        for (DishOrder dish : order.getDishes()){
+            deleteDishOrder(dish.dishOrderId);
+        }
+    }
+
+    public static void deleteDishOrder(int dishOrderId) throws SQLException{
+        String query = "DELETE FROM dish_orders WHERE dish_order_id=" + dishOrderId;
+
+        Statement stat = dbConnection.createStatement();
+
+        stat.executeUpdate(query);
+    }
+
     // Lars
 
    /**
@@ -409,12 +487,13 @@ public class OrderDB {
         ResultSet result = stat.getResultSet();
         while (result.next()) {
 
+            int dishOrderId = result.getInt("dish_order_id");
             int id = result.getInt("order_id");
             int dish = result.getInt("dish_id");
             int amount = result.getInt("amount");
             String comment = result.getString("comment");
 
-            order.dishOrder.add(new DishOrder(id, amount, comment));
+            order.dishOrder.add(new DishOrder(dishOrderId, id, amount, comment));
         }
 
         return order;

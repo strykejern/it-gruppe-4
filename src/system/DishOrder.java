@@ -10,6 +10,7 @@ import java.text.DecimalFormat;
  */
 public class DishOrder {
 
+    public int dishOrderId;
     public int dishID;
     public int amount;
     public String comments;
@@ -22,7 +23,8 @@ public class DishOrder {
      * @param amount - amount of this dish ordered
      * @param comments - comments for this dish
      */
-    public DishOrder(int dishID, int amount, String comments) {
+    public DishOrder(int dishOrderId, int dishID, int amount, String comments) {
+        this.dishOrderId = dishOrderId;
         this.dishID = dishID;
         this.amount = amount;
         this.comments = comments;
@@ -30,7 +32,8 @@ public class DishOrder {
         try {
             dish = OrderDB.getDish(dishID);
         } catch (SQLException e) {
-            System.out.println(e);
+            // If we fail to retrieve the dish set it to unknown
+            dish = new Dish(-1, "N/A", -1, "N/A");
         }
     }
 
@@ -142,6 +145,6 @@ public class DishOrder {
 
     @Override
     public DishOrder clone(){
-        return new DishOrder(dishID, amount, comments);
+        return new DishOrder(dishOrderId, dishID, amount, comments);
     }
 }
