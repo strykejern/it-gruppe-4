@@ -344,6 +344,22 @@ public class OrderDB {
         stat.executeUpdate(query);
     }
 
+    public static void setOrderAsDone(int orderId) throws SQLException{
+        String query = "UPDATE orders SET done=1 WHERE order_id=" + orderId;
+
+        Statement stat = dbConnection.createStatement();
+
+        stat.executeUpdate(query);
+    }
+
+    public static void undoSetOrderAsDone(int orderId) throws SQLException{
+        String query = "UPDATE orders SET done=0 WHERE order_id=" + orderId;
+
+        Statement stat = dbConnection.createStatement();
+
+        stat.executeUpdate(query);
+    }
+
     public static void updateDish(Dish updated, int originalId) throws SQLException{
         String query = "UPDATE menu SET " +
                 "name='" + updated.name + "', " +
@@ -378,6 +394,12 @@ public class OrderDB {
         String query = "SELECT * FROM orders, customer WHERE done=0 AND made=1 AND delivery=1 AND orders.customer_id=customer.customer_id";
 
         return getOrdersSimplifier(query, true);
+    }
+
+    public static FetchedOrder getOrderById(int orderId) throws SQLException{
+        String query = "SELECT * FROM orders, customer WHERE order_id=" + orderId + " AND orders.customer_id=customer.customer_id";
+
+        return getOrdersSimplifier(query, true).get(0);
     }
 
     public static ArrayList<FetchedOrder> getOrdersSimplifier(String query, boolean withCustomer) throws SQLException{
