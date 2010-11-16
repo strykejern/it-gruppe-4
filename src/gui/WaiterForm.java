@@ -30,12 +30,14 @@ import system.*;
  *
  * @author Anders
  */
-public class WaiterForm extends javax.swing.JFrame {
+public class WaiterForm extends javax.swing.JFrame implements FormListener {
 
     private MainFrame parent;
 
     private Order currentOrder;
     private boolean editCustomer;
+
+    private boolean reloading;
 
     /** Creates new form WaiterForm */
     public WaiterForm(MainFrame parent) {
@@ -75,6 +77,8 @@ public class WaiterForm extends javax.swing.JFrame {
 
         currentOrder = new Order();
         editCustomer = false;
+
+        reloading = false;
     }
 
     private void bindTocustomerTextChanged(final JTextField field){
@@ -89,6 +93,37 @@ public class WaiterForm extends javax.swing.JFrame {
                 customerTextChanged(field);
             }
         });
+    }
+
+    public void tell(int signal) {
+
+        try {
+            FetchedOrder order = OrderDB.getOrderById(signal);
+
+            setCustomer(order.getCustomer().id);
+
+            DefaultListModel model = new DefaultListModel();
+
+            for (DishOrder dish : order.getDishes()){
+                model.addElement(dish);
+            }
+
+            dishOrderList.setModel(model);
+
+            checkBoxDelivery.setEnabled(OrderDB.getOrderDelivery(signal));
+
+            checkBoxCustomAddress.setEnabled(order.hasCustomAddress());
+
+            if (order.hasCustomAddress()) {
+                txtCustomAddress.setText(order.getDeliveryAddress());
+            }
+
+            OrderDB.deleteOrder(order);
+            // TODO: delete order
+        }
+        catch (SQLException e){
+            JOptionPane.showMessageDialog(this, "Error loading order:\n" + e.getMessage());
+        }
     }
 
     /** This method is called from within the constructor to
@@ -430,7 +465,7 @@ public class WaiterForm extends javax.swing.JFrame {
         jPanel3.setMaximumSize(new java.awt.Dimension(32767, 45));
         jPanel3.setPreferredSize(new java.awt.Dimension(800, 45));
 
-        btnGetLastOrder.setText("Get last order");
+        btnGetLastOrder.setText("Get last orders");
         btnGetLastOrder.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnGetLastOrderActionPerformed(evt);
@@ -451,7 +486,7 @@ public class WaiterForm extends javax.swing.JFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(btnGetLastOrder)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 624, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 620, Short.MAX_VALUE)
                 .addComponent(btnPlaceOrder)
                 .addContainerGap())
         );
@@ -471,7 +506,9 @@ public class WaiterForm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void WaiterFormClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_WaiterFormClosed
-        parent.setVisible(true);
+        if (!reloading){
+            parent.setVisible(true);
+        }
     }//GEN-LAST:event_WaiterFormClosed
 
     private void txtCustomerFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtCustomerFieldFocusGained
@@ -591,11 +628,15 @@ public class WaiterForm extends javax.swing.JFrame {
         }
     }
 
-    private void popupMenuItemSelected(JMenuItem item){
+    private void popupMenuItemSelected(JMenuItem item) {
+        int customerId = Integer.parseInt(item.getName());
+        setCustomer(customerId);
+    }
+
+    private void setCustomer(int customerId){
         try {
-            int customerId = Integer.parseInt(item.getName());
             Customer customer = OrderDB.getCustomerById(customerId);
-            
+
             txtCustomerFirstName.setEnabled(false);
             txtCustomerLastName.setEnabled(false);
             txtCustomerPhone.setEnabled(false);
@@ -714,7 +755,13 @@ public class WaiterForm extends javax.swing.JFrame {
 
             // TODO: place the order
             try {
-            OrderDB.createOrder(currentOrder);
+                OrderDB.createOrder(currentOrder);
+                JOptionPane.showMessageDialog(this, "Order successfully placed");
+                // Reload JFrame
+                reloading = true;
+                this.dispose();
+                FormListener parentListener = (FormListener)parent;
+                parentListener.tell(0);
             }
             catch (SQLException e){
                 System.out.println("Failed to place order:\n" + e);
@@ -842,7 +889,7 @@ public class WaiterForm extends javax.swing.JFrame {
     }//GEN-LAST:event_btnEditCommentActionPerformed
 
     private void btnGetLastOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGetLastOrderActionPerformed
-        new WaiterGetOldOrdersChooser(this).setVisible(true);
+        new WaiterGetOldOrdersChooser(this, this).setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_btnGetLastOrderActionPerformed
 

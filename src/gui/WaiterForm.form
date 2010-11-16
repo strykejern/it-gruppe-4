@@ -466,7 +466,7 @@
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="btnGetLastOrder" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace pref="624" max="32767" attributes="0"/>
+                  <EmptySpace pref="620" max="32767" attributes="0"/>
                   <Component id="btnPlaceOrder" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
@@ -488,7 +488,7 @@
       <SubComponents>
         <Component class="javax.swing.JButton" name="btnGetLastOrder">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Get last order"/>
+            <Property name="text" type="java.lang.String" value="Get last orders"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnGetLastOrderActionPerformed"/>
