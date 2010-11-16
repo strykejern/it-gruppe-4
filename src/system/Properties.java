@@ -5,60 +5,75 @@
 
 package system;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
+import java.math.BigDecimal;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 /**
  * Class for admin
  * @author Lars
  */
 public class Properties {
-    private static Connection dbConnection;
-    public static double mva;
-    public static int deliveryPrice;
-    public static int maxTot;
-    private static String password;
+    private static double mva;
+    private static int deliveryPrice;
+    private static int freeDeliveryLimit;
 
-
-    public static void initializeDB
-    		(String userName, String password, String databaseLocation)
-            throws ClassNotFoundException, InstantiationException,
-            IllegalAccessException, SQLException{
-
-        if (dbConnection != null) {
-            dbConnection.close();
-        }
-        Class.forName("com.mysql.jdbc.Driver").newInstance();
-
-        dbConnection = DriverManager.getConnection(
-                databaseLocation, userName, password);
-    }
-
+    /**
+     * Preventing instantiation of class
+     */
     private Properties(){
-
     }
 
-    public void setMva(double newMva){
-        Properties.mva=newMva;
+    public static void loadProperties() throws SQLException{
+        Object[] values = OrderDB.loadProperties();
+
+        BigDecimal tmp = (BigDecimal)values[0];
+        mva = tmp.doubleValue();
+        deliveryPrice = (Integer)values[1];
+        freeDeliveryLimit = (Integer)values[2];
     }
 
-    public void setDeliveryPrice(int newDeliveryPrice){
-        Properties.deliveryPrice = newDeliveryPrice;
+    public static int getDeliveryPrice() {
+        return deliveryPrice;
     }
 
-    public void setMaxTot(int newMaxTot){
-        Properties.maxTot = newMaxTot;
+    public static int getFreeDeliveryLimit() {
+        return freeDeliveryLimit;
     }
 
-    private void setPassw(String passw){
-        Properties.password = passw;
+    public static double getMva() {
+        return mva;
     }
 
-    public void storeProperties(){
-        //TODO: SQL query storing info in DB
-        //TODO: Table in DB for storing info
+    public static void storeProperties(String mva, String deliveryPrice, String freeDeliveryLimit) throws SQLException {
+        double tmpMva;
+        int tmpDeliveryPrice;
+        int tmpFreeDeliveryLimit;
+
+        try {
+            tmpMva = Double.parseDouble(mva);
+        }
+        catch (NumberFormatException numberFormatException) {
+            throw new IllegalArgumentException("Invalid MVA");
+        }
+
+        try {
+            tmpDeliveryPrice = Integer.parseInt(deliveryPrice);
+        }
+        catch (NumberFormatException numberFormatException) {
+            throw new IllegalArgumentException("Invalid delivery price");
+        }
+
+        try {
+            tmpFreeDeliveryLimit = Integer.parseInt(freeDeliveryLimit);
+        }
+        catch (NumberFormatException numberFormatException) {
+            throw new IllegalArgumentException("Invalid free delivery limit");
+        }
+
+        OrderDB.setProperties(tmpMva, tmpDeliveryPrice, tmpFreeDeliveryLimit);
+
+        Properties.mva = tmpMva;
+        Properties.deliveryPrice = tmpDeliveryPrice;
+        Properties.freeDeliveryLimit = tmpFreeDeliveryLimit;
     }
 }
