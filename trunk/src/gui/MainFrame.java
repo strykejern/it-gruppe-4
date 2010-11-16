@@ -18,7 +18,7 @@ import system.*;
  *
  * @author Anders
  */
-public class MainFrame extends javax.swing.JFrame {
+public class MainFrame extends javax.swing.JFrame implements FormListener {
 
     /** Creates new form MainFrame */
     public MainFrame() {
@@ -31,6 +31,14 @@ public class MainFrame extends javax.swing.JFrame {
         }
         catch (Exception e){
             System.out.println(e);
+        }
+    }
+
+    public void tell(int signal) {
+        if (signal == 0){
+            // Reload the waiter form
+            new WaiterForm(this).setVisible(true);
+            this.setVisible(false);
         }
     }
 

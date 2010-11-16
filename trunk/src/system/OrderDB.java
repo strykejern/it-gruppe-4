@@ -279,7 +279,7 @@ public class OrderDB {
     }
 
     public static ArrayList<FetchedOrder> getCooksOrders() throws SQLException {
-        String query = "SELECT * FROM orders WHERE made=0";
+        String query = "SELECT * FROM orders WHERE made=0 ORDER BY order_id ASC";
 
         ArrayList<FetchedOrder> orders = new ArrayList<FetchedOrder>();
 
@@ -370,6 +370,22 @@ public class OrderDB {
         Statement stat = dbConnection.createStatement();
 
         stat.executeUpdate(query);
+    }
+
+    public static boolean getOrderDelivery(int orderId) throws SQLException {
+        String query = "SELECT delivery FROM orders WHERE order_id=" + orderId;
+
+        Statement stat = dbConnection.createStatement();
+
+        stat.execute(query);
+
+        ResultSet result = stat.getResultSet();
+        if (result.next()){
+            return result.getBoolean("delivery");
+        }
+        else {
+            throw new SQLException("Order not found");
+        }
     }
 
     public static void deleteDish(Dish removing) throws SQLException {

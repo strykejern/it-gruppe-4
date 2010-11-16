@@ -8,10 +8,11 @@ import java.util.ArrayList;
  * @author Anders
  */
 public class FetchedOrder {
+    public enum View{CHEF, DRIVER};
+
     private int orderId;
     private int customerId;
     private String deliveryAddress;
-    public enum View{CHEF, DRIVER};
     public View viewedBy;
     private String timeStamp = "";
 
@@ -89,6 +90,23 @@ public class FetchedOrder {
 
     public String getTimeStamp(){
         return timeStamp;
+    }
+
+    public boolean getDelivery() throws SQLException{
+        return OrderDB.getOrderDelivery(orderId);
+    }
+
+    public boolean hasCustomAddress(){
+        return !(deliveryAddress == null || deliveryAddress.length() < 2);
+    }
+
+    public String getDeliveryAddress() throws SQLException {
+        if (hasCustomAddress()){
+            return deliveryAddress;
+        }
+        else {
+            return getCustomer().address;
+        }
     }
 
     @Override

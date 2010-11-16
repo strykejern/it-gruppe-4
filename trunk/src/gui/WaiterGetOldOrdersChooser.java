@@ -11,10 +11,12 @@
 
 package gui;
 
+import java.awt.AWTEvent;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
+import javax.swing.ListSelectionModel;
 import system.FetchedOrder;
 import system.OrderDB;
 import system.WaiterFetchedOrder;
@@ -27,9 +29,12 @@ public class WaiterGetOldOrdersChooser extends javax.swing.JFrame {
 
     JFrame parent;
 
+    FormListener listener;
+
     /** Creates new form WaiterGetOldOrdersChooser */
-    public WaiterGetOldOrdersChooser(JFrame parent) {
+    public WaiterGetOldOrdersChooser(JFrame parent, FormListener listener) {
         this.parent = parent;
+        this.listener = listener;
 
         initComponents();
 
@@ -40,7 +45,6 @@ public class WaiterGetOldOrdersChooser extends javax.swing.JFrame {
         try {
 
             ArrayList<FetchedOrder> orders = OrderDB.getLatestOrders();
-            FetchedOrder selectedOrder = (FetchedOrder)orderList.getSelectedValue();
 
             DefaultListModel orderModel = new DefaultListModel();
 
@@ -49,7 +53,6 @@ public class WaiterGetOldOrdersChooser extends javax.swing.JFrame {
             }
 
             orderList.setModel(orderModel);
-            orderList.setSelectedValue(selectedOrder, false);
         }
         catch (SQLException e) {
             System.out.println(e);
@@ -79,6 +82,11 @@ public class WaiterGetOldOrdersChooser extends javax.swing.JFrame {
         });
 
         btnEdit.setText("Edit");
+        btnEdit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditActionPerformed(evt);
+            }
+        });
 
         btnCancel.setText("Cancel");
 
@@ -116,6 +124,15 @@ public class WaiterGetOldOrdersChooser extends javax.swing.JFrame {
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
         parent.setVisible(true);
     }//GEN-LAST:event_formWindowClosed
+
+    private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
+        FetchedOrder order = (FetchedOrder)orderList.getSelectedValue();
+        if (order == null) return;
+
+        listener.tell(order.getId());
+        parent.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnEditActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane ScrollPane1;
