@@ -508,6 +508,36 @@ public class OrderDB {
         throw new SQLException("The order does not have a reciept yet");
     }
 
+    public static Object[] loadProperties() throws SQLException{
+        String query = "SELECT * FROM properties ORDER BY properties_id DESC LIMIT 1";
+
+        Statement stat = dbConnection.createStatement();
+
+        stat.execute(query);
+
+        ResultSet result = stat.getResultSet();
+
+        if (result.next()){
+            Object[] ret = new Object[3];
+            ret[0] = result.getBigDecimal("mva");
+            ret[1] = result.getInt("delivery_price");
+            ret[2] = result.getInt("free_delivery_limit");
+
+            return ret;
+        }
+        else {
+            throw new SQLException("No rows fetched");
+        }
+    }
+
+    public static void setProperties(double mva, int deliveryPrice, int freeDeliveryLimit) throws SQLException {
+        String query = "INSERT INTO properties (mva, delivery_price, free_delivery_limit) VALUES (" + mva + ", " + deliveryPrice + ", " + freeDeliveryLimit + ")";
+
+        Statement stat = dbConnection.createStatement();
+
+        stat.executeUpdate(query);
+    }
+
     // Lars
 
    /**
@@ -587,10 +617,6 @@ public class OrderDB {
         }
 
         return order;
-    }
-
-    public void setProperties(double mva, int deliveryPrice, int maxTot){
-        //TODO query to DB setting parameters
     }
 
     // Audun

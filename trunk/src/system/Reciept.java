@@ -19,10 +19,10 @@ import java.text.DecimalFormat;
 
 public class Reciept {
     static DecimalFormat toDes = new DecimalFormat("0.00");
-    static double mva = Properties.mva;
+    static double mva = Properties.getMva();
     static boolean delivery;
-    static int deliveryPrice = Properties.deliveryPrice;
-    static int maxTot = Properties.maxTot;
+    static int deliveryPrice = Properties.getDeliveryPrice();
+    static int maxTot = Properties.getFreeDeliveryLimit();
     static double total;
 
     /**
