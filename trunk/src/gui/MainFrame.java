@@ -11,6 +11,7 @@
 
 package gui;
 
+import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import system.*;
 
@@ -30,7 +31,7 @@ public class MainFrame extends javax.swing.JFrame implements FormListener {
             OrderDB.initializeDB(testing.DBInfo.username, testing.DBInfo.password, "jdbc:mysql://mysql.stud.ntnu.no/andereie_itgrupp");
         }
         catch (Exception e){
-            System.out.println(e);
+            JOptionPane.showMessageDialog(null, "Failed to connect to database:\n" + e);
         }
     }
 

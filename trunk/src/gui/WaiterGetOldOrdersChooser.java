@@ -16,6 +16,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.ListSelectionModel;
 import system.FetchedOrder;
 import system.OrderDB;
@@ -72,6 +73,7 @@ public class WaiterGetOldOrdersChooser extends javax.swing.JFrame {
         btnCancel = new javax.swing.JButton();
         ScrollPane1 = new javax.swing.JScrollPane();
         orderList = new javax.swing.JList();
+        btnShowReciept = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(400, 500));
@@ -92,6 +94,13 @@ public class WaiterGetOldOrdersChooser extends javax.swing.JFrame {
 
         ScrollPane1.setViewportView(orderList);
 
+        btnShowReciept.setText("Show reciept");
+        btnShowReciept.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnShowRecieptActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -102,7 +111,9 @@ public class WaiterGetOldOrdersChooser extends javax.swing.JFrame {
                     .addComponent(ScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 380, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btnEdit)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 264, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 88, Short.MAX_VALUE)
+                        .addComponent(btnShowReciept)
+                        .addGap(81, 81, 81)
                         .addComponent(btnCancel)))
                 .addContainerGap())
         );
@@ -114,7 +125,8 @@ public class WaiterGetOldOrdersChooser extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnEdit)
-                    .addComponent(btnCancel))
+                    .addComponent(btnCancel)
+                    .addComponent(btnShowReciept))
                 .addContainerGap())
         );
 
@@ -134,10 +146,34 @@ public class WaiterGetOldOrdersChooser extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btnEditActionPerformed
 
+    private void btnShowRecieptActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnShowRecieptActionPerformed
+        FetchedOrder order = (FetchedOrder)orderList.getSelectedValue();
+        if (order == null) return;
+
+        try {
+            int answer = JOptionPane.showConfirmDialog(this, OrderDB.getReciept(order.getId()) + "\n------------------\nMark order as done?", "Reciept", JOptionPane.OK_CANCEL_OPTION);
+
+            if (answer == JOptionPane.CANCEL_OPTION){
+                return;
+            }
+        }
+        catch (SQLException e){
+            JOptionPane.showMessageDialog(this, e.getMessage());
+        }
+
+        try {
+            OrderDB.setOrderAsDone(order.getId());
+        }
+        catch (SQLException e){
+            JOptionPane.showMessageDialog(this, "Failed to mark order as done:\n" + e.getMessage());
+        }
+    }//GEN-LAST:event_btnShowRecieptActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane ScrollPane1;
     private javax.swing.JButton btnCancel;
     private javax.swing.JButton btnEdit;
+    private javax.swing.JButton btnShowReciept;
     private javax.swing.JList orderList;
     // End of variables declaration//GEN-END:variables
 

@@ -31,6 +31,8 @@ public class CookFrame extends javax.swing.JFrame implements GUIUpdater{
 
     private FetchedOrder lastMade;
 
+    private FetchedOrder selected;
+
     /** Creates new form CookFrame */
     public CookFrame(MainFrame parent) {
         this.parent = parent;
@@ -75,14 +77,13 @@ public class CookFrame extends javax.swing.JFrame implements GUIUpdater{
             }
 
             orderList.setModel(orderModel);
-            orderList.setSelectedValue(selectedOrder, false);
+            orderList.setSelectedValue(selected, false);
 
             if (focused != null){
                 focused.requestFocusInWindow();
             }
         }
         catch (SQLException e) {
-
         }
     }
 
@@ -251,6 +252,8 @@ public class CookFrame extends javax.swing.JFrame implements GUIUpdater{
                 dishModel.addElement(dish);
             }
             dishList.setModel(dishModel);
+
+            selected = selectedOrder;
         }
     }//GEN-LAST:event_orderListValueChanged
 
@@ -267,12 +270,12 @@ public class CookFrame extends javax.swing.JFrame implements GUIUpdater{
     }//GEN-LAST:event_dishListValueChanged
 
     private void btnOrderDoneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOrderDoneActionPerformed
-        FetchedOrder selectedOrder = (FetchedOrder)orderList.getSelectedValue();
-        if (selectedOrder != null){
+        if (selected != null){
             try {
-                lastMade = selectedOrder;
-                OrderDB.setOrderAsMade(selectedOrder.getId());
+                lastMade = selected;
+                OrderDB.setOrderAsMade(selected.getId());
                 dishList.setModel(new DefaultListModel());
+                selected = null;
                 updateGUI();
             } catch (SQLException e) {
                 System.out.println(e);
