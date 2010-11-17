@@ -2,6 +2,7 @@ package system;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import system.OrderDB;
 
 /**
  *
@@ -116,15 +117,20 @@ public class FetchedOrder {
     /**
      * update order if chef has completed order
      */
-    public void isMade(){
-        this.made = true;
+    public void isMade() throws SQLException{
+        if(OrderDB.checkMade(this.orderId)){
+           this.made = true;
+        }
     }
 
     /**
      * update order if customer has recieved order
      */
-    public void isDone(){
-        this.made=true;
+    public void isDone() throws SQLException{
+        if(OrderDB.checkDone(this.orderId)){
+            this.done=true;
+        }
+        
     }
     @Override
     public String toString(){
@@ -145,8 +151,7 @@ public class FetchedOrder {
             FetchedOrderPrint+= "Order:"+ spaces + this.orderId + " to " +
                     this.customerId + " at " + this.deliveryAddress;
         }
-        if(this.made){FetchedOrderPrint+= " *MADE*";}
-        if(this.done){FetchedOrderPrint+= " & *DONE*";}
+        
 
         return FetchedOrderPrint;
     }
