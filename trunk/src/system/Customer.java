@@ -60,7 +60,7 @@ public class Customer {
         String spaces2=" ";
         int nameLength=firstName.length()+lastName.length();
         if(nameLength<30){
-            for(int i =0;i<30-nameLength;i++){
+            for(int i =0;i<25-nameLength;i++){
                 spaces1+=" ";
             }
 
