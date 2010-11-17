@@ -90,7 +90,7 @@ public class AdminPanelSelecter extends javax.swing.JFrame {
         });
 
         btnCurrentOrders.setFont(btnMenu.getFont());
-        btnCurrentOrders.setText("Current orders");
+        btnCurrentOrders.setText("Orders");
         btnCurrentOrders.setPreferredSize(new java.awt.Dimension(350, 67));
         btnCurrentOrders.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

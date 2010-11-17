@@ -111,7 +111,7 @@ public class AdminOrderEditor extends javax.swing.JFrame implements GUIUpdater {
             orderList.setSelectionModel(orderSelection);
         }
         catch (SQLException e) {
-            
+            System.out.println(e);
         }
         catch (ParseException e){
             
@@ -154,6 +154,8 @@ public class AdminOrderEditor extends javax.swing.JFrame implements GUIUpdater {
         txtOrderedTime = new javax.swing.JTextField();
         btnDeleteOrder = new javax.swing.JButton();
         btnReciept = new javax.swing.JButton();
+        jCheckBox1 = new javax.swing.JCheckBox();
+        jCheckBox2 = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(800, 600));
@@ -163,7 +165,7 @@ public class AdminOrderEditor extends javax.swing.JFrame implements GUIUpdater {
             }
         });
 
-        orderList.setFont(new java.awt.Font("Courier New", 0, 11)); // NOI18N
+        orderList.setFont(new java.awt.Font("Courier New", 0, 11));
         orderList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         orderList.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
             public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
@@ -267,7 +269,7 @@ public class AdminOrderEditor extends javax.swing.JFrame implements GUIUpdater {
         txtDishComment.setBackground(javax.swing.UIManager.getDefaults().getColor("Panel.background"));
         txtDishComment.setColumns(20);
         txtDishComment.setEditable(false);
-        txtDishComment.setFont(new java.awt.Font("Tahoma", 0, 11)); // NOI18N
+        txtDishComment.setFont(new java.awt.Font("Tahoma", 0, 11));
         txtDishComment.setLineWrap(true);
         txtDishComment.setRows(5);
         jScrollPane3.setViewportView(txtDishComment);
@@ -326,6 +328,12 @@ public class AdminOrderEditor extends javax.swing.JFrame implements GUIUpdater {
             }
         });
 
+        jCheckBox1.setText("Done");
+        jCheckBox1.setEnabled(false);
+
+        jCheckBox2.setText("Made");
+        jCheckBox2.setEnabled(false);
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -346,7 +354,11 @@ public class AdminOrderEditor extends javax.swing.JFrame implements GUIUpdater {
                             .addComponent(txtCustomer, javax.swing.GroupLayout.DEFAULT_SIZE, 242, Short.MAX_VALUE)))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(btnDeleteOrder)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 115, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jCheckBox1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jCheckBox2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnReciept)))
                 .addContainerGap())
         );
@@ -367,9 +379,11 @@ public class AdminOrderEditor extends javax.swing.JFrame implements GUIUpdater {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
                     .addComponent(txtOrderedTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnDeleteOrder)
+                    .addComponent(jCheckBox2)
+                    .addComponent(jCheckBox1)
                     .addComponent(btnReciept))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -398,7 +412,7 @@ public class AdminOrderEditor extends javax.swing.JFrame implements GUIUpdater {
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 355, Short.MAX_VALUE)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 350, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
@@ -497,6 +511,8 @@ public class AdminOrderEditor extends javax.swing.JFrame implements GUIUpdater {
     private javax.swing.JButton btnDeleteOrder;
     private javax.swing.JButton btnReciept;
     private javax.swing.JList dishList;
+    private javax.swing.JCheckBox jCheckBox1;
+    private javax.swing.JCheckBox jCheckBox2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

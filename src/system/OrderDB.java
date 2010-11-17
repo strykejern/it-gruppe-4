@@ -399,7 +399,7 @@ public class OrderDB {
     public static ArrayList<FetchedOrder> getAdminOrders (int count, String time, boolean before) throws SQLException{
         String query = "SELECT customer.*, orders.* FROM customer, orders WHERE " +
                 "time" + (before ? "<" : ">") + "'" + time + "' " +
-                "AND orders.customer_id=customer.customer_id ";
+                "AND orders.customer_id=customer.customer_id ORDER BY order_id DESC ";
 
         if (count > 0) query += "LIMIT 0, " + count;
 
@@ -503,7 +503,7 @@ public class OrderDB {
         ResultSet result = stat.getResultSet();
         if (result.next()){
             String reciept = result.getString("reciept");
-            if (reciept.length() > 1) return reciept;
+            if (reciept != null && reciept.length() > 1) return reciept;
         }
         throw new SQLException("The order does not have a reciept yet");
     }
