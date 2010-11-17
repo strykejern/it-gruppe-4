@@ -11,6 +11,7 @@
 
 package gui;
 
+import java.io.IOException;
 import org.w3c.dom.Document;
 import java.util.ArrayList;
 import javax.swing.DefaultListModel;
@@ -22,11 +23,14 @@ import java.sql.SQLException;
 import javax.swing.JOptionPane;
 import org.jdesktop.swingx.JXMapKit.DefaultProviders;
 import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 import system.FetchedOrder;
 import system.OrderDB;
 
 /**
- *
+ * This class creates the frame for the Driverwindow, and initializes all components. 
+ * By default it sets the maplocation to the location specified in the dummyobject unSelected.
+ * The region-variable sets the region for where the map will search for addresses.
  * @author Audun
  */
 public class MapFrame extends javax.swing.JFrame implements GUIUpdater{
@@ -37,6 +41,7 @@ public class MapFrame extends javax.swing.JFrame implements GUIUpdater{
     private String noOrderSelected = "No order has been selected.";
     private MainFrame parent;
     private UpdaterThread updater;
+    private String region = "Trondheim";
     ArrayList<FetchedOrder> undeliveredList;
     FetchedOrder unSelected = new FetchedOrder(0, 0, "Trondheim",
                                     FetchedOrder.View.DRIVER, "");
@@ -142,7 +147,11 @@ public class MapFrame extends javax.swing.JFrame implements GUIUpdater{
     }// </editor-fold>//GEN-END:initComponents
 
     private void ordersToDeliverListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_ordersToDeliverListValueChanged
+        try{
         mapView.setAddressLocation(getCoords(getSelectedOrder()));
+        }catch(IllegalArgumentException e){
+            JOptionPane.showMessageDialog(null, "Error: \n"+e.getMessage());
+        }
     }//GEN-LAST:event_ordersToDeliverListValueChanged
 
     private void recieptButtonMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_recieptButtonMouseReleased
@@ -164,35 +173,39 @@ public class MapFrame extends javax.swing.JFrame implements GUIUpdater{
      * Retrieves a FetchedOrder ArrayList from OrderDB, then adds all the objects in a model, then finally sets the model to the orderToDeliverList.
      */
     private void setOrdersToDeliverModel() {
-       
-        try{
+
+        try {
             undeliveredList = OrderDB.getDriverOrders();
-        }catch (SQLException e){
-            
+        } catch (SQLException e) {
         }
-        
+
         model = new DefaultListModel();
 
-        for(FetchedOrder i: undeliveredList){
+        for (FetchedOrder i : undeliveredList) {
             model.addElement(i);
         }
+
         ordersToDeliverList.setModel(model);
     }
-    private String getSelectedOrderReciept(){
-        if(ordersToDeliverList.getSelectedValue() != null){
+
+    private String getSelectedOrderReciept() {
+        if (ordersToDeliverList.getSelectedValue() != null) {
             return ordersToDeliverList.getSelectedValue().toString();
         }
         return noOrderSelected;
     }
+
     /**
      * Return the selected order from the ordersToDeliverList. If no order is selected, it will return a dummy-object.
      * @return
      */
-    private FetchedOrder getSelectedOrder(){
-        if(ordersToDeliverList.getSelectedValue() != null){
-            return  (FetchedOrder)ordersToDeliverList.getSelectedValue();
+    private FetchedOrder getSelectedOrder() {
+        try {
+            return (ordersToDeliverList.getSelectedValue() != null ? (FetchedOrder) ordersToDeliverList.getSelectedValue() : null);
+            
+        } catch (Exception e) {
+            throw new IllegalArgumentException("No order is selected.");
         }
-        return unSelected;
     }
     /**
      * Sets the FetchedOrder to delivered, then reloads the list containing the undelivered orders. if The FetchedOrder equals the dummyObject unSelected which does not exist in the
@@ -203,6 +216,7 @@ public class MapFrame extends javax.swing.JFrame implements GUIUpdater{
         if (o !=unSelected){
             try {
                 OrderDB.setOrderAsDone(o.getId());
+
             }catch(SQLException e) {
             }
             undoId = o.getId();
@@ -232,51 +246,50 @@ public class MapFrame extends javax.swing.JFrame implements GUIUpdater{
      * @param o
      * @return 
      */
-    public GeoPosition getCoords(FetchedOrder o) {
+    public GeoPosition getCoords(FetchedOrder o)throws IllegalArgumentException {
         try {
             DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = builderFactory.newDocumentBuilder();
             String address = URLEncoder.encode(o.getDeliveryAddress(), "UTF-8");
-            Document xml = builder.parse("http://where.yahooapis.com/geocode?q=" + address);
+            Document xml = builder.parse("http://where.yahooapis.com/geocode?q=" + address + "+" + region);
             latitude = getLat(xml);
             longitude = getLong(xml);
-        } catch (Exception e) {
-            System.out.println("Failed to get coordinations:\n" + e.getMessage());
-        }
-        try {
             return new GeoPosition(Double.parseDouble(latitude), Double.parseDouble(longitude));
-        } catch (NumberFormatException e) {
-            throw new IllegalArgumentException("Failed to parse longitude and latitude");
+        } catch (IOException e) {
+            throw new IllegalArgumentException("Unable to find address or unable to connect to mapserver: " + e.getMessage());
+        } catch (SAXException e){
+            throw new IllegalArgumentException("Parsing error: " + e.getMessage());
+        }catch(Exception e){
+            throw new IllegalArgumentException(e.getMessage());
         }
     }
-
     /**
-     * Extracts the item at position 0 in a Document object, in this case the longitude, and returns a Sring containing the value.
+     * Extracts the item at position 0 in a Document object, in this case the longitude, and returns a String containing the value.
      * @param doc
      * @return
      */
     private String getLong(Document doc) {
-            try{
-                    NodeList nodeList = doc.getElementsByTagName("longitude");
-                    return nodeList.item(0).getTextContent();
-            }catch (Exception e) {
-                    System.out.println("Failed to get Longitude:\n" + e.getMessage());
-            }
-            return null;
+        try {
+            NodeList nodeList = doc.getElementsByTagName("longitude");
+           
+            return nodeList.item(0).getTextContent();
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Failed to retrieve longitude from Document.");
+        }
+
     }
     /**
-     * Extracts the item at position 0 in a Document object, in this case the latitude, and returns a Sring containing the value
+     * Extracts the item at position 0 in a Document object, in this case the latitude, and returns a String containing the value
      * @param doc
      * @return
      */
-    private String getLat(Document doc){
+    private String getLat(Document doc) {
         try {
             NodeList nodeList = doc.getElementsByTagName("latitude");
             return nodeList.item(0).getTextContent();
-        }catch (Exception e) {
-            System.out.println("Failed to get latitude:\n" + e.getMessage());
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Failed to retrieve latitude from Document.");
         }
-        return null;
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton deliveredButton;
