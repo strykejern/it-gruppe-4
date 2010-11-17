@@ -144,7 +144,7 @@ public class MapFrame extends javax.swing.JFrame implements GUIUpdater{
     }// </editor-fold>//GEN-END:initComponents
 
     private void ordersToDeliverListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_ordersToDeliverListValueChanged
-        if (prevSelectedIndex == -1) {
+        if (prevSelectedIndex == -1 && getSelectedOrder() != null) {
             mapView.setAddressLocation(getCoords(getSelectedOrder()));
         }
     }//GEN-LAST:event_ordersToDeliverListValueChanged
@@ -194,7 +194,12 @@ public class MapFrame extends javax.swing.JFrame implements GUIUpdater{
 
     private String getSelectedOrderReciept() {
         if (ordersToDeliverList.getSelectedValue() != null) {
-            return ordersToDeliverList.getSelectedValue().toString();
+            FetchedOrder temp = (FetchedOrder) ordersToDeliverList.getSelectedValue();
+            try {
+                return temp.getReciept();
+            } catch (SQLException e) {
+                throw new IllegalArgumentException("Error getting reciept: " + e.getMessage());
+            }
         }
         return noOrderSelected;
     }
@@ -252,6 +257,7 @@ public class MapFrame extends javax.swing.JFrame implements GUIUpdater{
      * @return 
      */
     public GeoPosition getCoords(FetchedOrder o){
+
         try {
             DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = builderFactory.newDocumentBuilder();
@@ -261,11 +267,11 @@ public class MapFrame extends javax.swing.JFrame implements GUIUpdater{
             longitude = getLong(xml);
             return new GeoPosition(Double.parseDouble(latitude), Double.parseDouble(longitude));
         } catch (IOException e) {
-            throw new IllegalArgumentException("Unable to find address or unable to connect to mapserver: " + e.getMessage());
+            throw new IllegalArgumentException("Unable to find address or unable to connect to mapserver: " + e);
         } catch (SAXException e){
-            throw new IllegalArgumentException("Parsing error: " + e.getMessage());
+            throw new IllegalArgumentException("Parsing error: " + e);
         }catch(Exception e){
-            throw new IllegalArgumentException("Error:"+ e.getMessage());
+            throw new IllegalArgumentException(e);
         }
     }
     /**
