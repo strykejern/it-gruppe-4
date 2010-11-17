@@ -91,16 +91,15 @@ public class Dish {
      */
     public String forReciept(int amount) {
         DecimalFormat toDes=new DecimalFormat("0.00");
-        String spaces="";
-        if(name.length()<16){
-            for(int i=0;i<(16-name.length()); i++){
+        String spaces=" ";
+        if(name.length()<20){
+            for(int i=0;i<(20-name.length()); i++){
                 spaces+=" ";
             }
         }
         int total = amount * this.price;
 
-        return this.name + spaces + "\t"
-                + amount + "     " +
+        return this.name + spaces + amount + " x " + this.price + " = " +
                 toDes.format(total) + "\n";
     }
 }

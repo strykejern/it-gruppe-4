@@ -10,6 +10,7 @@ import java.text.DecimalFormat;
 
 
 
+
 /**
  * Creating printable reciept
  * @author Lars
@@ -31,10 +32,9 @@ public class Reciept {
      * @return string with reciept
      */
     public static String toString(Order order) {
-        String print = "Reciept for: " 
-                + order.customer
-                + "\nDish \t\tAmount "
-                + "  Price \n";
+        String print = "Reciept for: \n"
+                + order.customer.firstName + " " + order.customer.lastName
+                + "\n\nDish                 Amount         Price \n\n";
         Double localMva;
 
         for (DishOrder dish : order.dishOrder) {
@@ -45,7 +45,7 @@ public class Reciept {
         if (delivery) {
             print += "Delivery: ";
             if (total >= maxTot) {
-                print += "\t\t\t 0.0";
+                print += "\t\t\t 0.00";
             } else {
                 total += deliveryPrice;
                 print += "\t\t\t" + deliveryPrice;
@@ -53,9 +53,14 @@ public class Reciept {
         }
 
         localMva = total*(mva/100.0);
-        print += "\nTotal: \t\t       " + toDes.format(total) + "\n";
+        print += "\nTotal inkl. mva:                       " +
+                toDes.format(total) + "\n";
         
-        print += "Mva: \t\t\t "  + toDes.format(localMva) + "\n";
+        print += "Mva:                                     " +
+                toDes.format(localMva) + "\n";
+        print += "\n   Takk for en hyggelig handel \n\n";
+
+        
         return print;
     }
 }
