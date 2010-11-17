@@ -29,6 +29,7 @@ public class MainFrame extends javax.swing.JFrame implements FormListener {
         try {
             // Initialize DB
             OrderDB.initializeDB("andereie_itgrupp", "itrestaurant", "jdbc:mysql://mysql.stud.ntnu.no/andereie_itgrupp");
+            Properties.loadProperties();
         }
         catch (Exception e){
             JOptionPane.showMessageDialog(null, "Failed to connect to database:\n" + e);
