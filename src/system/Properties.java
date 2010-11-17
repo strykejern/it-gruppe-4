@@ -8,6 +8,7 @@ package system;
 import java.math.BigDecimal;
 import java.sql.SQLException;
 
+
 /**
  * Class for admin
  * @author Lars
@@ -23,6 +24,10 @@ public class Properties {
     private Properties(){
     }
 
+    /**
+     * Loads properties from database
+     * @throws SQLException
+     */
     public static void loadProperties() throws SQLException{
         Object[] values = OrderDB.loadProperties();
 
@@ -32,14 +37,26 @@ public class Properties {
         freeDeliveryLimit = (Integer)values[2];
     }
 
+    /**
+     * Method for showing the current deliveryprice
+     * @return current deliveryprice
+     */
     public static int getDeliveryPrice() {
         return deliveryPrice;
     }
 
+    /**
+     * Returns the total price of order necessary to get free delivery
+     * @return free delivery limit
+     */
     public static int getFreeDeliveryLimit() {
         return freeDeliveryLimit;
     }
 
+    /**
+     * Returns mva 
+     * @return current Mva
+     */
     public static double getMva() {
         return mva;
     }
