@@ -87,8 +87,8 @@ public class OrderDB {
         return m;
     }
 
-    public static ArrayList<Customer> searchCustomer(String firstName,
-            String lastName, String phone, String address)
+    public static ArrayList<Customer> searchCustomer
+            (String firstName, String lastName, String phone, String address)
             throws SQLException{
         
         int phoneNumber = -1;
@@ -172,7 +172,8 @@ public class OrderDB {
         return customers;
     }
 
-    public static void editCustomer(Customer updated, int originalId) throws SQLException{
+    public static void editCustomer(Customer updated, int originalId)
+            throws SQLException{
         String query = "UPDATE customer SET " +
                 "first_name='" + updated.firstName + "', " +
                 "last_name='" + updated.lastName + "', " +
@@ -246,7 +247,8 @@ public class OrderDB {
         ID, FIRST_NAME, LAST_NAME, PHONE_NUMBER, ADDRESS
     }
 
-    public static ArrayList<Customer> getAllCustomersOrdered(CustomerOrder orderBy) throws SQLException{
+    public static ArrayList<Customer> getAllCustomersOrdered(CustomerOrder orderBy)
+            throws SQLException{
         String query = "SELECT * FROM customer ORDER BY ";
 
         if (orderBy == CustomerOrder.ID) query += "customer_id";
@@ -271,7 +273,8 @@ public class OrderDB {
     }
 
     private static void deleteCustomersOrders(int customerId) throws SQLException{
-        String query = "SELECT order_id, customer_id FROM orders WHERE customer_id=" + customerId;
+        String query = "SELECT order_id, customer_id FROM orders "
+                + "WHERE customer_id=" + customerId;
 
         Statement stat = dbConnection.createStatement();
 
@@ -401,7 +404,8 @@ public class OrderDB {
         stat.executeUpdate(query);
     }
 
-    public static ArrayList<FetchedOrder> getAdminOrders (int count, String time, boolean before) throws SQLException{
+    public static ArrayList<FetchedOrder> getAdminOrders
+            (int count, String time, boolean before) throws SQLException{
         String query = "SELECT customer.*, orders.* FROM customer, orders WHERE " +
                 "time" + (before ? "<" : ">") + "'" + time + "' " +
                 "AND orders.customer_id=customer.customer_id ORDER BY order_id DESC ";
@@ -412,18 +416,23 @@ public class OrderDB {
     }
 
     public static ArrayList<FetchedOrder> getDriverOrders() throws SQLException {
-        String query = "SELECT * FROM orders, customer WHERE done=0 AND made=1 AND delivery=1 AND orders.customer_id=customer.customer_id";
+        String query = "SELECT * FROM orders, customer "
+                + "WHERE done=0 AND made=1 AND delivery=1 "
+                + "AND orders.customer_id=customer.customer_id";
 
         return getOrdersSimplifier(query, true);
     }
 
     public static FetchedOrder getOrderById(int orderId) throws SQLException{
-        String query = "SELECT * FROM orders, customer WHERE order_id=" + orderId + " AND orders.customer_id=customer.customer_id";
+        String query = "SELECT * FROM orders, customer "
+                + "WHERE order_id=" + orderId + " "
+                + "AND orders.customer_id=customer.customer_id";
 
         return getOrdersSimplifier(query, true).get(0);
     }
 
-    public static ArrayList<FetchedOrder> getOrdersSimplifier(String query, boolean withCustomer) throws SQLException{
+    public static ArrayList<FetchedOrder> getOrdersSimplifier
+            (String query, boolean withCustomer) throws SQLException{
         ArrayList<FetchedOrder> orders = new ArrayList<FetchedOrder>();
 
         Statement stat = dbConnection.createStatement();
@@ -447,7 +456,9 @@ public class OrderDB {
 
                 Customer customer = new Customer(id, fName, lName, phone, address);
 
-                order = new FetchedOrder(orderId, customer, deliveryAddress, FetchedOrder.View.CHEF, time);
+                order = new FetchedOrder
+                        (orderId, customer, deliveryAddress,
+                        FetchedOrder.View.CHEF, time);
             }
             else {
                 order = new FetchedOrder(orderId, customerId,
@@ -463,7 +474,9 @@ public class OrderDB {
     }
 
     public static ArrayList<FetchedOrder> getLatestOrders() throws SQLException {
-        String query = "SELECT * FROM orders, customer WHERE made=0 AND done=0 AND orders.customer_id=customer.customer_id";
+        String query = "SELECT * FROM orders, customer "
+                + "WHERE made=0 AND done=0 "
+                + "AND orders.customer_id=customer.customer_id";
 
         return getOrdersSimplifier(query, true);
     }
@@ -535,8 +548,14 @@ public class OrderDB {
         }
     }
 
-    public static void setProperties(double mva, int deliveryPrice, int freeDeliveryLimit) throws SQLException {
-        String query = "INSERT INTO properties (mva, delivery_price, free_delivery_limit, time) VALUES (" + mva + ", " + deliveryPrice + ", " + freeDeliveryLimit + ", NOW())";
+    public static void setProperties
+            (double mva, int deliveryPrice, int freeDeliveryLimit)
+            throws SQLException {
+        String query = "INSERT INTO properties "
+                + "(mva, delivery_price, free_delivery_limit, time) "
+                + "VALUES "
+                + "(" + mva + ", " +
+                deliveryPrice + ", " + freeDeliveryLimit + ", NOW())";
 
         Statement stat = dbConnection.createStatement();
 
@@ -551,12 +570,6 @@ public class OrderDB {
     * @throws SQLException
     */
     public static void newDish(Dish dishIn) throws SQLException{
-                /**INSERT INTO  `menu` (  `dish_id` ,  `name` ,  `price` ,
-                 * `description` )
-                VALUES ('4',  'navn',  '345',  'innhold');
-
-                 **/
-
         String query = "INSERT INTO menu "
                 + "VALUES (" +
                 dishIn.nr +", '" +
@@ -591,43 +604,6 @@ public class OrderDB {
             throw new SQLException("No Dish with that id");
         }
 
-    }
-
-
-    /**
-     * removes specified dish from menu DB
-     *@param query : querystring for deleting element in DB
-     */
-    public static void deleteDish(int menuNr) throws SQLException {
-
-        String query = "DELETE FROM menu WHERE dish_id=" + menuNr;
-        Statement stat = dbConnection.createStatement();
-        stat.executeUpdate(query);
-
-    }
-    /**
-     * @param orderNr - id for reciept
-     * @return
-     * @throws SQLException
-     */
-    public static Order getOrder(int orderNr) throws SQLException {
-        String query = "SELECT * FROM dish_orders WHERE order_id='" + orderNr + "'";
-        Statement stat = dbConnection.createStatement();
-        stat.executeQuery(query);
-        Order order = new Order();
-        ResultSet result = stat.getResultSet();
-        while (result.next()) {
-
-            int dishOrderId = result.getInt("dish_order_id");
-            int id = result.getInt("order_id");
-            int dish = result.getInt("dish_id");
-            int amount = result.getInt("amount");
-            String comment = result.getString("comment");
-
-            order.dishOrder.add(new DishOrder(dishOrderId, id, amount, comment));
-        }
-
-        return order;
     }
 
     /**Checks if order is made by chef
@@ -679,9 +655,4 @@ public class OrderDB {
         }
 
     }
-
-    // Audun
-
-    // Haavard
-    
 }
