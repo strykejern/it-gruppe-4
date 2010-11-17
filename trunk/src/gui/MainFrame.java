@@ -28,7 +28,7 @@ public class MainFrame extends javax.swing.JFrame implements FormListener {
 
         try {
             // Initialize DB
-            OrderDB.initializeDB(testing.DBInfo.username, testing.DBInfo.password, "jdbc:mysql://mysql.stud.ntnu.no/andereie_itgrupp");
+            OrderDB.initializeDB("andereie_itgrupp", "itrestaurant", "jdbc:mysql://mysql.stud.ntnu.no/andereie_itgrupp");
         }
         catch (Exception e){
             JOptionPane.showMessageDialog(null, "Failed to connect to database:\n" + e);
@@ -111,6 +111,11 @@ public class MainFrame extends javax.swing.JFrame implements FormListener {
 
         btnSelectUserDriver.setFont(btnSelectUserWaiter.getFont());
         btnSelectUserDriver.setText("Driver");
+        btnSelectUserDriver.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSelectUserDriverActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -180,6 +185,11 @@ public class MainFrame extends javax.swing.JFrame implements FormListener {
         new AdminPanelSelecter(this).setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_btnSelectUserAdminActionPerformed
+
+    private void btnSelectUserDriverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelectUserDriverActionPerformed
+        new MapFrame(this).setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_btnSelectUserDriverActionPerformed
 
     /**
     * @param args the command line arguments
