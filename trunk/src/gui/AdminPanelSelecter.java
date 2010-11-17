@@ -102,6 +102,11 @@ public class AdminPanelSelecter extends javax.swing.JFrame {
 
         btnProperties.setFont(btnMenu.getFont());
         btnProperties.setText("Properties");
+        btnProperties.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPropertiesActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -164,6 +169,11 @@ public class AdminPanelSelecter extends javax.swing.JFrame {
         new AdminOrderEditor(this).setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_btnCurrentOrdersActionPerformed
+
+    private void btnPropertiesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPropertiesActionPerformed
+        new AdminPropertiesFrame(this).setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_btnPropertiesActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCurrentOrders;

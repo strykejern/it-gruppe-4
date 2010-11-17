@@ -261,17 +261,17 @@ public class OrderDB {
     }
 
     public static void deleteCustomer(Customer deleting) throws SQLException{
+        deleteCustomersOrders(deleting.id);
+
         String query = "DELETE FROM customer WHERE customer_id=" + deleting.id;
 
         Statement stat = dbConnection.createStatement();
 
         stat.executeUpdate(query);
-
-        deleteCustomersOrders(deleting.id);
     }
 
     private static void deleteCustomersOrders(int customerId) throws SQLException{
-        String query = "SELECT order_id FROM order WHERE customer_id=" + customerId;
+        String query = "SELECT order_id, customer_id FROM orders WHERE customer_id=" + customerId;
 
         Statement stat = dbConnection.createStatement();
 
