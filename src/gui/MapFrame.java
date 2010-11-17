@@ -42,8 +42,8 @@ public class MapFrame extends javax.swing.JFrame implements GUIUpdater{
     private MainFrame parent;
     private UpdaterThread updater;
     private String region = "Trondheim";
-    ArrayList<FetchedOrder> undeliveredList;
-    FetchedOrder unSelected = new FetchedOrder(0, 0, "Trondheim",
+    private int prevSelectedIndex = -1;
+    private final FetchedOrder unSelected = new FetchedOrder(0, 0, "Trondheim",
                                     FetchedOrder.View.DRIVER, "");
 
     /** Creates new form MapFrame */
@@ -108,9 +108,9 @@ public class MapFrame extends javax.swing.JFrame implements GUIUpdater{
         });
 
         deliveredButton.setText("Delivered");
-        deliveredButton.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                deliveredButtonKeyReleased(evt);
+        deliveredButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                deliveredButtonMouseReleased(evt);
             }
         });
 
@@ -144,10 +144,8 @@ public class MapFrame extends javax.swing.JFrame implements GUIUpdater{
     }// </editor-fold>//GEN-END:initComponents
 
     private void ordersToDeliverListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_ordersToDeliverListValueChanged
-        try{
-        mapView.setAddressLocation(getCoords(getSelectedOrder()));
-        }catch(IllegalArgumentException e){
-            JOptionPane.showMessageDialog(null, "Error: \n"+e.getMessage());
+        if (prevSelectedIndex == -1) {
+            mapView.setAddressLocation(getCoords(getSelectedOrder()));
         }
     }//GEN-LAST:event_ordersToDeliverListValueChanged
 
@@ -155,25 +153,28 @@ public class MapFrame extends javax.swing.JFrame implements GUIUpdater{
         JOptionPane.showMessageDialog(null, getSelectedOrderReciept());
     }//GEN-LAST:event_recieptButtonMouseReleased
 
-    private void deliveredButtonKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_deliveredButtonKeyReleased
-        orderDelivered(getSelectedOrder());
-}//GEN-LAST:event_deliveredButtonKeyReleased
-
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
         parent.setVisible(true);
     }//GEN-LAST:event_formWindowClosed
 
-    public void updateGUI(){
+    private void deliveredButtonMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_deliveredButtonMouseReleased
+        orderDelivered(getSelectedOrder());
+    }//GEN-LAST:event_deliveredButtonMouseReleased
+
+    public void updateGUI() {
+        prevSelectedIndex = ordersToDeliverList.getSelectedIndex();
         setOrdersToDeliverModel();
     }
+
     /**
      * Retrieves a FetchedOrder ArrayList from OrderDB, then adds all the objects in a model, then finally sets the model to the orderToDeliverList.
      */
     private void setOrdersToDeliverModel() {
-
+        ArrayList<FetchedOrder> undeliveredList;
         try {
             undeliveredList = OrderDB.getDriverOrders();
         } catch (SQLException e) {
+            throw new IllegalArgumentException("Unable to retrieve list of objects.");
         }
 
         model = new DefaultListModel();
@@ -183,6 +184,12 @@ public class MapFrame extends javax.swing.JFrame implements GUIUpdater{
         }
 
         ordersToDeliverList.setModel(model);
+        if(prevSelectedIndex!= -1){
+            //checks to see if there was a selected value in a previous model.
+            //If true, it sets the selected value in this model to be the same as the last one.
+            ordersToDeliverList.setSelectedIndex(prevSelectedIndex);
+            prevSelectedIndex = -1;
+        }
     }
 
     private String getSelectedOrderReciept() {
@@ -209,14 +216,14 @@ public class MapFrame extends javax.swing.JFrame implements GUIUpdater{
      * database, it will only refresh the orderToDeliverList.
      * @param o
      */
-    private void orderDelivered(FetchedOrder o){
-        if (o !=unSelected){
-            try {
-                OrderDB.setOrderAsDone(o.getId());
+    private void orderDelivered(FetchedOrder o) {
+        try {
 
-            }catch(SQLException e) {
-            }
+            OrderDB.setOrderAsDone(o.getId());
             undoId = o.getId();
+
+        } catch (SQLException e) {
+            throw new IllegalArgumentException(e.getMessage());
         }
         setOrdersToDeliverModel();
     }
@@ -230,6 +237,7 @@ public class MapFrame extends javax.swing.JFrame implements GUIUpdater{
           try {
               OrderDB.undoSetOrderAsDone(undoId);
           }catch(SQLException e) {
+              throw new IllegalArgumentException(e.getMessage());
           }
           setOrdersToDeliverModel();
        }     
@@ -243,7 +251,7 @@ public class MapFrame extends javax.swing.JFrame implements GUIUpdater{
      * @param o
      * @return 
      */
-    public GeoPosition getCoords(FetchedOrder o)throws IllegalArgumentException {
+    public GeoPosition getCoords(FetchedOrder o){
         try {
             DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = builderFactory.newDocumentBuilder();
@@ -257,7 +265,7 @@ public class MapFrame extends javax.swing.JFrame implements GUIUpdater{
         } catch (SAXException e){
             throw new IllegalArgumentException("Parsing error: " + e.getMessage());
         }catch(Exception e){
-            throw new IllegalArgumentException(e.getMessage());
+            throw new IllegalArgumentException("Error:"+ e.getMessage());
         }
     }
     /**
@@ -271,7 +279,7 @@ public class MapFrame extends javax.swing.JFrame implements GUIUpdater{
            
             return nodeList.item(0).getTextContent();
         } catch (Exception e) {
-            throw new IllegalArgumentException("Failed to retrieve longitude from Document.");
+            throw new IllegalArgumentException("Failed to retrieve longitude from Document: "+ e.getMessage());
         }
 
     }
@@ -285,7 +293,7 @@ public class MapFrame extends javax.swing.JFrame implements GUIUpdater{
             NodeList nodeList = doc.getElementsByTagName("latitude");
             return nodeList.item(0).getTextContent();
         } catch (Exception e) {
-            throw new IllegalArgumentException("Failed to retrieve latitude from Document.");
+            throw new IllegalArgumentException("Failed to retrieve latitude from Document: "+ e.getMessage());
         }
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
