@@ -15,6 +15,7 @@ public class Order {
     boolean takeAway = false;
     Customer customer = null;
     ArrayList<DishOrder> dishOrder;
+    String reciept;
 
     public Order() {
         dishOrder = new ArrayList<DishOrder>();
@@ -42,6 +43,10 @@ public class Order {
 
     public void setDeliveryAddress(String address) {
         deliveryAddress = address;
+    }
+
+    public void setReciept(String reciept){
+        this.reciept = reciept;
     }
 
     public void createOrder() throws Exception {

@@ -156,17 +156,16 @@ public class WaiterGetOldOrdersChooser extends javax.swing.JFrame {
             if (answer == JOptionPane.CANCEL_OPTION){
                 return;
             }
-        }
-        catch (SQLException e){
+        } catch (SQLException e) {
             JOptionPane.showMessageDialog(this, e.getMessage());
+            try {
+                OrderDB.setOrderAsDone(order.getId());
+            } catch (SQLException e2) {
+                JOptionPane.showMessageDialog(this, "Failed to mark order as done:\n" + e2.getMessage());
+            }
         }
 
-        try {
-            OrderDB.setOrderAsDone(order.getId());
-        }
-        catch (SQLException e){
-            JOptionPane.showMessageDialog(this, "Failed to mark order as done:\n" + e.getMessage());
-        }
+        
     }//GEN-LAST:event_btnShowRecieptActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

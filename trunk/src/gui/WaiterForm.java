@@ -755,6 +755,8 @@ public class WaiterForm extends javax.swing.JFrame implements FormListener {
 
             // TODO: place the order
             try {
+                currentOrder.setReciept(Reciept.toString(currentOrder));
+
                 OrderDB.createOrder(currentOrder);
                 JOptionPane.showMessageDialog(this, "Order successfully placed");
                 // Reload JFrame

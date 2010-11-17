@@ -35,16 +35,11 @@ public class Reciept {
                 + order.customer
                 + "\nDish \t\tAmount "
                 + "  Price \n";
-        Dish dish2;
         Double localMva;
 
         for (DishOrder dish : order.dishOrder) {
-            try {
-                dish2 = OrderDB.getDish(dish.dishID);
-                print += dish2.forReciept(dish.amount);
-                total = (double) dish2.price * dish.amount;//
-            } catch (SQLException e) {
-            }
+            print += dish.dish.forReciept(dish.amount);
+            total += (double)( dish.dish.price * dish.amount);//
         }
 
         if (delivery) {
@@ -57,7 +52,7 @@ public class Reciept {
             }
         }
 
-        localMva = (total-total/(1+mva));
+        localMva = total*(mva/100.0);
         print += "\nTotal: \t\t       " + toDes.format(total) + "\n";
         
         print += "Mva: \t\t\t "  + toDes.format(localMva) + "\n";

@@ -187,12 +187,12 @@ public class OrderDB {
     
     public static void createOrder(Order order) throws SQLException{
     	String query = "INSERT INTO orders (customer_id, made," +
-    			" delivery, delivery_address, time) VALUES " +
+    			" delivery, delivery_address, time, reciept) VALUES " +
                         "(" + order.getCustomer().id +
     			", 0, " + (order.takeAway ? 1 : 0) +
     			", '" + 
                         (order.deliveryAddress != null ? order.deliveryAddress
-                        : "") + "', NOW())";
+                        : "") + "', NOW(), '" + order.reciept + "')";
     	
     	Statement stat = dbConnection.createStatement();
     	stat.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
