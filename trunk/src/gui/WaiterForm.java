@@ -46,6 +46,8 @@ public class WaiterForm extends javax.swing.JFrame implements FormListener {
         initComponents();
 
         init();
+
+        setExtendedState(getExtendedState() | MAXIMIZED_BOTH);
     }
 
     private void init(){
@@ -697,7 +699,9 @@ public class WaiterForm extends javax.swing.JFrame implements FormListener {
                     Customer newCustomer = new Customer(txtCustomerFirstName.getText(), txtCustomerLastName.getText(), txtCustomerPhone.getText(), txtCustomerAddress.getText());
 
                     try {
-                        OrderDB.newCustomer(newCustomer);
+                        int id = OrderDB.newCustomer(newCustomer);
+
+                        newCustomer = OrderDB.getCustomerById(id);
                     }
                     catch (SQLException e) {
                         // TODO: catch ?

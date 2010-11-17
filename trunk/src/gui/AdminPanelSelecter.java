@@ -25,6 +25,8 @@ public class AdminPanelSelecter extends javax.swing.JFrame {
         this.parent = parent;
         
         initComponents();
+
+        setExtendedState(getExtendedState() | MAXIMIZED_BOTH);
     }
 
     /** This method is called from within the constructor to

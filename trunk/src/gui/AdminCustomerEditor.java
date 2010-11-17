@@ -40,6 +40,8 @@ public class AdminCustomerEditor extends javax.swing.JFrame implements GUIUpdate
 
         initComponents();
 
+        setExtendedState(getExtendedState() | MAXIMIZED_BOTH);
+
         guiUpdater = new UpdaterThread(this, 10 * 1000);
         guiUpdater.start();
     }

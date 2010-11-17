@@ -36,6 +36,9 @@ public class AdminMenuEditor extends javax.swing.JFrame implements GUIUpdater {
 
         initComponents();
 
+
+        setExtendedState(getExtendedState() | MAXIMIZED_BOTH);
+
         guiUpdater = new UpdaterThread(this, 10 * 1000);
         guiUpdater.start();
     }
