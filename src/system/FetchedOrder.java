@@ -114,6 +114,10 @@ public class FetchedOrder {
         }
     }
 
+    public String getReciept() throws SQLException{
+        return OrderDB.getReciept(orderId);
+    }
+
     /**
      * update order if chef has completed order
      */
