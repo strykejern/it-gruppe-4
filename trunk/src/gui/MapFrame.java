@@ -75,7 +75,12 @@ public class MapFrame extends javax.swing.JFrame implements GUIUpdater{
         deliveredButton = new javax.swing.JButton();
         mapView = new org.jdesktop.swingx.JXMapKit();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                formWindowClosed(evt);
+            }
+        });
 
         ordersToDeliverList.setModel(new javax.swing.AbstractListModel() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
@@ -124,7 +129,7 @@ public class MapFrame extends javax.swing.JFrame implements GUIUpdater{
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(mapView, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 486, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap(25, Short.MAX_VALUE)
+                        .addContainerGap(29, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(recieptButton)
                             .addComponent(deliveredButton))
@@ -147,6 +152,10 @@ public class MapFrame extends javax.swing.JFrame implements GUIUpdater{
     private void deliveredButtonKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_deliveredButtonKeyReleased
         orderDelivered(getSelectedOrder());
 }//GEN-LAST:event_deliveredButtonKeyReleased
+
+    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
+        parent.setVisible(true);
+    }//GEN-LAST:event_formWindowClosed
 
     public void updateGUI(){
         setOrdersToDeliverModel();
@@ -223,18 +232,22 @@ public class MapFrame extends javax.swing.JFrame implements GUIUpdater{
      * @param o
      * @return 
      */
-    public GeoPosition getCoords(FetchedOrder o){
-            try{
-                    DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
-                    DocumentBuilder builder = builderFactory.newDocumentBuilder();
-                    String address = URLEncoder.encode(o.getDeliveryAddress(), "UTF-8");
-                    Document xml = builder.parse("http://where.yahooapis.com/geocode?q=" + address);
-                    latitude = getLat(xml);
-                    longitude = getLong(xml);
-            }catch (Exception e) {
-                    System.out.println(e);
-            }
-            return new GeoPosition(Double.parseDouble(latitude),Double.parseDouble(longitude));
+    public GeoPosition getCoords(FetchedOrder o) {
+        try {
+            DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder = builderFactory.newDocumentBuilder();
+            String address = URLEncoder.encode(o.getDeliveryAddress(), "UTF-8");
+            Document xml = builder.parse("http://where.yahooapis.com/geocode?q=" + address);
+            latitude = getLat(xml);
+            longitude = getLong(xml);
+        } catch (Exception e) {
+            System.out.println("Failed to get coordinations:\n" + e.getMessage());
+        }
+        try {
+            return new GeoPosition(Double.parseDouble(latitude), Double.parseDouble(longitude));
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("Failed to parse longitude and latitude");
+        }
     }
 
     /**
@@ -247,7 +260,7 @@ public class MapFrame extends javax.swing.JFrame implements GUIUpdater{
                     NodeList nodeList = doc.getElementsByTagName("longitude");
                     return nodeList.item(0).getTextContent();
             }catch (Exception e) {
-                    System.out.println(e);
+                    System.out.println("Failed to get Longitude:\n" + e.getMessage());
             }
             return null;
     }
@@ -261,7 +274,7 @@ public class MapFrame extends javax.swing.JFrame implements GUIUpdater{
             NodeList nodeList = doc.getElementsByTagName("latitude");
             return nodeList.item(0).getTextContent();
         }catch (Exception e) {
-            System.out.println(e);
+            System.out.println("Failed to get latitude:\n" + e.getMessage());
         }
         return null;
     }
