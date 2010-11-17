@@ -220,7 +220,7 @@ public class OrderDB {
         stat.executeUpdate(query);
     }
 
-    public static void newCustomer(Customer customer) throws SQLException{
+    public static int newCustomer(Customer customer) throws SQLException{
         String query = "INSERT INTO customer " +
                 "(first_name, last_name, phone_number," +
                 " address) VALUES " +
@@ -228,7 +228,12 @@ public class OrderDB {
                 customer.phoneNumber + ",'" + customer.address + "')";
 
         Statement stat = dbConnection.createStatement();
-        stat.executeUpdate(query);
+        stat.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
+
+        ResultSet keys = stat.getGeneratedKeys();
+
+        if (!keys.next()) throw new SQLException("Failed to retrieve key");
+        return keys.getInt(1);
     }
 
     public static ArrayList<Customer> getAllCustomers() throws SQLException{
@@ -458,7 +463,7 @@ public class OrderDB {
     }
 
     public static ArrayList<FetchedOrder> getLatestOrders() throws SQLException {
-        String query = "SELECT * FROM orders, customer WHERE made=0 AND orders.customer_id=customer.customer_id";
+        String query = "SELECT * FROM orders, customer WHERE made=0 AND done=0 AND orders.customer_id=customer.customer_id";
 
         return getOrdersSimplifier(query, true);
     }
@@ -531,7 +536,7 @@ public class OrderDB {
     }
 
     public static void setProperties(double mva, int deliveryPrice, int freeDeliveryLimit) throws SQLException {
-        String query = "INSERT INTO properties (mva, delivery_price, free_delivery_limit) VALUES (" + mva + ", " + deliveryPrice + ", " + freeDeliveryLimit + ")";
+        String query = "INSERT INTO properties (mva, delivery_price, free_delivery_limit, time) VALUES (" + mva + ", " + deliveryPrice + ", " + freeDeliveryLimit + ", NOW())";
 
         Statement stat = dbConnection.createStatement();
 

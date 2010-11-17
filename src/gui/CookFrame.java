@@ -39,6 +39,8 @@ public class CookFrame extends javax.swing.JFrame implements GUIUpdater{
 
         initComponents();
 
+        setExtendedState(getExtendedState() | MAXIMIZED_BOTH);
+
         init();
     }
 

@@ -11,6 +11,7 @@
 
 package gui;
 
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import system.*;
@@ -19,7 +20,7 @@ import system.*;
  *
  * @author Anders
  */
-public class MainFrame extends javax.swing.JFrame implements FormListener {
+public class MainFrame extends JFrame implements FormListener {
 
     /** Creates new form MainFrame */
     public MainFrame() {
@@ -34,6 +35,8 @@ public class MainFrame extends javax.swing.JFrame implements FormListener {
         catch (Exception e){
             JOptionPane.showMessageDialog(null, "Failed to connect to database:\n" + e);
         }
+
+        setExtendedState(getExtendedState() | MAXIMIZED_BOTH);
     }
 
     public void tell(int signal) {

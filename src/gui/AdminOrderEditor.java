@@ -67,6 +67,9 @@ public class AdminOrderEditor extends javax.swing.JFrame implements GUIUpdater {
                 guiUpdater.manualUpdate();
             }
         });
+
+
+        setExtendedState(getExtendedState() | MAXIMIZED_BOTH);
     }
 
     public void updateGUI() {
@@ -210,6 +213,7 @@ public class AdminOrderEditor extends javax.swing.JFrame implements GUIUpdater {
 
         selectTime.setMaximumRowCount(12);
         selectTime.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "02.00", "04.00", "06.00", "08.00", "10.00", "12.00", "14.00", "16.00", "18.00", "20.00", "22.00", "24.00" }));
+        selectTime.setSelectedIndex(11);
         selectTime.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 selectTimeItemStateChanged(evt);

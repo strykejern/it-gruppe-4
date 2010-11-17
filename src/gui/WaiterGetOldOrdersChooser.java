@@ -40,6 +40,9 @@ public class WaiterGetOldOrdersChooser extends javax.swing.JFrame {
         initComponents();
 
         init();
+
+
+        setExtendedState(getExtendedState() | MAXIMIZED_BOTH);
     }
 
     private void init(){
@@ -91,6 +94,11 @@ public class WaiterGetOldOrdersChooser extends javax.swing.JFrame {
         });
 
         btnCancel.setText("Cancel");
+        btnCancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelActionPerformed(evt);
+            }
+        });
 
         ScrollPane1.setViewportView(orderList);
 
@@ -156,17 +164,23 @@ public class WaiterGetOldOrdersChooser extends javax.swing.JFrame {
             if (answer == JOptionPane.CANCEL_OPTION){
                 return;
             }
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(this, e.getMessage());
+
             try {
                 OrderDB.setOrderAsDone(order.getId());
             } catch (SQLException e2) {
                 JOptionPane.showMessageDialog(this, "Failed to mark order as done:\n" + e2.getMessage());
             }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, e.getMessage());
+            
         }
 
         
     }//GEN-LAST:event_btnShowRecieptActionPerformed
+
+    private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_btnCancelActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane ScrollPane1;
