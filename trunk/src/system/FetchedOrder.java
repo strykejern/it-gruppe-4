@@ -10,6 +10,8 @@ import java.util.ArrayList;
 public class FetchedOrder {
     public enum View{CHEF, DRIVER};
 
+    private boolean made=false;
+    private boolean done=false;
     private int orderId;
     private int customerId;
     private String deliveryAddress;
@@ -27,9 +29,11 @@ public class FetchedOrder {
         this.deliveryAddress = orig.deliveryAddress;
         this.viewedBy = orig.viewedBy;
         this.timeStamp = orig.timeStamp;
+        this.made = orig.made;
+        this.done = orig.done;
         if(viewedBy == View.DRIVER){
             if(deliveryAddress==null){
-                String getAddress = ""; //TODO create query
+                String getAddress = ""; 
             }
         }
     }
@@ -40,10 +44,10 @@ public class FetchedOrder {
         this.customerId = customerId;
         this.deliveryAddress = deliveryAddress;
         this.viewedBy = view;
-        this.timeStamp = time; 
+        this.timeStamp = time;
         if(viewedBy == View.DRIVER){
             if(deliveryAddress==null){
-                String getAddress = ""; //TODO create query
+                String getAddress = ""; 
             }
         }
     }
@@ -58,7 +62,7 @@ public class FetchedOrder {
         this.timeStamp = time;
         if(viewedBy == View.DRIVER){
             if(deliveryAddress==null){
-                String getAddress = ""; //TODO create query
+                String getAddress = ""; 
             }
         }
     }
@@ -109,6 +113,19 @@ public class FetchedOrder {
         }
     }
 
+    /**
+     * update order if chef has completed order
+     */
+    public void isMade(){
+        this.made = true;
+    }
+
+    /**
+     * update order if customer has recieved order
+     */
+    public void isDone(){
+        this.made=true;
+    }
     @Override
     public String toString(){
         String FetchedOrderPrint = "";
@@ -127,9 +144,10 @@ public class FetchedOrder {
         if(viewedBy == View.DRIVER){
             FetchedOrderPrint+= "Order:"+ spaces + this.orderId + " to " +
                     this.customerId + " at " + this.deliveryAddress;
-
-
         }
+        if(this.made){FetchedOrderPrint+= " *MADE*";}
+        if(this.done){FetchedOrderPrint+= " & *DONE*";}
+
         return FetchedOrderPrint;
     }
 }
