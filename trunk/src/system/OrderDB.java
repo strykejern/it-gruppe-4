@@ -568,20 +568,26 @@ public class OrderDB {
      * @return
      * @throws SQLException
      */
-    public static Dish getDish(int dishNr) throws SQLException{
+    public static Dish getDish(int dishNr) throws SQLException {
         String query = "SELECT * FROM `menu` WHERE dish_id=" + dishNr;
         Statement stat = dbConnection.createStatement();
         stat.executeQuery(query);
         ResultSet result = stat.getResultSet();
-        result.next();
-        int id          = result.getInt("dish_id");
-        String name     = result.getString("name");
-        int price       = result.getInt("price");
-        String comment  = result.getString("description");
+        if (result.next()) {
+            int id = result.getInt("dish_id");
+            String name = result.getString("name");
+            int price = result.getInt("price");
+            String comment = result.getString("description");
 
-        Dish fromDB = new Dish(id, name, price, comment);
-        return fromDB;
+            Dish fromDB = new Dish(id, name, price, comment);
+
+            return fromDB;
+        } else {
+            throw new SQLException("No Dish with that id");
+        }
+
     }
+
 
     /**
      * removes specified dish from menu DB
@@ -617,6 +623,56 @@ public class OrderDB {
         }
 
         return order;
+    }
+
+    /**Checks if order is made by chef
+     *
+     * @param orderId Id of order being checked
+     * @return true or false
+     * @throws SQLException when no order with that id
+     */
+    public static boolean checkMade(int orderId) throws SQLException {
+        boolean made = false;
+
+        String query = "SELECT made FROM orders WHERE order_id='" + orderId + "'";
+        Statement stat = dbConnection.createStatement();
+        stat.executeQuery(query);
+        ResultSet result = stat.getResultSet();
+
+        if (result.next()) {
+            if (result.getInt("made") == 1) {
+                made = true;
+            }
+            return made;
+        } else {
+            throw new SQLException("No order with that id");
+        }
+
+    }
+
+    /**Checks if order is delivered to customer
+     *
+     * @param orderId id of the order being checked
+     * @return true/false
+     * @throws SQLException when no order with that id
+     */
+    public static boolean checkDone(int orderId) throws SQLException {
+        boolean made = false;
+
+        String query = "SELECT done FROM orders WHERE order_id='" + orderId + "'";
+        Statement stat = dbConnection.createStatement();
+        stat.executeQuery(query);
+        ResultSet result = stat.getResultSet();
+
+        if (result.next()) {
+            if (result.getInt("done") == 1) {
+                made = true;
+            }
+            return made;
+        } else {
+            throw new SQLException("No order with that id");
+        }
+
     }
 
     // Audun
