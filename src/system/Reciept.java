@@ -33,7 +33,7 @@ public class Reciept {
      */
     public static String toString(Order order) {
         String print = "Reciept for: \n"
-                + order.customer.firstName + " " + order.customer.lastName
+                + order.customer.id 
                 + "\n\nDish                 Amount         Price \n\n";
         Double localMva;
 
