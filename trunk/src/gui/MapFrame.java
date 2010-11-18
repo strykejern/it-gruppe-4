@@ -109,11 +109,6 @@ public class MapFrame extends javax.swing.JFrame implements GUIUpdater {
                 undoButtonMouseReleased(evt);
             }
         });
-        undoButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                undoButtonActionPerformed(evt);
-            }
-        });
 
         ordersToDeliverList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         ordersToDeliverList.setToolTipText("Contains the orders that need delivery.");
@@ -182,7 +177,9 @@ public class MapFrame extends javax.swing.JFrame implements GUIUpdater {
     }// </editor-fold>//GEN-END:initComponents
 
     /**
-     *
+     * If the value selected in the orderlist changes, this method refreshes the map
+     * and the addressLabel with the new address. If the value selected has not changed
+     * it will return without doing anything.
      * @param evt
      */
     private void ordersToDeliverListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_ordersToDeliverListValueChanged
@@ -195,7 +192,7 @@ public class MapFrame extends javax.swing.JFrame implements GUIUpdater {
         }
     }//GEN-LAST:event_ordersToDeliverListValueChanged
     /**
-     * Runs whenever the recieptButton is clicked, and released again.
+     * Opens a message dialog containing the reciept for the selected item..
      * @param evt
      */
     private void recieptButtonMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_recieptButtonMouseReleased
@@ -210,20 +207,19 @@ public class MapFrame extends javax.swing.JFrame implements GUIUpdater {
     }//GEN-LAST:event_formWindowClosed
 
     /**
-     * Runs whenever the deliveredButton is clicked, and released again.
+     * Runs orderDelivered using the selected order, if any.
      * @param evt
      */
     private void deliveredButtonMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_deliveredButtonMouseReleased
         orderDelivered(getSelectedOrder());
     }//GEN-LAST:event_deliveredButtonMouseReleased
-
+    /**
+     * Runs undoOrderDelivered.
+     * @param evt
+     */
     private void undoButtonMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_undoButtonMouseReleased
         undoOrderDelivered();
     }//GEN-LAST:event_undoButtonMouseReleased
-
-    private void undoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_undoButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_undoButtonActionPerformed
     /**
      * The method that is called automatically by a GUIUpdater thread. Will make
      * sure the selected order in the ordersToDeliverList stays the same, if any
@@ -240,7 +236,7 @@ public class MapFrame extends javax.swing.JFrame implements GUIUpdater {
 
     /**
      * A manual updater method. The difference from updateGUI is that manualUpdateGUI
-     * will not try to keep the selected order selected, as it will only be run after
+     * will not try to keep the selected order selected, since it will only be run after
      * modifying the database.
      */
     public void manualUpdateGUI() {
@@ -318,7 +314,8 @@ public class MapFrame extends javax.swing.JFrame implements GUIUpdater {
     /**
      * Sets the FetchedOrder to delivered, then reloads the list containing the 
      * undelivered orders. Sets the variable undoId to the index of the order in
-     * the database, incase we choose to implement the undoOrderDelivered method.
+     * the database, so that the last delivered order can be retrieved incase the
+     * user clicks deliver by mistake.
      * @param o
      */
     private void orderDelivered(FetchedOrder o) {
@@ -336,7 +333,7 @@ public class MapFrame extends javax.swing.JFrame implements GUIUpdater {
 
     /**
      * Undos a orderDelivered call, setting the object to undelivered, if 
-     * undoId = -1, no object has been delivered as of this session, and the 
+     * undoId == -1, no object has been delivered as of this session, and the
      * method will return without doing anything.
      * @param o
      */
@@ -357,8 +354,6 @@ public class MapFrame extends javax.swing.JFrame implements GUIUpdater {
      * the delivery address with the help of the Yahoo-whereis service.
      * Returns a GeoPosition object containing the latitude and longitude of the
      * position.
-     * 
-     * 
      * @param o
      * @return 
      */
@@ -384,8 +379,8 @@ public class MapFrame extends javax.swing.JFrame implements GUIUpdater {
     }
 
     /**
-     * Extracts the item at position 0 in a Document object,
-     * in this case the longitude, and returns a String containing the value.
+     * Extracts the longitude from a Document object,
+     * and returns a String containing the value.
      * @param doc
      * @return
      */
@@ -400,8 +395,8 @@ public class MapFrame extends javax.swing.JFrame implements GUIUpdater {
     }
 
     /**
-     * Extracts the item at position 0 in a Document object,
-     * in this case the latitude, and returns a String containing the value
+     * Extracts the latitude from a Document object,
+     * and returns a String containing the value
      * @param doc
      * @return
      */
