@@ -18,7 +18,7 @@ public class Order {
     ArrayList<DishOrder> dishOrder;
     String reciept;
 
-    /* Initiates the DishOrder object */
+    /* Initiates the arraylist of DishOrder objects */
     public Order() {
         dishOrder = new ArrayList<DishOrder>();
     }
@@ -33,11 +33,12 @@ public class Order {
         return customer;
     }
 
+    /*NOT USED*/
     public void addDish(DishOrder dish) {
         dishOrder.add(dish);
     }
 
-    /*Sets the DishOrder objects as the DishOrder parameter*/
+    /*Sets the DishOrder list as the parameter*/
     public void setDishes(ArrayList<DishOrder> dishes) {
         dishOrder = dishes;
     }
@@ -59,6 +60,7 @@ public class Order {
         this.reciept = reciept;
     }
 
+    /*NOT USED*/
     public void createOrder() throws Exception {
         if (customer == null) {
             throw new Exception("Customer is not set");
