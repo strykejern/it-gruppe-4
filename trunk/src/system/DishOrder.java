@@ -6,7 +6,7 @@ import java.text.DecimalFormat;
 /**
  * Sets the ID, amount and comments of dishes in an order.
  * 
- * @author H�vard
+ * @author Havard
  */
 public class DishOrder {
 
@@ -17,8 +17,10 @@ public class DishOrder {
     public Dish dish;
     private boolean viewedByChef = false;
 
-    /**
-     *
+    /*
+     * Creates a DishOrder object with the following parameters.
+     * 
+     * @param dishOrderID - nr assigned to the DishOrder in the database
      * @param dishID - nr of the dish in menu
      * @param amount - amount of this dish ordered
      * @param comments - comments for this dish
@@ -37,8 +39,8 @@ public class DishOrder {
         }
     }
 
-    /**
-     *
+    /* Creates a DishOrder object without the dishOrderID
+     * 
      * @param dish - Dish-object
      * @param amount - amount of that object in this order
      * @param comments - comments about dish
@@ -50,45 +52,48 @@ public class DishOrder {
         this.dish = dish;
     }
 
-    /**
+    /*
      * sets boolean to define toStrings for specific viewer
      */
     public void setViewedByChef(){
         this.viewedByChef=true;
     }
 
-    /**
-     *
+    /* NOT USED
      * @return the ID of this DishOrders dish
      */
     public int getDishID() {
         return dishID;
     }
 
-
+    /*NOT USED*/
     public void setDishID(int dishID) {
         this.dishID = dishID;
     }
 
-
+    /*NOT USED*/
     public int getAmount() {
         return amount;
     }
 
-
+    /*NOT USED*/
     public void setAmount(int amount) {
         this.amount = amount;
     }
 
+    /*NOT USED*/
     public String getComments() {
         return comments;
     }
 
+    /*
+     * Sets a comment to a DishOrder
+     */
     public void setComments(String comments) {
         this.comments = comments;
     }
 
-    /** Builds a String with Dishorder-info formatted for viewer
+    /* Builds a String with DishOrder-info formatted for viewer
      *
      * @return DishOrder info, setup either for chef or waiter
      */
