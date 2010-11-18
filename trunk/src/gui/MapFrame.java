@@ -57,12 +57,18 @@ public class MapFrame extends javax.swing.JFrame implements GUIUpdater {
         setExtendedState(getExtendedState() | MAXIMIZED_BOTH);
         init();
     }
-
+    /**
+     * Initializes the updater that keeps the ordersToDeliverList updated with
+     * the newest deliveres from the database.
+     */
     private void init() {// GUI updater with 10 second interval
         updater = new UpdaterThread(this, 10 * 1000);
         updater.start();
     }
-
+    /**
+     * Customizes the map with the preferred settings, and sets the
+     * startposition for the map.
+     */
     private void initMapSettings() {
         mapView.setDefaultProvider(DefaultProviders.OpenStreetMaps);
         mapView.setMiniMapVisible(false);
@@ -177,22 +183,25 @@ public class MapFrame extends javax.swing.JFrame implements GUIUpdater {
     }// </editor-fold>//GEN-END:initComponents
 
     /**
-     * If the value selected in the orderlist changes, this method refreshes the map
-     * and the addressLabel with the new address. If the value selected has not changed
-     * it will return without doing anything.
+     * If the value selected in the orderlist changes, this method refreshes the
+     * map and the addressLabel with the new address. If the value selected has
+     * not changed it will return without doing anything.
      * @param evt
      */
     private void ordersToDeliverListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_ordersToDeliverListValueChanged
         if (prevSelectedIndex == -1 && getSelectedOrder() != null) {
-            mapView.setAddressLocation(getCoords(getSelectedOrder()));
             try {
+                mapView.setAddressLocation(getCoords(getSelectedOrder()));
                 addressLabel.setText(getSelectedOrder().getDeliveryAddress());
             } catch (SQLException e) {
+
+            }catch(IllegalArgumentException e){
+                JOptionPane.showMessageDialog(null, "Error connecting to mapservice: "+e.getMessage());
             }
         }
     }//GEN-LAST:event_ordersToDeliverListValueChanged
     /**
-     * Opens a message dialog containing the reciept for the selected item..
+     * Opens a message dialog containing the reciept for the selected item.
      * @param evt
      */
     private void recieptButtonMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_recieptButtonMouseReleased
@@ -364,15 +373,11 @@ public class MapFrame extends javax.swing.JFrame implements GUIUpdater {
             DocumentBuilder builder = builderFactory.newDocumentBuilder();
             String address = URLEncoder.encode(o.getDeliveryAddress(), "UTF-8");
             Document xml = builder.parse("http://where.yahooapis.com/geocode?q="
-                    + address + "+" + region);
+                    + address + "+" + region);  //sends a query containing the address.
             latitude = getLat(xml);
             longitude = getLong(xml);
             return new GeoPosition(Double.parseDouble(latitude),
                     Double.parseDouble(longitude));
-        } catch (IOException e) {
-            throw new IllegalArgumentException(e);
-        } catch (SAXException e) {
-            throw new IllegalArgumentException("Parsing error: " + e);
         } catch (Exception e) {
             throw new IllegalArgumentException(e);
         }
