@@ -15,6 +15,10 @@ public class Dish {
     public int price;           //price of dish
 
     protected Dish(Dish dish){
+        if (dish.nr < 0){
+            throw new IllegalArgumentException("Illegal dish ID");
+        }
+
         this.nr = dish.nr;
         this.name = dish.name;
         this.description = dish.description;

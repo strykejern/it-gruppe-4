@@ -2,7 +2,6 @@ package system;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import system.OrderDB;
 
 /**
  * This class retrieves an order and customer information from the database. It
@@ -17,7 +16,7 @@ public class FetchedOrder {
     private int orderId;
     private int customerId;
     private String deliveryAddress;
-    public View viewedBy;
+    private View viewedBy;
     private String timeStamp = "";
 
     private Customer customer;

@@ -11,6 +11,9 @@
 
 package gui;
 
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
@@ -24,7 +27,7 @@ import testing.DBInfo;
 public class MainFrame extends JFrame implements FormListener {
 
     /** Creates new form MainFrame */
-    public MainFrame() {
+    public MainFrame() throws SQLException{
         initComponents();
 
 
@@ -36,7 +39,7 @@ public class MainFrame extends JFrame implements FormListener {
         }
         catch (Exception e){
             JOptionPane.showMessageDialog(null, "Failed to connect to database:\n" + e);
-            this.dispose();
+            throw new SQLException("Failed to connect to the database");
         }
 
         setExtendedState(getExtendedState() | MAXIMIZED_BOTH);
@@ -208,8 +211,11 @@ public class MainFrame extends JFrame implements FormListener {
                     UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
                 } catch (Exception e) {
                 }
-                
-                new MainFrame().setVisible(true);
+                try {
+                    new MainFrame().setVisible(true);
+                } catch (SQLException ex) {
+                    System.exit(0);
+                }
             }
         });
     }
