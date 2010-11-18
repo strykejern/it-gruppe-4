@@ -17,13 +17,16 @@ import java.text.DecimalFormat;
  */
 
 
-
+/**Constructor for building a receipt-object
+ *
+ * @author Lars
+ */
 public class Reciept {
 
     /**
      *
-     * @param order the order one creates a reciept for
-     * @return string with reciept
+     * @param order
+     * @return
      */
     public static String toString(Order order) {
         DecimalFormat toDes = new DecimalFormat("0.00");
@@ -34,8 +37,8 @@ public class Reciept {
         double total = 0;
 
         String print = "Reciept for: \n"
-                + order.customer.id 
-                + "\n\nDish                 Amount         Price \n\n";
+                      + order.customer.id
+                      + "\n\nDish                 Amount         Price \n\n";
         Double localMva;
 
         for (DishOrder dish : order.dishOrder) {
