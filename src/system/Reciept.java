@@ -19,12 +19,6 @@ import java.text.DecimalFormat;
 
 
 public class Reciept {
-    static DecimalFormat toDes = new DecimalFormat("0.00");
-    static double mva = Properties.getMva();
-    static boolean delivery;
-    static int deliveryPrice = Properties.getDeliveryPrice();
-    static int maxTot = Properties.getFreeDeliveryLimit();
-    static double total;
 
     /**
      *
@@ -32,6 +26,13 @@ public class Reciept {
      * @return string with reciept
      */
     public static String toString(Order order) {
+        DecimalFormat toDes = new DecimalFormat("0.00");
+        double mva = Properties.getMva();
+        boolean delivery = order.takeAway;
+        int deliveryPrice = Properties.getDeliveryPrice();
+        int maxTot = Properties.getFreeDeliveryLimit();
+        double total = 0;
+
         String print = "Reciept for: \n"
                 + order.customer.id 
                 + "\n\nDish                 Amount         Price \n\n";
