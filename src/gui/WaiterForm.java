@@ -112,7 +112,7 @@ public class WaiterForm extends javax.swing.JFrame implements FormListener {
 
             dishOrderList.setModel(model);
 
-            checkBoxDelivery.setEnabled(OrderDB.getOrderDelivery(signal));
+            checkBoxDelivery.setEnabled(order.getDelivery());
 
             checkBoxCustomAddress.setEnabled(order.hasCustomAddress());
 
@@ -149,7 +149,7 @@ public class WaiterForm extends javax.swing.JFrame implements FormListener {
         btnClear = new javax.swing.JButton();
         btnEdit = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
+        menuScrollBar = new javax.swing.JScrollPane();
         menuList = new javax.swing.JList();
         jPanel4 = new javax.swing.JPanel();
         btnAddToOrder = new javax.swing.JButton();
@@ -158,7 +158,7 @@ public class WaiterForm extends javax.swing.JFrame implements FormListener {
         jLabel1 = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
         txtDishComment = new javax.swing.JTextArea();
-        jScrollPane2 = new javax.swing.JScrollPane();
+        dishOrderScrollBar = new javax.swing.JScrollPane();
         dishOrderList = new javax.swing.JList();
         jPanel3 = new javax.swing.JPanel();
         btnGetLastOrder = new javax.swing.JButton();
@@ -188,11 +188,6 @@ public class WaiterForm extends javax.swing.JFrame implements FormListener {
         txtCustomerFirstName.setMinimumSize(new java.awt.Dimension(150, 20));
         txtCustomerFirstName.setName("First Name"); // NOI18N
         txtCustomerFirstName.setPreferredSize(new java.awt.Dimension(150, 20));
-        txtCustomerFirstName.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                txtCustomerFieldMouseClicked(evt);
-            }
-        });
         txtCustomerFirstName.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 txtCustomerFieldFocusGained(evt);
@@ -365,11 +360,11 @@ public class WaiterForm extends javax.swing.JFrame implements FormListener {
 
         jPanel2.setLayout(new javax.swing.BoxLayout(jPanel2, javax.swing.BoxLayout.LINE_AXIS));
 
-        menuList.setFont(new java.awt.Font("Courier New", 0, 12));
-        menuList.setPreferredSize(new java.awt.Dimension(200, 80));
-        jScrollPane1.setViewportView(menuList);
+        menuList.setFont(new java.awt.Font("Courier New", 0, 12)); // NOI18N
+        menuList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        menuScrollBar.setViewportView(menuList);
 
-        jPanel2.add(jScrollPane1);
+        jPanel2.add(menuScrollBar);
 
         jPanel4.setMaximumSize(new java.awt.Dimension(100, 32767));
         jPanel4.setMinimumSize(new java.awt.Dimension(70, 0));
@@ -451,16 +446,15 @@ public class WaiterForm extends javax.swing.JFrame implements FormListener {
 
         jPanel2.add(jPanel4);
 
-        dishOrderList.setFont(new java.awt.Font("Courier New", 0, 12));
-        dishOrderList.setPreferredSize(new java.awt.Dimension(200, 80));
+        dishOrderList.setFont(new java.awt.Font("Courier New", 0, 12)); // NOI18N
         dishOrderList.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
             public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
                 dishOrderListSelectionChanged(evt);
             }
         });
-        jScrollPane2.setViewportView(dishOrderList);
+        dishOrderScrollBar.setViewportView(dishOrderList);
 
-        jPanel2.add(jScrollPane2);
+        jPanel2.add(dishOrderScrollBar);
 
         getContentPane().add(jPanel2);
 
@@ -910,15 +904,15 @@ public class WaiterForm extends javax.swing.JFrame implements FormListener {
     private javax.swing.JCheckBox checkBoxCustomAddress;
     private javax.swing.JCheckBox checkBoxDelivery;
     private javax.swing.JList dishOrderList;
+    private javax.swing.JScrollPane dishOrderScrollBar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JList menuList;
+    private javax.swing.JScrollPane menuScrollBar;
     private javax.swing.JPopupMenu popupCustomer;
     private javax.swing.JTextField txtCustomAddress;
     private javax.swing.JTextField txtCustomerAddress;
