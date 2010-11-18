@@ -9,14 +9,14 @@ import java.util.ArrayList;
  */
 public class Order {
 
-    boolean sameAddress = false;
-    String deliveryAddress = null;
-    String comment = "";
-    boolean dishIsFinished = false;
-    boolean takeAway = false;
-    Customer customer = null;
-    ArrayList<DishOrder> dishOrder;
-    String reciept;
+    public boolean sameAddress = false;
+    public String deliveryAddress = null;
+    public String comment = "";
+    public boolean dishIsFinished = false;
+    public boolean takeAway = false;
+    public Customer customer = null;
+    public ArrayList<DishOrder> dishOrder;
+    public String reciept;
 
     /* Initiates the arraylist of DishOrder objects */
     public Order() {
