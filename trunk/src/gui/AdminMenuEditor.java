@@ -16,6 +16,7 @@ import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.ListSelectionModel;
+import system.AdminDish;
 import system.Dish;
 import system.Menu;
 import system.OrderDB;
@@ -52,7 +53,7 @@ public class AdminMenuEditor extends javax.swing.JFrame implements GUIUpdater {
             DefaultListModel mod = new DefaultListModel();
 
             for (Dish dish : menu.getMenu()){
-                mod.addElement(dish);
+                mod.addElement(new AdminDish(dish));
             }
 
             menuList.setModel(mod);
