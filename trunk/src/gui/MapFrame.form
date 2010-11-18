@@ -26,15 +26,18 @@
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="1" attributes="0">
-              <Component id="mapView" pref="558" max="32767" attributes="0"/>
+              <Component id="mapView" pref="486" max="32767" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                  <Group type="102" attributes="1">
-                      <Component id="recieptButton" min="-2" pref="104" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="deliveredButton" max="32767" attributes="0"/>
+              <Group type="103" groupAlignment="1" attributes="0">
+                  <Component id="addressLabel" pref="289" max="32767" attributes="0"/>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Component id="recieptButton" min="-2" pref="80" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="deliveredButton" min="-2" pref="87" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="undoButton" max="32767" attributes="0"/>
                   </Group>
-                  <Component id="jScrollPane1" min="-2" pref="223" max="-2" attributes="0"/>
+                  <Component id="jScrollPane1" alignment="1" pref="289" max="32767" attributes="0"/>
               </Group>
           </Group>
       </Group>
@@ -46,9 +49,12 @@
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="recieptButton" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="deliveredButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="undoButton" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-              <Component id="jScrollPane1" pref="469" max="32767" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="addressLabel" pref="41" max="32767" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="jScrollPane1" min="-2" pref="428" max="-2" attributes="0"/>
           </Group>
           <Component id="mapView" alignment="0" pref="520" max="32767" attributes="0"/>
       </Group>
@@ -65,15 +71,10 @@
         <Component class="javax.swing.JList" name="ordersToDeliverList">
           <Properties>
             <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.editors2.ListModelEditor">
-              <StringArray count="5">
-                <StringItem index="0" value="Item 1"/>
-                <StringItem index="1" value="Item 2"/>
-                <StringItem index="2" value="Item 3"/>
-                <StringItem index="3" value="Item 4"/>
-                <StringItem index="4" value="Item 5"/>
-              </StringArray>
+              <StringArray count="0"/>
             </Property>
             <Property name="selectionMode" type="int" value="0"/>
+            <Property name="toolTipText" type="java.lang.String" value="Contains the orders that need delivery."/>
           </Properties>
           <Events>
             <EventHandler event="valueChanged" listener="javax.swing.event.ListSelectionListener" parameters="javax.swing.event.ListSelectionEvent" handler="ordersToDeliverListValueChanged"/>
@@ -84,6 +85,7 @@
     <Component class="javax.swing.JButton" name="recieptButton">
       <Properties>
         <Property name="text" type="java.lang.String" value="Reciept"/>
+        <Property name="toolTipText" type="java.lang.String" value="Gets the reciept for the selected order."/>
       </Properties>
       <Events>
         <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="recieptButtonMouseReleased"/>
@@ -92,12 +94,23 @@
     <Component class="javax.swing.JButton" name="deliveredButton">
       <Properties>
         <Property name="text" type="java.lang.String" value="Delivered"/>
+        <Property name="toolTipText" type="java.lang.String" value="Removes the selected order."/>
       </Properties>
       <Events>
         <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="deliveredButtonMouseReleased"/>
       </Events>
     </Component>
     <Component class="org.jdesktop.swingx.JXMapKit" name="mapView">
+    </Component>
+    <Component class="javax.swing.JLabel" name="addressLabel">
+    </Component>
+    <Component class="javax.swing.JButton" name="undoButton">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Undo Delivered"/>
+      </Properties>
+      <Events>
+        <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="undoButtonMouseReleased"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>
