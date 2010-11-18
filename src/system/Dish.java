@@ -70,8 +70,8 @@ public class Dish {
         String id = Integer.toString(nr);
         String spaces="";
         String numSpace="";
-        if(name.length()<16){
-            for(int i=0;i<(16-name.length()); i++){
+        if(name.length()<30){
+            for(int i=0;i<(30-name.length()); i++){
                 spaces+=" ";
             }
         }
@@ -92,8 +92,8 @@ public class Dish {
     public String forReciept(int amount) {
         DecimalFormat toDes=new DecimalFormat("0.00");
         String spaces=" ";
-        if(name.length()<20){
-            for(int i=0;i<(20-name.length()); i++){
+        if(name.length()<30){
+            for(int i=0;i<(30-name.length()); i++){
                 spaces+=" ";
             }
         }
