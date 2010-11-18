@@ -5,7 +5,8 @@ import java.util.ArrayList;
 import system.OrderDB;
 
 /**
- *
+ * This class retrieves an order and customer information from the database. It
+ * is used by the chef and the driver classes.
  * @author Anders
  */
 public class FetchedOrder {
@@ -67,7 +68,12 @@ public class FetchedOrder {
             }
         }
     }
-
+    /**
+     * Recieves an ArrayList with DishOrders, then puts it in the dishes variable.
+     * If the object is to be viewed by the chef, the enum View is set to CHEF for
+     * every DishOrder in the ArrayList.
+     * @param dishes
+     */
     public void setDishes(ArrayList<DishOrder> dishes) {
         this.dishes = dishes;
          if(this.viewedBy==View.CHEF){
@@ -75,24 +81,43 @@ public class FetchedOrder {
                 this.dishes.get(i).setViewedByChef();
         }
     }
-
+    /**
+     * Returns ArrayList dishes.
+     * @return
+     */
     public ArrayList<DishOrder> getDishes() {
         return dishes;
     }
 
-    public boolean equals(FetchedOrder other){
+    /**
+     * checks to see if a FetchedOrder.orderId equals this FetchedOrder.orderId.
+     * @param other
+     * @return
+     */
+    public boolean equals(FetchedOrder other) {
         return other.orderId == orderId;
     }
-
+    /**
+     * Return orderId.
+     * @return
+     */
     public int getId(){
         return this.orderId;
     }
-
+    /**
+     * Retrieves a Customer object from the database using the customerId,
+     * if the customer variable is empty.
+     * @return
+     * @throws SQLException
+     */
     public Customer getCustomer() throws SQLException{
         if (customer == null) customer = OrderDB.getCustomerById(customerId);
         return customer;
     }
-
+    /**
+     * Gets the timeStamp.
+     * @return
+     */
     public String getTimeStamp(){
         return timeStamp;
     }
@@ -100,11 +125,19 @@ public class FetchedOrder {
     public boolean getDelivery() throws SQLException{
         return OrderDB.getOrderDelivery(orderId);
     }
-
+    /**
+     * checks to see if the deliveryaddress is custom i.e. Not the customers home
+     * address.
+     * @return
+     */
     public boolean hasCustomAddress(){
         return !(deliveryAddress == null || deliveryAddress.length() < 2);
     }
-
+    /**
+     * Gets the delivery address for the customer.
+     * @return
+     * @throws SQLException
+     */
     public String getDeliveryAddress() throws SQLException {
         if (hasCustomAddress()){
             return deliveryAddress;
@@ -113,7 +146,11 @@ public class FetchedOrder {
             return getCustomer().address;
         }
     }
-
+    /**
+     * Retrieves the reciept from the database using orderID.
+     * @return
+     * @throws SQLException
+     */
     public String getReciept() throws SQLException{
         return OrderDB.getReciept(orderId);
     }
@@ -136,6 +173,11 @@ public class FetchedOrder {
         }
         
     }
+    /**
+     * Checks to se wether View is set to CHEF or to DRIVER and then returns a
+     * String-value appropriate for the two different users.
+     * @return
+     */
     @Override
     public String toString(){
         String FetchedOrderPrint = "";
