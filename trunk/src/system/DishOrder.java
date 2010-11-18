@@ -113,8 +113,8 @@ public class DishOrder {
             }
         }
 
-        if(name.length()<16){
-            for(int i=0;i<(16-name.length()); i++){
+        if(name.length()<25){
+            for(int i=0;i<(25-name.length()); i++){
                 priceSpaces+=" ";
             }
         }
