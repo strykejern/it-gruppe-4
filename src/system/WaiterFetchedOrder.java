@@ -5,7 +5,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
+ * Essentially a FetchedOrder object, but overrides the toString method to accomodate
+ * a Waiter view.
  * @author Anders
  */
 public class WaiterFetchedOrder extends FetchedOrder{

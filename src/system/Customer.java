@@ -1,7 +1,7 @@
 package system;
 
 /**
- *
+ * An object for holding the customer information.
  * @author Anders
  */
 public class Customer {
@@ -42,7 +42,10 @@ public class Customer {
 
         validate();
     }
-
+    /**
+     * Checks to see if the information provided is longer than 2 characters and not null.
+     * @throws IllegalArgumentException
+     */
     public void validate() throws IllegalArgumentException {
         if (firstName == null || firstName.length() < 2)
                 throw new IllegalArgumentException("Invalid first name");
@@ -53,7 +56,11 @@ public class Customer {
         if (phoneNumber < 10000000)
                 throw new IllegalArgumentException("Ivalid phonenumber");
     }
-
+    /**
+     * Overrides the toString method and returns the contents of the object in
+     * a formatted String.
+     * @return
+     */
     @Override
     public String toString(){
         String spaces1=" ";
