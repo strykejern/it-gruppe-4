@@ -15,6 +15,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import system.*;
+import testing.DBInfo;
 
 /**
  *
@@ -29,11 +30,13 @@ public class MainFrame extends JFrame implements FormListener {
 
         try {
             // Initialize DB
-            OrderDB.initializeDB("andereie_itgrupp", "itrestaurant", "jdbc:mysql://mysql.stud.ntnu.no/andereie_itgrupp");
+            OrderDB.initializeDB(DBInfo.username, DBInfo.password,
+                    "jdbc:mysql://mysql.stud.ntnu.no/andereie_itgrupp");
             Properties.loadProperties();
         }
         catch (Exception e){
             JOptionPane.showMessageDialog(null, "Failed to connect to database:\n" + e);
+            this.dispose();
         }
 
         setExtendedState(getExtendedState() | MAXIMIZED_BOTH);
