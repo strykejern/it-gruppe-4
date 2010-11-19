@@ -42,10 +42,13 @@ public class AdminCustomerEditor extends javax.swing.JFrame implements GUIUpdate
 
         setExtendedState(getExtendedState() | MAXIMIZED_BOTH);
 
-        guiUpdater = new UpdaterThread(this, 10 * 1000);
+        guiUpdater = new UpdaterThread(this, 10 * 1000); //gui updater thread with 10 second interval
         guiUpdater.start();
     }
 
+    /*
+     * Loads all the customers into the list, ordered by the specified CustomerOrder
+     */
     public void updateGUI() {
         try {
             ArrayList<Customer> customers = OrderDB.getAllCustomersOrdered(orderBy);
@@ -340,11 +343,18 @@ public class AdminCustomerEditor extends javax.swing.JFrame implements GUIUpdate
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /*
+     * When window is closed, make parent visible again, and stop the thread
+     * updating the gui
+     */
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
         parent.setVisible(true);
         guiUpdater.end();
     }//GEN-LAST:event_formWindowClosed
 
+    /*
+     * Change the orderBy variable according to which radiobutton is selected
+     */
     private void radioOrderByChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_radioOrderByChanged
         JRadioButton invoker = (JRadioButton)evt.getSource();
         String name = invoker.getName();
@@ -358,6 +368,9 @@ public class AdminCustomerEditor extends javax.swing.JFrame implements GUIUpdate
         updateGUI();
     }//GEN-LAST:event_radioOrderByChanged
 
+    /*
+     * Changes the customer info, when the selected customer is changed
+     */
     private void customerListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_customerListValueChanged
         Customer selected = (Customer)customerList.getSelectedValue();
 
@@ -370,6 +383,10 @@ public class AdminCustomerEditor extends javax.swing.JFrame implements GUIUpdate
         txtCustomerAddress.setText(selected.getAddress());
     }//GEN-LAST:event_customerListValueChanged
 
+    /*
+     * Tries to edit the selected customer with the specified variables from
+     * the text fields
+     */
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
         try {
             Customer newCustomer = new Customer(txtCustomerFirstName.getText(), txtCustomerLastName.getText(), txtCustomerPhoneNumber.getText(), txtCustomerAddress.getText());
@@ -388,6 +405,9 @@ public class AdminCustomerEditor extends javax.swing.JFrame implements GUIUpdate
         }
     }//GEN-LAST:event_btnEditActionPerformed
 
+    /*
+     * Tries to create a new customer with the values of the text fields
+     */
     private void btnCreateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreateActionPerformed
         try {
             Customer newCustomer = new Customer(txtCustomerFirstName.getText(), txtCustomerLastName.getText(), txtCustomerPhoneNumber.getText(), txtCustomerAddress.getText());
@@ -404,6 +424,10 @@ public class AdminCustomerEditor extends javax.swing.JFrame implements GUIUpdate
         }
     }//GEN-LAST:event_btnCreateActionPerformed
 
+    /*
+     * Clear the selected customer and the text fields (to prepare for a new
+     * customer)
+     */
     private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearActionPerformed
         txtCustomerId.setText("");
         txtCustomerFirstName.setText("");
@@ -412,6 +436,9 @@ public class AdminCustomerEditor extends javax.swing.JFrame implements GUIUpdate
         txtCustomerAddress.setText("");
     }//GEN-LAST:event_btnClearActionPerformed
 
+    /*
+     * Tries to delete the selected customer
+     */
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
         Customer selected = (Customer)customerList.getSelectedValue();
 
