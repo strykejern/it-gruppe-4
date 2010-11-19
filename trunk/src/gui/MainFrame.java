@@ -12,8 +12,6 @@
 package gui;
 
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
@@ -32,9 +30,10 @@ public class MainFrame extends JFrame implements FormListener {
 
 
         try {
-            // Initialize DB
+            // Initializes the database connection
             OrderDB.initializeDB(DBInfo.username, DBInfo.password,
                     "jdbc:mysql://mysql.stud.ntnu.no/andereie_itgrupp");
+            // Loads the properties from the database
             Properties.loadProperties();
         }
         catch (Exception e){
@@ -181,21 +180,33 @@ public class MainFrame extends JFrame implements FormListener {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /*
+     * Opens a new window and sends itself as the parent, and hides self
+     */
     private void btnSelectUserWaiterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelectUserWaiterActionPerformed
         new WaiterForm(this).setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_btnSelectUserWaiterActionPerformed
 
+    /*
+     * Opens a new window and sends itself as the parent, and hides self
+     */
     private void btnSelectUserChefActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelectUserChefActionPerformed
         new CookFrame(this).setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_btnSelectUserChefActionPerformed
 
+    /*
+     * Opens a new window and sends itself as the parent, and hides self
+     */
     private void btnSelectUserAdminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelectUserAdminActionPerformed
         new AdminPanelSelecter(this).setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_btnSelectUserAdminActionPerformed
 
+    /*
+     * Opens a new window and sends itself as the parent, and hides self
+     */
     private void btnSelectUserDriverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelectUserDriverActionPerformed
         new MapFrame(this).setVisible(true);
         this.setVisible(false);
@@ -207,6 +218,10 @@ public class MainFrame extends JFrame implements FormListener {
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
+                /*
+                 * Tries to set the look and feel of the program to the
+                 * system default
+                 */
                 try {
                     UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
                 } catch (Exception e) {
@@ -214,7 +229,7 @@ public class MainFrame extends JFrame implements FormListener {
                 try {
                     new MainFrame().setVisible(true);
                 } catch (SQLException ex) {
-                    System.exit(0);
+                    System.exit(0); // If database connection fails, exit
                 }
             }
         });

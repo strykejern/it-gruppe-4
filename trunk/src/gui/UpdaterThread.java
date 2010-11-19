@@ -1,6 +1,8 @@
 package gui;
 
 /**
+ * A Thread designed to run in the background and update the gui of something
+ * that implements the GUIUpdater interface
  *
  * @author Anders
  */
@@ -9,6 +11,12 @@ public class UpdaterThread extends Thread {
     private int updateInterval;
     private boolean running;
 
+    /**
+     * Constructs the thread
+     *
+     * @param listener The class that implemented GUIUpdater
+     * @param updateInterval The interval between the updates (in ms)
+     */
     public UpdaterThread(GUIUpdater listener, int updateInterval) {
         this.listener = listener;
         this.updateInterval = updateInterval;
@@ -32,10 +40,16 @@ public class UpdaterThread extends Thread {
         }
     }
 
+    /**
+     * Manually force the thread to update the gui
+     */
     public void manualUpdate(){
         this.interrupt();
     }
 
+    /**
+     * End the Thread's main loop
+     */
     public void end(){
         running = false;
     }

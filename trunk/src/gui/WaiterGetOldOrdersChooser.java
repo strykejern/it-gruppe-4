@@ -11,13 +11,11 @@
 
 package gui;
 
-import java.awt.AWTEvent;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.ListSelectionModel;
 import system.FetchedOrder;
 import system.OrderDB;
 import system.WaiterFetchedOrder;
@@ -46,6 +44,10 @@ public class WaiterGetOldOrdersChooser extends javax.swing.JFrame {
     }
 
     private void init(){
+        /*
+         * Tries to load the latest orders from the database into the list
+         * (only those which are not already made by the chef or delivered)
+         */
         try {
 
             ArrayList<FetchedOrder> orders = OrderDB.getLatestOrders();
@@ -141,10 +143,17 @@ public class WaiterGetOldOrdersChooser extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /*
+     * Set the parent to be visible when closing the frame
+     */
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
         parent.setVisible(true);
     }//GEN-LAST:event_formWindowClosed
 
+    /*
+     * send a signal back to the waiterform which order was selected to be
+     * edited, and then dispose/close self
+     */
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
         FetchedOrder order = (FetchedOrder)orderList.getSelectedValue();
         if (order == null) return;
@@ -154,6 +163,10 @@ public class WaiterGetOldOrdersChooser extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btnEditActionPerformed
 
+    /*
+     * Shows the reciept for the selected order, and gives the oppertunity to
+     * mark it as done
+     */
     private void btnShowRecieptActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnShowRecieptActionPerformed
         FetchedOrder order = (FetchedOrder)orderList.getSelectedValue();
         if (order == null) return;
@@ -178,6 +191,9 @@ public class WaiterGetOldOrdersChooser extends javax.swing.JFrame {
         
     }//GEN-LAST:event_btnShowRecieptActionPerformed
 
+    /*
+     * Dispose/close the frame when cancel is pushed
+     */
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
         this.dispose();
     }//GEN-LAST:event_btnCancelActionPerformed

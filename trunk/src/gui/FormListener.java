@@ -1,6 +1,7 @@
 package gui;
 
 /**
+ * Used to be able to send a signal from one class to another
  *
  * @author Anders
  */
