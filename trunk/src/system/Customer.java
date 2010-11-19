@@ -72,8 +72,8 @@ public class Customer {
             }
 
         }
-        return getFirstName() + " " + getLastName() + spaces1 + "Num: (" + getPhoneNumber() +
-                ")     Addr: (" + getAddress() + ")";
+        return getFirstName() + " " + getLastName() + spaces1 +
+                "Num: (" + getPhoneNumber() + ")     Addr: (" + getAddress() + ")";
     }
 
     /**

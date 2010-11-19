@@ -18,7 +18,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
-import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.DocumentEvent;
@@ -88,7 +87,12 @@ public class AdminOrderEditor extends javax.swing.JFrame implements GUIUpdater {
             ListSelectionModel orderSelection = orderList.getSelectionModel();
             ListSelectionModel dishSelection = dishList.getSelectionModel();
 
-            ArrayList<FetchedOrder> orders = OrderDB.getAdminOrders(count, txtDate.getText() + " " + selectTime.getSelectedItem(), before); // TODO: use input
+            ArrayList<FetchedOrder> orders = OrderDB.getAdminOrders(
+                                                count,
+                                                txtDate.getText() +
+                                                " " +
+                                                selectTime.getSelectedItem(),
+                                                before);
             FetchedOrder selectedOrder = (FetchedOrder)orderList.getSelectedValue();
 
             DefaultListModel orderModel = new DefaultListModel();
@@ -98,7 +102,6 @@ public class AdminOrderEditor extends javax.swing.JFrame implements GUIUpdater {
                 orderModel.addElement(order);
 
                 if (selectedOrder != null && order.equals(selectedOrder)) {
-                    DishOrder selectedDish = (DishOrder)dishList.getSelectedValue();
 
                     DefaultListModel dishModel = new DefaultListModel();
                     for (DishOrder dish : order.getDishes()) {
@@ -456,7 +459,8 @@ public class AdminOrderEditor extends javax.swing.JFrame implements GUIUpdater {
                 selectDone.setSelected(OrderDB.checkDone(selectedOrder.getId()));
             }
             catch (SQLException e){
-                JOptionPane.showMessageDialog(this, "Error fetching order from database:\n" + e.getMessage());
+                JOptionPane.showMessageDialog(this,
+                        "Error fetching order from database:\n" + e.getMessage());
             }
         }
     }//GEN-LAST:event_orderListValueChanged
@@ -489,7 +493,11 @@ public class AdminOrderEditor extends javax.swing.JFrame implements GUIUpdater {
         FetchedOrder order = (FetchedOrder)orderList.getSelectedValue();
         if (order == null) return;
 
-        int answer = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete the currently selected order?", "Delete order", JOptionPane.OK_CANCEL_OPTION);
+        int answer = JOptionPane.showConfirmDialog(this,
+                "Are you sure you want to delete the currently selected order?",
+                "Delete order",
+                JOptionPane.OK_CANCEL_OPTION);
+        
         if (answer == JOptionPane.CANCEL_OPTION) return;
 
         try {

@@ -32,11 +32,6 @@ public class FetchedOrder {
         this.timeStamp = orig.timeStamp;
         this.made = orig.made;
         this.done = orig.done;
-        if(viewedBy == View.DRIVER){
-            if(deliveryAddress==null){
-                String getAddress = ""; 
-            }
-        }
     }
 
     public FetchedOrder(int orderId, int customerId, String deliveryAddress,
@@ -46,11 +41,6 @@ public class FetchedOrder {
         this.deliveryAddress = deliveryAddress;
         this.viewedBy = view;
         this.timeStamp = time;
-        if(viewedBy == View.DRIVER){
-            if(deliveryAddress==null){
-                String getAddress = ""; 
-            }
-        }
     }
 
     public FetchedOrder(int orderId, Customer customer, String deliveryAddress,
@@ -61,11 +51,6 @@ public class FetchedOrder {
         this.deliveryAddress = deliveryAddress;
         this.viewedBy = view;
         this.timeStamp = time;
-        if(viewedBy == View.DRIVER){
-            if(deliveryAddress==null){
-                String getAddress = ""; 
-            }
-        }
     }
     /**
      * Recieves an ArrayList with DishOrders, then puts it in the dishes variable.

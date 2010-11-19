@@ -1,8 +1,6 @@
 package system;
 
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Essentially a FetchedOrder object, but overrides the toString method to accomodate
@@ -23,8 +21,7 @@ public class WaiterFetchedOrder extends FetchedOrder{
                     + this.getCustomer().getPhoneNumber() + ")";
             return print;
         } catch (SQLException ex) {
-            Logger.getLogger(WaiterFetchedOrder.class.getName()).log(Level.SEVERE, null, ex);
+            throw new IllegalArgumentException("Failed to connect to database");
         }
-        return "Error";
     }
 }

@@ -172,7 +172,10 @@ public class WaiterGetOldOrdersChooser extends javax.swing.JFrame {
         if (order == null) return;
 
         try {
-            int answer = JOptionPane.showConfirmDialog(this, OrderDB.getReciept(order.getId()) + "\n------------------\nMark order as done?", "Reciept", JOptionPane.OK_CANCEL_OPTION);
+            int answer = JOptionPane.showConfirmDialog(
+                    this, OrderDB.getReciept(order.getId()) +
+                    "\n------------------\nMark order as done?",
+                    "Reciept", JOptionPane.OK_CANCEL_OPTION);
 
             if (answer == JOptionPane.CANCEL_OPTION){
                 return;
@@ -181,7 +184,8 @@ public class WaiterGetOldOrdersChooser extends javax.swing.JFrame {
             try {
                 OrderDB.setOrderAsDone(order.getId());
             } catch (SQLException e2) {
-                JOptionPane.showMessageDialog(this, "Failed to mark order as done:\n" + e2.getMessage());
+                JOptionPane.showMessageDialog(
+                        this, "Failed to mark order as done:\n" + e2.getMessage());
             }
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(this, e.getMessage());

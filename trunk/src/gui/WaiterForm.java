@@ -610,7 +610,7 @@ public class WaiterForm extends javax.swing.JFrame implements FormListener {
 
             Dish selectedDish = (Dish)menuList.getSelectedValue();
 
-            DishOrder toBeAdded = new DishOrder(selectedDish, 1, ""); // TODO: read comment from textBox
+            DishOrder toBeAdded = new DishOrder(selectedDish, 1, ""); 
 
             mod.addElement(toBeAdded);
 
@@ -648,7 +648,7 @@ public class WaiterForm extends javax.swing.JFrame implements FormListener {
 
                     for (Customer cust : customers){
                         JMenuItem item = new JMenuItem(cust.toString());
-                        item.setName(cust.getId() + ""); // TODO: maybe a cleaner way to do this ?
+                        item.setName(cust.getId() + ""); 
 
                         item.setFont(txtCustomerFirstName.getFont());
 
