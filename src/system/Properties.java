@@ -61,7 +61,9 @@ public class Properties {
         return mva;
     }
 
-    public static void storeProperties(String mva, String deliveryPrice, String freeDeliveryLimit) throws SQLException {
+    public static void storeProperties
+            (String mva, String deliveryPrice, String freeDeliveryLimit)
+            throws SQLException {
         double tmpMva;
         int tmpDeliveryPrice;
         int tmpFreeDeliveryLimit;

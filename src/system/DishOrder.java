@@ -138,7 +138,8 @@ public class DishOrder {
 
     @Override
     public DishOrder clone(){
-        return new DishOrder(getDishOrderId(), getDishID(), getAmount(), getComment());
+        return new DishOrder(
+                getDishOrderId(), getDishID(), getAmount(), getComment());
     }
 
     /**

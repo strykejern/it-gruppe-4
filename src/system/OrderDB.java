@@ -169,7 +169,6 @@ public class OrderDB {
         ResultSet result = stat.getResultSet();
 
         while (result.next()) {
-            // TODO: Create customer object to return
             int id          = result.getInt("customer_id");
             String fName    = result.getString("first_name");
             String lName    = result.getString("last_name");

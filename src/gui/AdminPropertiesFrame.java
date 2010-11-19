@@ -186,15 +186,19 @@ public class AdminPropertiesFrame extends javax.swing.JFrame{
      */
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         try {
-            Properties.storeProperties(txtMva.getText(), txtDeliveryPrice.getText(), txtFreeDeliveryLimit.getText());
+            Properties.storeProperties(txtMva.getText(), 
+                                        txtDeliveryPrice.getText(),
+                                        txtFreeDeliveryLimit.getText());
 
             JOptionPane.showMessageDialog(this, "Properties saved successfully");
         }
         catch (SQLException e){
-            JOptionPane.showMessageDialog(this, "Failed to save properties:\n" + e.getMessage());
+            JOptionPane.showMessageDialog(
+                    this, "Failed to save properties:\n" + e.getMessage());
         }
         catch (IllegalArgumentException e){
-            JOptionPane.showMessageDialog(this, "Failed to save properties:\n" + e.getMessage());
+            JOptionPane.showMessageDialog(
+                    this, "Failed to save properties:\n" + e.getMessage());
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 

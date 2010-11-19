@@ -389,7 +389,10 @@ public class AdminCustomerEditor extends javax.swing.JFrame implements GUIUpdate
      */
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
         try {
-            Customer newCustomer = new Customer(txtCustomerFirstName.getText(), txtCustomerLastName.getText(), txtCustomerPhoneNumber.getText(), txtCustomerAddress.getText());
+            Customer newCustomer = new Customer(txtCustomerFirstName.getText(),
+                                                txtCustomerLastName.getText(),
+                                                txtCustomerPhoneNumber.getText(),
+                                                txtCustomerAddress.getText());
 
             int oldId = Integer.parseInt(txtCustomerId.getText());
 
@@ -401,7 +404,8 @@ public class AdminCustomerEditor extends javax.swing.JFrame implements GUIUpdate
             JOptionPane.showMessageDialog(this, "Input error:\n" + e.getMessage());
         }
         catch (SQLException e){
-            JOptionPane.showMessageDialog(this, "Error updating the user in the database:\n" + e);
+            JOptionPane.showMessageDialog(
+                    this, "Error updating the user in the database:\n" + e);
         }
     }//GEN-LAST:event_btnEditActionPerformed
 
@@ -410,7 +414,10 @@ public class AdminCustomerEditor extends javax.swing.JFrame implements GUIUpdate
      */
     private void btnCreateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreateActionPerformed
         try {
-            Customer newCustomer = new Customer(txtCustomerFirstName.getText(), txtCustomerLastName.getText(), txtCustomerPhoneNumber.getText(), txtCustomerAddress.getText());
+            Customer newCustomer = new Customer(txtCustomerFirstName.getText(),
+                                                txtCustomerLastName.getText(),
+                                                txtCustomerPhoneNumber.getText(),
+                                                txtCustomerAddress.getText());
 
             OrderDB.newCustomer(newCustomer);
 
@@ -420,7 +427,8 @@ public class AdminCustomerEditor extends javax.swing.JFrame implements GUIUpdate
             JOptionPane.showMessageDialog(this, "Input error:\n" + e.getMessage());
         }
         catch (SQLException e){
-            JOptionPane.showMessageDialog(this, "Error creating the user in the database:\n" + e);
+            JOptionPane.showMessageDialog(
+                    this, "Error creating the user in the database:\n" + e);
         }
     }//GEN-LAST:event_btnCreateActionPerformed
 
@@ -444,7 +452,9 @@ public class AdminCustomerEditor extends javax.swing.JFrame implements GUIUpdate
 
         if (selected == null) return;
 
-        int answer = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete this customer:\n" + selected, "Delete customer", JOptionPane.OK_CANCEL_OPTION);
+        int answer = JOptionPane.showConfirmDialog(
+                this, "Are you sure you want to delete this customer:\n" +
+                selected, "Delete customer", JOptionPane.OK_CANCEL_OPTION);
 
         if (answer == JOptionPane.CANCEL_OPTION) return;
 
@@ -454,7 +464,8 @@ public class AdminCustomerEditor extends javax.swing.JFrame implements GUIUpdate
             updateGUI();
         }
         catch (SQLException e) {
-            JOptionPane.showMessageDialog(this, "Error deleting customer:\n" + e.getMessage());
+            JOptionPane.showMessageDialog(
+                    this, "Error deleting customer:\n" + e.getMessage());
         }
     }//GEN-LAST:event_btnDeleteActionPerformed
 

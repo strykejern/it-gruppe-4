@@ -247,7 +247,10 @@ public class AdminMenuEditor extends javax.swing.JFrame implements GUIUpdater {
 
             OrderDB.getDish(dishId);
 
-            JOptionPane.showMessageDialog(this, "A dish with that ID already exists, either choose an available ID or click \"Edit\" to edit the current dish");
+            JOptionPane.showMessageDialog(this,
+                    "A dish with that ID already exists, " +
+                    "either choose an available ID or click \"Edit\" " +
+                    "to edit the current dish");
             return;
         }
         catch (NumberFormatException e){
@@ -259,9 +262,14 @@ public class AdminMenuEditor extends javax.swing.JFrame implements GUIUpdater {
         }
 
         try {
-            Dish newDish = new Dish(txtMenuId.getText(), txtMenuName.getText(), txtMenuPrice.getText(), txtMenuComment.getText());
+            Dish newDish = new Dish(txtMenuId.getText(),
+                                    txtMenuName.getText(),
+                                    txtMenuPrice.getText(),
+                                    txtMenuComment.getText());
 
-            int answer = JOptionPane.showConfirmDialog(this, "Are you sure you want to create this dish?\n" + newDish, "Create dish", JOptionPane.OK_CANCEL_OPTION);
+            int answer = JOptionPane.showConfirmDialog(this, 
+                    "Are you sure you want to create this dish?\n" +
+                    newDish, "Create dish", JOptionPane.OK_CANCEL_OPTION);
 
             if (answer == JOptionPane.CANCEL_OPTION) return;
 
@@ -273,7 +281,8 @@ public class AdminMenuEditor extends javax.swing.JFrame implements GUIUpdater {
             JOptionPane.showMessageDialog(this, e.getMessage());
         }
         catch (SQLException e){
-            JOptionPane.showMessageDialog(this, "Error creating the dish:\n" + e.getMessage());
+            JOptionPane.showMessageDialog(
+                    this, "Error creating the dish:\n" + e.getMessage());
         }
     }//GEN-LAST:event_btnNewActionPerformed
     /**
@@ -290,13 +299,21 @@ public class AdminMenuEditor extends javax.swing.JFrame implements GUIUpdater {
                 oldDish = OrderDB.getDish(dishId); // If this doesn't fail we know we are editing an exisiting dish
             }
             catch (SQLException e) {
-                JOptionPane.showMessageDialog(this, "There are no dishes with that ID, use the \"New\" button to create a new dish");
+                JOptionPane.showMessageDialog(this, 
+                        "There are no dishes with that ID, " +
+                        "use the \"New\" button to create a new dish");
                 return;
             }
 
-            Dish updatedDish = new Dish(txtMenuId.getText(), txtMenuName.getText(), txtMenuPrice.getText(), txtMenuComment.getText());
+            Dish updatedDish = new Dish(txtMenuId.getText(),
+                                        txtMenuName.getText(),
+                                        txtMenuPrice.getText(),
+                                        txtMenuComment.getText());
 
-            int answer = JOptionPane.showConfirmDialog(this, "Are you sure you want to edit this dish:\n" + oldDish + "\nTo this:\n" + updatedDish, "Update dish", JOptionPane.OK_CANCEL_OPTION);
+            int answer = JOptionPane.showConfirmDialog(
+                    this, "Are you sure you want to edit this dish:\n" +
+                    oldDish + "\nTo this:\n" + updatedDish, "Update dish",
+                    JOptionPane.OK_CANCEL_OPTION);
 
             if (answer == JOptionPane.CANCEL_OPTION) return;
 
@@ -308,7 +325,8 @@ public class AdminMenuEditor extends javax.swing.JFrame implements GUIUpdater {
             JOptionPane.showMessageDialog(this, "Invalid ID");
         }
         catch (SQLException e) {
-            JOptionPane.showMessageDialog(this, "Error editing dish:\n" + e.getMessage());
+            JOptionPane.showMessageDialog(
+                    this, "Error editing dish:\n" + e.getMessage());
         }
     }//GEN-LAST:event_btnEditActionPerformed
     /**
@@ -334,7 +352,8 @@ public class AdminMenuEditor extends javax.swing.JFrame implements GUIUpdater {
         txtMenuId.setText(selected.getDishId()+"");
         txtMenuName.setText(selected.getName());
         txtMenuPrice.setText(selected.getPrice()+"");
-        txtMenuComment.setText(selected.getDescription() != null ? selected.getDescription() : "");
+        txtMenuComment.setText(selected.getDescription() != null ? 
+                                    selected.getDescription() : "");
     }//GEN-LAST:event_menuListValueChanged
     /**
      * Prompts the user if he wants to remove the selected Dish in the menuList
@@ -346,7 +365,9 @@ public class AdminMenuEditor extends javax.swing.JFrame implements GUIUpdater {
 
         if (selected == null) return;
 
-        int answer = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete this dish:\n" + selected, "Delete dish", JOptionPane.OK_CANCEL_OPTION);
+        int answer = JOptionPane.showConfirmDialog(
+                this, "Are you sure you want to delete this dish:\n" +
+                selected, "Delete dish", JOptionPane.OK_CANCEL_OPTION);
 
         if (answer == JOptionPane.CANCEL_OPTION) return;
 
@@ -356,7 +377,8 @@ public class AdminMenuEditor extends javax.swing.JFrame implements GUIUpdater {
             updateGUI();
         }
         catch (SQLException e){
-            JOptionPane.showMessageDialog(this, "Error deleting the dish:\n" + e.getMessage());
+            JOptionPane.showMessageDialog(
+                    this, "Error deleting the dish:\n" + e.getMessage());
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
