@@ -43,12 +43,17 @@ public class CookFrame extends javax.swing.JFrame implements GUIUpdater{
 
         init();
     }
-
+    /**
+     * Initializes a UpdaterThread and starts the timer.
+     */
     private void init(){
         updater = new UpdaterThread(this, 10 * 1000); // GUI updater with 10 second interval
         updater.start();
     }
-
+    /**
+     * This method is called whenever the UpdaterThread activates. It retrieves the
+     * orders from the database and puts them in the order list.
+     */
     public void updateGUI() {
         try {
             JList focused = null;
@@ -239,12 +244,19 @@ public class CookFrame extends javax.swing.JFrame implements GUIUpdater{
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    /**
+     * Makes sure that the parent becomes visible and that the UpdaterThread closes
+     * when the window is exited.
+     * @param evt
+     */
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
         parent.setVisible(true);
         updater.end();
     }//GEN-LAST:event_formWindowClosed
-
+    /**
+     * Puts the dishes from the FetchedOrder object into the dish list
+     * @param evt
+     */
     private void orderListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_orderListValueChanged
         FetchedOrder selectedOrder = (FetchedOrder)orderList.getSelectedValue();
         if (selectedOrder != null) {
@@ -258,7 +270,10 @@ public class CookFrame extends javax.swing.JFrame implements GUIUpdater{
             selected = selectedOrder;
         }
     }//GEN-LAST:event_orderListValueChanged
-
+    /**
+     * Retrieves and sets the comment, if any, for the selected dish in the comment field.
+     * @param evt
+     */
     private void dishListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_dishListValueChanged
         DishOrder selectedDish = (DishOrder)dishList.getSelectedValue();
         if (selectedDish != null){
@@ -270,7 +285,10 @@ public class CookFrame extends javax.swing.JFrame implements GUIUpdater{
             }
         }
     }//GEN-LAST:event_dishListValueChanged
-
+    /**
+     * Sets the selected Order to made. Then updates the list.
+     * @param evt
+     */
     private void btnOrderDoneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOrderDoneActionPerformed
         if (selected != null){
             try {
@@ -287,7 +305,11 @@ public class CookFrame extends javax.swing.JFrame implements GUIUpdater{
             JOptionPane.showMessageDialog(this, "No order selected");
         }
     }//GEN-LAST:event_btnOrderDoneActionPerformed
-
+    /**
+     * Undos setting the last order to "made", if there have been anyone made
+     * while the window is open
+     * @param evt
+     */
     private void btnLastOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLastOrderActionPerformed
         if (lastMade != null){
             try {
