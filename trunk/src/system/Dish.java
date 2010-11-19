@@ -97,16 +97,27 @@ public class Dish {
      */
     public String forReciept(int amount) {
         DecimalFormat toDes=new DecimalFormat("0.00");
+        String print;
         String spaces=" ";
         if(getName().length()<30){
             for(int i=0;i<(30-getName().length()); i++){
                 spaces+=" ";
             }
         }
-        int total = amount * this.getPrice();
 
-        return this.getName() + spaces + amount + " x " + this.getPrice() + " = " +
-                toDes.format(total) + "\n";
+
+        int total = amount * this.getPrice();
+        
+        print = Integer.toString(amount) + " x "
+                + Integer.toString(this.getPrice()) + " = "
+                + toDes.format(total);
+        if(print.length()<15){
+            for(int i = 0; i<(15-print.length()); i++){
+                spaces += " ";
+            }
+        }
+        return this.getName() + " :" + spaces + print + "\n";
+
     }
 
     /**
