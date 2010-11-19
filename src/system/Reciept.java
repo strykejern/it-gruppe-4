@@ -37,7 +37,7 @@ public class Reciept {
 
         String print = "Reciept for: \n"
                       + order.getCustomer().getId()
-                      + "\n\nDish                 Amount         Price \n\n";
+                      + "\n\nDish               Amount x Price    Total\n\n";
         Double localMva;
 
         for (DishOrder dish : order.getDishOrder()) {
@@ -56,10 +56,10 @@ public class Reciept {
         }
 
         localMva = total*(mva/100.0);
-        print += "\nTotal inkl. mva:                       " +
+        print += "\nTotal inkl. mva: " +
                 toDes.format(total) + "\n";
         
-        print += "Mva:                                     " +
+        print += "Mva av totalen: " +
                 toDes.format(localMva) + "\n";
         print += "\n   Takk for en hyggelig handel \n\n";
 
