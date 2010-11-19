@@ -10,7 +10,6 @@
  */
 package gui;
 
-import java.io.IOException;
 import org.w3c.dom.Document;
 import java.util.ArrayList;
 import javax.swing.DefaultListModel;
@@ -22,7 +21,6 @@ import java.sql.SQLException;
 import javax.swing.JOptionPane;
 import org.jdesktop.swingx.JXMapKit.DefaultProviders;
 import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
 import system.FetchedOrder;
 import system.OrderDB;
 
@@ -91,10 +89,12 @@ public class MapFrame extends javax.swing.JFrame implements GUIUpdater {
         undoButton = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         ordersToDeliverList = new javax.swing.JList();
-        addressLabel = new javax.swing.JLabel();
         deliveredButton = new javax.swing.JButton();
+        addressField = new javax.swing.JTextField();
+        findAddressButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setMinimumSize(new java.awt.Dimension(800, 600));
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosed(java.awt.event.WindowEvent evt) {
                 formWindowClosed(evt);
@@ -133,6 +133,13 @@ public class MapFrame extends javax.swing.JFrame implements GUIUpdater {
             }
         });
 
+        findAddressButton.setText("Find Address");
+        findAddressButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                findAddressButtonMouseReleased(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -145,10 +152,10 @@ public class MapFrame extends javax.swing.JFrame implements GUIUpdater {
                         .addComponent(recieptButton, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(undoButton, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(addressLabel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 270, Short.MAX_VALUE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 279, Short.MAX_VALUE)
+                    .addComponent(findAddressButton, javax.swing.GroupLayout.DEFAULT_SIZE, 279, Short.MAX_VALUE)
+                    .addComponent(addressField, javax.swing.GroupLayout.DEFAULT_SIZE, 279, Short.MAX_VALUE))
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -158,10 +165,12 @@ public class MapFrame extends javax.swing.JFrame implements GUIUpdater {
                     .addComponent(deliveredButton)
                     .addComponent(recieptButton, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(undoButton))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(addressLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 557, Short.MAX_VALUE))
+                .addComponent(addressField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(5, 5, 5)
+                .addComponent(findAddressButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 559, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -192,7 +201,7 @@ public class MapFrame extends javax.swing.JFrame implements GUIUpdater {
         if (prevSelectedIndex == -1 && getSelectedOrder() != null) {
             try {
                 mapView.setAddressLocation(getCoords(getSelectedOrder()));
-                addressLabel.setText(getSelectedOrder().getDeliveryAddress());
+                addressField.setText(getSelectedOrder().getDeliveryAddress());
             } catch (SQLException e) {
 
             }catch(IllegalArgumentException e){
@@ -229,6 +238,15 @@ public class MapFrame extends javax.swing.JFrame implements GUIUpdater {
     private void undoButtonMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_undoButtonMouseReleased
         undoOrderDelivered();
     }//GEN-LAST:event_undoButtonMouseReleased
+    /**
+     * Uses the address in the addressField and sets the map to point to
+     * the new location if possible.
+     * @param evt
+     */
+    private void findAddressButtonMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_findAddressButtonMouseReleased
+        mapView.setAddressLocation(getCoords(new FetchedOrder(0, null,
+                addressField.getText(), FetchedOrder.View.DRIVER, "")));
+    }//GEN-LAST:event_findAddressButtonMouseReleased
     /**
      * The method that is called automatically by a GUIUpdater thread. Will make
      * sure the selected order in the ordersToDeliverList stays the same, if any
@@ -336,7 +354,7 @@ public class MapFrame extends javax.swing.JFrame implements GUIUpdater {
         } catch (SQLException e) {
             throw new IllegalArgumentException(e.getMessage());
         }
-        addressLabel.setText("");
+        addressField.setText("");
         manualUpdateGUI();
     }
 
@@ -414,8 +432,9 @@ public class MapFrame extends javax.swing.JFrame implements GUIUpdater {
         }
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel addressLabel;
+    private javax.swing.JTextField addressField;
     private javax.swing.JButton deliveredButton;
+    private javax.swing.JButton findAddressButton;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private org.jdesktop.swingx.JXMapKit mapView;
