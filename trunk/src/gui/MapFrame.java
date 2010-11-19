@@ -222,6 +222,7 @@ public class MapFrame extends javax.swing.JFrame implements GUIUpdater {
      */
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
         parent.setVisible(true);
+        updater.end();
     }//GEN-LAST:event_formWindowClosed
 
     /**
