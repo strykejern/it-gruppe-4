@@ -19,6 +19,7 @@ import java.util.Date;
 import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JTextArea;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import system.AdminCustomer;
@@ -524,7 +525,8 @@ public class AdminOrderEditor extends javax.swing.JFrame implements GUIUpdater {
         if (order == null) return;
 
         try {
-            String reciept = OrderDB.getReciept(order.getId());
+            JTextArea reciept = new JTextArea(OrderDB.getReciept(order.getId()));
+            reciept.setEnabled(false);
             JOptionPane.showMessageDialog(this, reciept);
         }
         catch (SQLException e){
