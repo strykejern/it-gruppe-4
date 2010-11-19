@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JTextArea;
 import system.FetchedOrder;
 import system.OrderDB;
 import system.WaiterFetchedOrder;
@@ -172,9 +173,12 @@ public class WaiterGetOldOrdersChooser extends javax.swing.JFrame {
         if (order == null) return;
 
         try {
+            JTextArea area = new JTextArea(OrderDB.getReciept(order.getId()) +
+                    "\n------------------\nMark order as done?");
+            area.setEnabled(false);
+
             int answer = JOptionPane.showConfirmDialog(
-                    this, OrderDB.getReciept(order.getId()) +
-                    "\n------------------\nMark order as done?",
+                    this, area,
                     "Reciept", JOptionPane.OK_CANCEL_OPTION);
 
             if (answer == JOptionPane.CANCEL_OPTION){
