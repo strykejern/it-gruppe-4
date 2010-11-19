@@ -19,7 +19,6 @@ import java.util.Date;
 import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.ListSelectionModel;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import system.AdminCustomer;
@@ -33,11 +32,13 @@ import system.OrderDB;
  */
 public class AdminOrderEditor extends javax.swing.JFrame implements GUIUpdater {
 
-    JFrame parent;
+    private JFrame parent;
 
-    UpdaterThread guiUpdater;
+    private UpdaterThread guiUpdater;
 
-    SimpleDateFormat format;
+    private SimpleDateFormat format;
+
+    private FetchedOrder selectedOrder;
 
     /** Creates new form AdminOrderEditor */
     public AdminOrderEditor(JFrame parent) {
@@ -84,8 +85,8 @@ public class AdminOrderEditor extends javax.swing.JFrame implements GUIUpdater {
 
             format.parse(txtDate.getText());
 
-            ListSelectionModel orderSelection = orderList.getSelectionModel();
-            ListSelectionModel dishSelection = dishList.getSelectionModel();
+            FetchedOrder orderSelection = (FetchedOrder)orderList.getSelectedValue();
+            DishOrder dishSelection = (DishOrder)dishList.getSelectedValue();
 
             ArrayList<FetchedOrder> orders = OrderDB.getAdminOrders(
                                                 count,
@@ -108,13 +109,14 @@ public class AdminOrderEditor extends javax.swing.JFrame implements GUIUpdater {
                         dishModel.addElement(dish);
                     }
                     dishList.setModel(dishModel);
-                    dishList.setSelectionModel(dishSelection);
+                    dishList.setSelectedValue(dishSelection, true);
                 }
             }
 
             orderList.setModel(orderModel);
 
-            orderList.setSelectionModel(orderSelection);
+            orderList.requestFocusInWindow();
+            orderList.setSelectedValue(orderSelection, true);
         }
         catch (SQLException e) {
             System.out.println(e);
@@ -437,9 +439,11 @@ public class AdminOrderEditor extends javax.swing.JFrame implements GUIUpdater {
     }//GEN-LAST:event_formWindowClosed
 
     private void orderListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_orderListValueChanged
-        FetchedOrder selectedOrder = (FetchedOrder)orderList.getSelectedValue();
-        if (selectedOrder != null) {
+        FetchedOrder buffer = (FetchedOrder)orderList.getSelectedValue();
+        if (buffer != null) {
             try {
+                selectedOrder = buffer;
+
                 AdminCustomer customer = new AdminCustomer(selectedOrder.getCustomer());
 
                 txtCustomer.setText(customer.toString());
@@ -490,8 +494,11 @@ public class AdminOrderEditor extends javax.swing.JFrame implements GUIUpdater {
     }//GEN-LAST:event_selectBeforeAfterItemStateChanged
 
     private void btnDeleteOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteOrderActionPerformed
-        FetchedOrder order = (FetchedOrder)orderList.getSelectedValue();
-        if (order == null) return;
+        FetchedOrder order = selectedOrder;
+        if (order == null){
+            JOptionPane.showMessageDialog(this, "No order selected");
+            return;
+        }
 
         int answer = JOptionPane.showConfirmDialog(this,
                 "Are you sure you want to delete the currently selected order?",
@@ -503,6 +510,8 @@ public class AdminOrderEditor extends javax.swing.JFrame implements GUIUpdater {
         try {
             OrderDB.deleteOrder(order);
 
+            selectedOrder = null;
+
             guiUpdater.manualUpdate();
         }
         catch (SQLException e) {
@@ -511,7 +520,7 @@ public class AdminOrderEditor extends javax.swing.JFrame implements GUIUpdater {
     }//GEN-LAST:event_btnDeleteOrderActionPerformed
 
     private void btnRecieptActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRecieptActionPerformed
-        FetchedOrder order = (FetchedOrder)orderList.getSelectedValue();
+        FetchedOrder order = selectedOrder;
         if (order == null) return;
 
         try {
