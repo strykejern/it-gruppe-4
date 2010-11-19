@@ -34,7 +34,9 @@ public class AdminPropertiesFrame extends javax.swing.JFrame{
 
         setExtendedState(getExtendedState() | MAXIMIZED_BOTH);
     }
-
+    /**
+     * initializes the text fields with the properties from the database.
+     */
     public void init() {
         txtMva.setText(Double.toString(Properties.getMva()));
         txtDeliveryPrice.setText(Integer.toString(Properties.getDeliveryPrice()));
@@ -170,11 +172,18 @@ public class AdminPropertiesFrame extends javax.swing.JFrame{
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    /**
+     * Sets the parent to visible upon exiting the window.
+     * @param evt
+     */
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
         parent.setVisible(true);
     }//GEN-LAST:event_formWindowClosed
-
+    /**
+     * Tries to save the values stored in the three text-fields. If an exception
+     * is thrown, an error message will be created in a new window.
+     * @param evt
+     */
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         try {
             Properties.storeProperties(txtMva.getText(), txtDeliveryPrice.getText(), txtFreeDeliveryLimit.getText());

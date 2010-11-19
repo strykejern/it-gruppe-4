@@ -150,26 +150,41 @@ public class AdminPanelSelecter extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    /**
+     * Sets the parent to visible upon exiting the window.
+     * @param evt
+     */
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
         parent.setVisible(true);
     }//GEN-LAST:event_formWindowClosed
-
+    /**
+     * Creates a new AdminCustomerEditor window and makes the current frame invisible.
+     * @param evt
+     */
     private void btnCustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCustomerActionPerformed
         new AdminCustomerEditor(this).setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_btnCustomerActionPerformed
-
+    /**
+     * Creates a new AdminMenuEditor window and makes the current frame invisible.
+     * @param evt
+     */
     private void btnMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuActionPerformed
         new AdminMenuEditor(this).setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_btnMenuActionPerformed
-
+    /**
+     * Creates a new AdminOrderEditor window and makes the current frame invisible.
+     * @param evt
+     */
     private void btnCurrentOrdersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCurrentOrdersActionPerformed
         new AdminOrderEditor(this).setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_btnCurrentOrdersActionPerformed
-
+    /**
+     * Creates a new AdminPropertiesFrame window and makes the current frame invisible.
+     * @param evt
+     */
     private void btnPropertiesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPropertiesActionPerformed
         new AdminPropertiesFrame(this).setVisible(true);
         this.setVisible(false);
