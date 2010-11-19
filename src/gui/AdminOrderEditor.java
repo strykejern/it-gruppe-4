@@ -456,7 +456,7 @@ public class AdminOrderEditor extends javax.swing.JFrame implements GUIUpdater {
                 selectDone.setSelected(OrderDB.checkDone(selectedOrder.getId()));
             }
             catch (SQLException e){
-                // TODO: notify
+                JOptionPane.showMessageDialog(this, "Error fetching order from database:\n" + e.getMessage());
             }
         }
     }//GEN-LAST:event_orderListValueChanged

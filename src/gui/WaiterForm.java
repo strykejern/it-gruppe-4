@@ -18,7 +18,6 @@ import javax.swing.DefaultListModel;
 import javax.swing.JCheckBox;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
-import javax.swing.JPopupMenu;
 import javax.swing.JTextField;
 import javax.swing.ListModel;
 import javax.swing.event.DocumentEvent;
@@ -47,7 +46,7 @@ public class WaiterForm extends javax.swing.JFrame implements FormListener {
 
         init();
 
-        setExtendedState(getExtendedState() | MAXIMIZED_BOTH);
+        setExtendedState(getExtendedState() | MAXIMIZED_BOTH); // Maximize frame
     }
 
     private void init(){
@@ -56,6 +55,7 @@ public class WaiterForm extends javax.swing.JFrame implements FormListener {
 
             Menu menu = OrderDB.getMenu();
 
+            // Fill in menu in the menulist
             DefaultListModel mod = new DefaultListModel();
 
             for (Dish dish : menu.getMenu()){
@@ -72,6 +72,7 @@ public class WaiterForm extends javax.swing.JFrame implements FormListener {
             System.out.println(e);
         }
 
+        // Adds listeners to when the text is changed
         bindTocustomerTextChanged(txtCustomerFirstName);
         bindTocustomerTextChanged(txtCustomerLastName);
         bindTocustomerTextChanged(txtCustomerPhone);
@@ -83,6 +84,9 @@ public class WaiterForm extends javax.swing.JFrame implements FormListener {
         reloading = false;
     }
 
+    /*
+     * Binds the specified JTextField to the listener
+     */
     private void bindTocustomerTextChanged(final JTextField field){
         field.getDocument().addDocumentListener(new DocumentListener() {
             public void insertUpdate(DocumentEvent e) {
@@ -97,6 +101,11 @@ public class WaiterForm extends javax.swing.JFrame implements FormListener {
         });
     }
 
+    /*
+     * Gets the signal from WaiterGetOldOrdersChooser that tells what order to
+     * load. Then fills in all the required fields to match the  order, and
+     * deletes it from the database. This is used to edit orders.
+     */
     public void tell(int signal) {
 
         try {
@@ -121,7 +130,6 @@ public class WaiterForm extends javax.swing.JFrame implements FormListener {
             }
 
             OrderDB.deleteOrder(order);
-            // TODO: delete order
         }
         catch (SQLException e){
             JOptionPane.showMessageDialog(this, "Error loading order:\n" + e.getMessage());
@@ -502,11 +510,17 @@ public class WaiterForm extends javax.swing.JFrame implements FormListener {
     }// </editor-fold>//GEN-END:initComponents
 
     private void WaiterFormClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_WaiterFormClosed
-        if (!reloading){
+        if (!reloading){ // If we didn't just place an order, we set the parent to be visible
             parent.setVisible(true);
         }
     }//GEN-LAST:event_WaiterFormClosed
 
+    /*
+     * Listener that changes the text in the user info text boxes. Once it
+     * gains focus, it's changed to a blank string.
+     *
+     * It also searches for customers matching the textFields' texts
+     */
     private void txtCustomerFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtCustomerFieldFocusGained
         JTextField focusedTextField = (JTextField)evt.getSource();
 
@@ -518,6 +532,12 @@ public class WaiterForm extends javax.swing.JFrame implements FormListener {
         customerTextChanged(focusedTextField);
     }//GEN-LAST:event_txtCustomerFieldFocusGained
 
+    /*
+     * Listener that changes the text in the user ifo boxes. If it loses focus
+     * and is empty, it gets it's name as the text
+     *
+     * It also hides the popupMenu with the customers
+     */
     private void txtCustomerFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtCustomerFieldFocusLost
         JTextField focusedTextField = (JTextField)evt.getSource();
 
@@ -529,6 +549,10 @@ public class WaiterForm extends javax.swing.JFrame implements FormListener {
         popupCustomer.setVisible(false);
     }//GEN-LAST:event_txtCustomerFieldFocusLost
 
+    /*
+     * Changes the visibility of the custom address controls according to the
+     * state of the delivery checkbox
+     */
     private void checkBoxDeliveryStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_checkBoxDeliveryStateChanged
         JCheckBox check = (JCheckBox)evt.getSource();
 
@@ -541,6 +565,10 @@ public class WaiterForm extends javax.swing.JFrame implements FormListener {
         }
     }//GEN-LAST:event_checkBoxDeliveryStateChanged
 
+    /*
+     * Changes the visibility of the custom address textbox according to the
+     * state of the custom address checkbox
+     */
     private void checkBoxCustomAddressStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_checkBoxCustomAddressStateChanged
         JCheckBox check = (JCheckBox)evt.getSource();
 
@@ -553,6 +581,11 @@ public class WaiterForm extends javax.swing.JFrame implements FormListener {
         }
     }//GEN-LAST:event_checkBoxCustomAddressStateChanged
 
+    /*
+     * Changes back the visibility of the custom address textbox according to
+     * the state of the custom address checkbox after the component is
+     * enabled again
+     */
     private void checkBoxCustomAddressEnabledChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_checkBoxCustomAddressEnabledChanged
         JCheckBox check = (JCheckBox)evt.getSource();
 
@@ -565,6 +598,10 @@ public class WaiterForm extends javax.swing.JFrame implements FormListener {
         }
     }//GEN-LAST:event_checkBoxCustomAddressEnabledChanged
 
+    /*
+     * Creates a DishOrder object with the selected Dish, and moves it over to
+     * the orderList
+     */
     private void btnAddToOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddToOrderActionPerformed
         if (!menuList.isSelectionEmpty()){
             ListModel model = dishOrderList.getModel();
@@ -581,6 +618,10 @@ public class WaiterForm extends javax.swing.JFrame implements FormListener {
         }
     }//GEN-LAST:event_btnAddToOrderActionPerformed
 
+    /*
+     * Converts the specified ListModel to a DefaultListModel, so that items can
+     * be added.
+     */
     private DefaultListModel convertToDefaultListModel(ListModel list){
         DefaultListModel mod = new DefaultListModel();
 
@@ -591,6 +632,12 @@ public class WaiterForm extends javax.swing.JFrame implements FormListener {
         return mod;
     }
 
+    /*
+     * Method that seaches for customers when a textfield changes. The search is
+     * done with the customer fields that have text in them, and a popupmenu
+     * is displayed with the result, so you can choose one. A listener is
+     * added to each of the menu items.
+     */
     private void customerTextChanged(JTextField invoker){
         if (invoker.hasFocus() && invoker.getText().length() > 0){
             try {
@@ -624,11 +671,19 @@ public class WaiterForm extends javax.swing.JFrame implements FormListener {
         }
     }
 
+    /*
+     * The listener for the menuitems in the popumenu. It sets the selected
+     * customer with the method setCustomer
+     */
     private void popupMenuItemSelected(JMenuItem item) {
         int customerId = Integer.parseInt(item.getName());
         setCustomer(customerId);
     }
 
+    /*
+     * Sets the specified customer to be the customer in the order. It also
+     * locks all the textfields so that one cannot edit the customers info
+     */
     private void setCustomer(int customerId){
         try {
             Customer customer = OrderDB.getCustomerById(customerId);
@@ -698,8 +753,8 @@ public class WaiterForm extends javax.swing.JFrame implements FormListener {
                         newCustomer = OrderDB.getCustomerById(id);
                     }
                     catch (SQLException e) {
-                        // TODO: catch ?
-                        System.out.println(e);
+                        JOptionPane.showMessageDialog(this, "Error creating customer in the database:\n" + e.getMessage());
+                        return;
                     }
 
                     currentOrder.setCustomer(newCustomer);
@@ -727,12 +782,17 @@ public class WaiterForm extends javax.swing.JFrame implements FormListener {
 
                 String updateRequest = "Are you sure you want to edit customer:\n" +
                         currentOrder.getCustomer() + "\nTo:\n" +
-                        tmpCustomer; // TODO: set to the update request
+                        tmpCustomer;
 
                 int answer = JOptionPane.showConfirmDialog(this, updateRequest, "Update customer", JOptionPane.OK_CANCEL_OPTION);
 
                 if (answer == JOptionPane.OK_OPTION){
-                    // TODO: update current customer in database
+                    try {
+                        OrderDB.editCustomer(tmpCustomer, currentOrder.getCustomer().getId());
+                    } catch (SQLException ex) {
+                        JOptionPane.showMessageDialog(this, "Failed to edit the customer in the database:\n" + ex.getMessage());
+                        return;
+                    }
                 }
                 else {
                     return;
@@ -746,12 +806,12 @@ public class WaiterForm extends javax.swing.JFrame implements FormListener {
                 currentOrder.setToBeDelivered();
 
                 if (checkBoxCustomAddress.isSelected() &&
-                        txtCustomAddress.getText().length() > 1){ // TODO: maybe more?
+                        txtCustomAddress.getText().length() > 1){
                     currentOrder.setDeliveryAddress(txtCustomAddress.getText());
                 }
             }
 
-            // TODO: place the order
+            
             try {
                 currentOrder.setReciept(Reciept.toString(currentOrder));
 
