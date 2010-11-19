@@ -441,7 +441,7 @@ public class AdminOrderEditor extends javax.swing.JFrame implements GUIUpdater {
 
                 txtCustomer.setText(customer.toString());
 
-                txtAddress.setText(customer.address);
+                txtAddress.setText(customer.getAddress());
 
                 txtOrderedTime.setText(selectedOrder.getTimeStamp());
 
@@ -464,8 +464,8 @@ public class AdminOrderEditor extends javax.swing.JFrame implements GUIUpdater {
     private void dishListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_dishListValueChanged
         DishOrder selectedDish = (DishOrder)dishList.getSelectedValue();
         if (selectedDish != null){
-            if (selectedDish.comments != null && selectedDish.comments.length() > 2){
-                txtDishComment.setText(selectedDish.comments);
+            if (selectedDish.getComment() != null && selectedDish.getComment().length() > 2){
+                txtDishComment.setText(selectedDish.getComment());
             }
             else {
                 txtDishComment.setText("No comment");

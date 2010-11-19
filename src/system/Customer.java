@@ -5,11 +5,11 @@ package system;
  * @author Anders
  */
 public class Customer {
-    public String firstName;
-    public String lastName;
-    public String address;
-    public int id;
-    public int phoneNumber;
+    private String firstName;
+    private String lastName;
+    private String address;
+    private int id;
+    private int phoneNumber;
 
     protected Customer(Customer customer){
         this.id = customer.id;
@@ -47,13 +47,13 @@ public class Customer {
      * @throws IllegalArgumentException
      */
     public void validate() throws IllegalArgumentException {
-        if (firstName == null || firstName.length() < 2)
+        if (getFirstName() == null || getFirstName().length() < 2)
                 throw new IllegalArgumentException("Invalid first name");
-        if (lastName == null || lastName.length() < 2)
+        if (getLastName() == null || getLastName().length() < 2)
                 throw new IllegalArgumentException("Invalid last name");
-        if (address == null || address.length() < 2)
+        if (getAddress() == null || getAddress().length() < 2)
                 throw new IllegalArgumentException("Invalid address");
-        if (phoneNumber < 10000000)
+        if (getPhoneNumber() < 10000000)
                 throw new IllegalArgumentException("Ivalid phonenumber");
     }
     /**
@@ -65,14 +65,49 @@ public class Customer {
     public String toString(){
         String spaces1=" ";
         String spaces2=" ";
-        int nameLength=firstName.length()+lastName.length();
+        int nameLength=getFirstName().length()+getLastName().length();
         if(nameLength<30){
             for(int i =0;i<25-nameLength;i++){
                 spaces1+=" ";
             }
 
         }
-        return firstName + " " + lastName + spaces1 + "Num: (" + phoneNumber +
-                ")     Addr: (" + address + ")";
+        return getFirstName() + " " + getLastName() + spaces1 + "Num: (" + getPhoneNumber() +
+                ")     Addr: (" + getAddress() + ")";
+    }
+
+    /**
+     * @return the firstName
+     */
+    public String getFirstName() {
+        return firstName;
+    }
+
+    /**
+     * @return the lastName
+     */
+    public String getLastName() {
+        return lastName;
+    }
+
+    /**
+     * @return the address
+     */
+    public String getAddress() {
+        return address;
+    }
+
+    /**
+     * @return the id
+     */
+    public int getId() {
+        return id;
+    }
+
+    /**
+     * @return the phoneNumber
+     */
+    public int getPhoneNumber() {
+        return phoneNumber;
     }
 }

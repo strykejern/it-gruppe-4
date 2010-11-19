@@ -262,8 +262,8 @@ public class CookFrame extends javax.swing.JFrame implements GUIUpdater{
     private void dishListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_dishListValueChanged
         DishOrder selectedDish = (DishOrder)dishList.getSelectedValue();
         if (selectedDish != null){
-            if (selectedDish.comments != null){
-                txtDishComment.setText(selectedDish.comments);
+            if (selectedDish.getComment() != null){
+                txtDishComment.setText(selectedDish.getComment());
             }
             else {
                 txtDishComment.setText("No comment");

@@ -31,19 +31,19 @@ public class Reciept {
     public static String toString(Order order) {
         DecimalFormat toDes = new DecimalFormat("0.00");
         double mva = Properties.getMva();
-        boolean delivery = order.takeAway;
+        boolean delivery = order.isToBeDelivered();
         int deliveryPrice = Properties.getDeliveryPrice();
         int maxTot = Properties.getFreeDeliveryLimit();
         double total = 0;
 
         String print = "Reciept for: \n"
-                      + order.customer.id
+                      + order.getCustomer().getId()
                       + "\n\nDish                 Amount         Price \n\n";
         Double localMva;
 
-        for (DishOrder dish : order.dishOrder) {
-            print += dish.dish.forReciept(dish.amount);
-            total += (double)( dish.dish.price * dish.amount);//
+        for (DishOrder dish : order.getDishOrder()) {
+            print += dish.getDish().forReciept(dish.getAmount());
+            total += (double)( dish.getDish().getPrice() * dish.getAmount());//
         }
 
         if (delivery) {

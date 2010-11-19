@@ -198,10 +198,10 @@ public class OrderDB {
     public static void editCustomer(Customer updated, int originalId)
             throws SQLException{
         String query = "UPDATE customer SET " +
-                "first_name='" + updated.firstName + "', " +
-                "last_name='" + updated.lastName + "', " +
-                "phone_number='" + updated.phoneNumber + "', " +
-                "address='" + updated.address + "' " +
+                "first_name='" + updated.getFirstName() + "', " +
+                "last_name='" + updated.getLastName() + "', " +
+                "phone_number='" + updated.getPhoneNumber() + "', " +
+                "address='" + updated.getAddress() + "' " +
                 "WHERE customer_id=" + originalId;
 
         Statement stat = dbConnection.createStatement();
@@ -218,16 +218,16 @@ public class OrderDB {
      * @author Anders
      */
     public static void createOrder(Order order) throws SQLException{
-        String address = (order.deliveryAddress != null ?
-                        order.deliveryAddress : "");
+        String address = (order.getDeliveryAddress() != null ?
+                        order.getDeliveryAddress() : "");
 
     	String query = "INSERT INTO orders (customer_id," +
     			" delivery, delivery_address, time, reciept) VALUES " +
-                        "(" + order.getCustomer().id +                          // Customer id
-    			", " + (order.takeAway ? 1 : 0) +                       // Order going to be delivered?
+                        "(" + order.getCustomer().getId() +                          // Customer id
+    			", " + (order.isToBeDelivered() ? 1 : 0) +                       // Order going to be delivered?
     			", '" + address + "'" +                                 // Delivery address
                         ", NOW()" +                                             // Current date and time
-                        ", '" + order.reciept + "')";                           // The reciept
+                        ", '" + order.getReciept() + "')";                           // The reciept
     	
     	Statement stat = dbConnection.createStatement();
     	stat.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
@@ -237,7 +237,7 @@ public class OrderDB {
         if (!keys.next()) throw new SQLException("Failed to retrieve key");
         int orderId = keys.getInt(1);
     	
-        for (DishOrder dish : order.dishOrder){
+        for (DishOrder dish : order.getDishOrder()){
             addDishOrder(dish, orderId);
         }
     }
@@ -247,14 +247,14 @@ public class OrderDB {
      */
     private static void addDishOrder(DishOrder dish, int orderId)
             throws SQLException {
-        String comment = (dish.comments != null && dish.comments.length() > 1 ? 
-                        dish.comments : "");
+        String comment = (dish.getComment() != null && dish.getComment().length() > 1 ?
+                        dish.getComment() : "");
 
         String query = "INSERT INTO dish_orders "
                 + "(order_id, dish_id, amount, comment) VALUES (" +
                 orderId + ", " +
-                dish.dishID + ", " +
-                dish.amount + ", '" +
+                dish.getDishID() + ", " +
+                dish.getAmount() + ", '" +
                 comment + "')";
 
         Statement stat = dbConnection.createStatement();
@@ -274,10 +274,10 @@ public class OrderDB {
     public static int newCustomer(Customer customer) throws SQLException{
         String query = "INSERT INTO customer " +
                 "(first_name, last_name, phone_number, address) VALUES ('" + 
-                customer.firstName + "','" +
-                customer.lastName + "'," +
-                customer.phoneNumber + ",'" +
-                customer.address + "')";
+                customer.getFirstName() + "','" +
+                customer.getLastName() + "'," +
+                customer.getPhoneNumber() + ",'" +
+                customer.getAddress() + "')";
 
         Statement stat = dbConnection.createStatement();
         stat.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
@@ -332,9 +332,9 @@ public class OrderDB {
      * @author Anders
      */
     public static void deleteCustomer(Customer deleting) throws SQLException{
-        deleteCustomersOrders(deleting.id);
+        deleteCustomersOrders(deleting.getId());
 
-        String query = "DELETE FROM customer WHERE customer_id=" + deleting.id;
+        String query = "DELETE FROM customer WHERE customer_id=" + deleting.getId();
 
         Statement stat = dbConnection.createStatement();
 
@@ -499,9 +499,9 @@ public class OrderDB {
      */
     public static void updateDish(Dish updated, int originalId) throws SQLException{
         String query = "UPDATE menu SET " +
-                "name='"        + updated.name + "', " +
-                "price="        + updated.price + ", " +
-                "description='" + updated.description + "' " +
+                "name='"        + updated.getName() + "', " +
+                "price="        + updated.getPrice() + ", " +
+                "description='" + updated.getDescription() + "' " +
                 "WHERE dish_id=" + originalId;
 
         Statement stat = dbConnection.createStatement();
@@ -543,7 +543,7 @@ public class OrderDB {
      * @author Anders
      */
     public static void deleteDish(Dish removing) throws SQLException {
-        String query = "DELETE FROM menu WHERE dish_id=" + removing.nr;
+        String query = "DELETE FROM menu WHERE dish_id=" + removing.getDishId();
 
         Statement stat = dbConnection.createStatement();
 
@@ -798,10 +798,10 @@ public class OrderDB {
     public static void newDish(Dish dishIn) throws SQLException{
         String query = "INSERT INTO menu "
                 + "VALUES (" +
-                dishIn.nr +", '" +
-                dishIn.name + "'," +
-                dishIn.price + ",'" +
-                dishIn.description + "');";
+                dishIn.getDishId() +", '" +
+                dishIn.getName() + "'," +
+                dishIn.getPrice() + ",'" +
+                dishIn.getDescription() + "');";
         Statement stat = dbConnection.createStatement();
         stat.executeUpdate(query);
     }

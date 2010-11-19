@@ -37,20 +37,6 @@ public class Menu {
 
     /**
      *
-     * @param nr of dish in menu
-     * @return requested dish
-     */
-    public Dish getDish(int nr){
-        for(Dish dish : menu){
-            if(dish.nr == nr){
-                return dish;
-            }
-        }
-        return null;
-    }
-
-    /**
-     *
      * @return String formated as a menu
      */
     @Override
@@ -61,9 +47,6 @@ public class Menu {
         }
         return output;
     }
-
-
-
 }
 
 

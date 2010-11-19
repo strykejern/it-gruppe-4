@@ -18,9 +18,9 @@ public class WaiterFetchedOrder extends FetchedOrder{
     public String toString(){
         try {
             String print;
-            print = super.toString() + " for " + this.getCustomer().firstName 
-                    + " " + this.getCustomer().lastName + " (tlf: "
-                    + this.getCustomer().phoneNumber + ")";
+            print = super.toString() + " for " + this.getCustomer().getFirstName()
+                    + " " + this.getCustomer().getLastName() + " (tlf: "
+                    + this.getCustomer().getPhoneNumber() + ")";
             return print;
         } catch (SQLException ex) {
             Logger.getLogger(WaiterFetchedOrder.class.getName()).log(Level.SEVERE, null, ex);
