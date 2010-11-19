@@ -85,7 +85,7 @@ public class Dish {
                numSpace+=" ";
             }
         }
-        return numSpace + id + " " + name + spaces + toDes.format(price) + "\n"
+        return numSpace + id + " " + name + spaces + toDes.format(price) + " info: "
                 + this.description;
     }
 
