@@ -245,8 +245,12 @@ public class MapFrame extends javax.swing.JFrame implements GUIUpdater {
      * @param evt
      */
     private void findAddressButtonMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_findAddressButtonMouseReleased
-        mapView.setAddressLocation(getCoords(new FetchedOrder(0, null,
+       if(addressField.getText() != null){
+        mapView.setAddressLocation(getCoords(new FetchedOrder(0, 0,
                 addressField.getText(), FetchedOrder.View.DRIVER, "")));
+        }else{
+           JOptionPane.showMessageDialog(null, "No address selected.");
+        }
     }//GEN-LAST:event_findAddressButtonMouseReleased
     /**
      * The method that is called automatically by a GUIUpdater thread. Will make
