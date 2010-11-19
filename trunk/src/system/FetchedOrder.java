@@ -25,7 +25,7 @@ public class FetchedOrder {
 
     protected FetchedOrder(FetchedOrder orig){
         this.orderId = orig.orderId;
-        this.customerId = orig.customer.id;
+        this.customerId = orig.customer.getId();
         this.customer = orig.customer;
         this.deliveryAddress = orig.deliveryAddress;
         this.viewedBy = orig.viewedBy;
@@ -56,7 +56,7 @@ public class FetchedOrder {
     public FetchedOrder(int orderId, Customer customer, String deliveryAddress,
             View view, String time) {
         this.orderId = orderId;
-        this.customerId = customer.id;
+        this.customerId = customer.getId();
         this.customer = customer;
         this.deliveryAddress = deliveryAddress;
         this.viewedBy = view;
@@ -142,7 +142,7 @@ public class FetchedOrder {
             return deliveryAddress;
         }
         else {
-            return getCustomer().address;
+            return getCustomer().getAddress();
         }
     }
     /**

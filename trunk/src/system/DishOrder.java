@@ -9,12 +9,11 @@ import java.text.DecimalFormat;
  * @author Havard
  */
 public class DishOrder {
-
-    public int dishOrderId;
-    public int dishID;
-    public int amount;
-    public String comments;
-    public Dish dish;
+    private int dishOrderId;
+    private int dishID;
+    private int amount;
+    private String comment;
+    private Dish dish;
     private boolean viewedByChef = false;
 
     /*
@@ -29,7 +28,7 @@ public class DishOrder {
         this.dishOrderId = dishOrderId;
         this.dishID = dishID;
         this.amount = amount;
-        this.comments = comments;
+        this.comment = comments;
 
         try {
             dish = OrderDB.getDish(dishID);
@@ -46,9 +45,9 @@ public class DishOrder {
      * @param comments - comments about dish
      */
     public DishOrder(Dish dish, int amount, String comments) {
-        this.dishID = dish.nr;
+        this.dishID = dish.getDishId();
         this.amount = amount;
-        this.comments = comments;
+        this.comment = comments;
         this.dish = dish;
     }
 
@@ -67,11 +66,6 @@ public class DishOrder {
     }
 
     /*NOT USED*/
-    public void setDishID(int dishID) {
-        this.dishID = dishID;
-    }
-
-    /*NOT USED*/
     public int getAmount() {
         return amount;
     }
@@ -82,15 +76,12 @@ public class DishOrder {
     }
 
     /*NOT USED*/
-    public String getComments() {
-        return comments;
+    public String getComment() {
+        return comment;
     }
 
-    /*
-     * Sets a comment to a DishOrder
-     */
-    public void setComments(String comments) {
-        this.comments = comments;
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 
     /* Builds a String with DishOrder-info formatted for viewer
@@ -100,11 +91,11 @@ public class DishOrder {
     @Override
     public String toString() {
         String retStr="";
-        String id=Integer.toString(dish.nr);
+        String id=Integer.toString(getDish().getDishId());
         String spaces="";
-        String name=dish.name;
+        String name=getDish().getName();
         String priceSpaces=" ";
-        String amount2=Integer.toString(amount);
+        String amount2=Integer.toString(getAmount());
         DecimalFormat toDes = new DecimalFormat("0.00");
 
         if(id.length()<3){
@@ -127,30 +118,54 @@ public class DishOrder {
 
         if(!viewedByChef){
             retStr = spaces + id + " "
-            + dish.name + priceSpaces
-            + toDes.format(dish.price) + "kr  x "
+            + getDish().getName() + priceSpaces
+            + toDes.format(getDish().getPrice()) + "kr  x "
             + amount2 + " \n";
-            if(comments!=null && !comments.equals("")){
+            if(getComment()!=null && !comment.equals("")){
                 retStr += "*comment*";}
         }
     
         if(viewedByChef){
             retStr = spaces + id + " "
-            + dish.name + priceSpaces
+            + getDish().getName() + priceSpaces
             + "x" + amount2 + " \n";
-            if(comments!=null && !comments.equals("")){
+            if(getComment()!=null && !comment.equals("")){
                 retStr += "*comment*";}
         }
 
         return retStr;
     }
-    
-    public String getComment(){
-        return this.comments;
-    }
 
     @Override
     public DishOrder clone(){
-        return new DishOrder(dishOrderId, dishID, amount, comments);
+        return new DishOrder(getDishOrderId(), getDishID(), getAmount(), getComment());
+    }
+
+    /**
+     * @return the dishOrderId
+     */
+    public int getDishOrderId() {
+        return dishOrderId;
+    }
+
+    /**
+     * @param dishOrderId the dishOrderId to set
+     */
+    public void setDishOrderId(int dishOrderId) {
+        this.dishOrderId = dishOrderId;
+    }
+
+    /**
+     * @return the dish
+     */
+    public Dish getDish() {
+        return dish;
+    }
+
+    /**
+     * @param dish the dish to set
+     */
+    public void setDish(Dish dish) {
+        this.dish = dish;
     }
 }

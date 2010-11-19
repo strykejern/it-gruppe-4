@@ -7,19 +7,20 @@ import java.text.DecimalFormat;
  * @author Lars
  */
 public class Dish {
-
-
-    public int nr;		//number in menu
-    public String name;		//name of dish
-    public String description;	//contents of dish
-    public int price;           //price of dish
+    private int dishId;           //price of dish
+    private String name;
+    private String description;
+    private int price;
 
     protected Dish(Dish dish){
-        if (dish.nr < 0){
+        if (dish.dishId < 0){
             throw new IllegalArgumentException("Illegal dish ID");
         }
+        if (dish.price < 0){
+            throw new IllegalArgumentException("Illegal dish price");
+        }
 
-        this.nr = dish.nr;
+        this.dishId = dish.dishId;
         this.name = dish.name;
         this.description = dish.description;
         this.price = dish.price;
@@ -34,7 +35,7 @@ public class Dish {
      * @param priceIn - price of dish
      */
     public Dish(int nr, String name, int price, String description) {
-        this.nr = nr;
+        this.dishId = nr;
         this.name = name;
         this.description = description;
         this.price = price;
@@ -43,7 +44,7 @@ public class Dish {
     public Dish(String dishId, String name, String price, String comment)
             throws IllegalArgumentException{
         try {
-            nr = Integer.parseInt(dishId);
+            this.dishId = Integer.parseInt(dishId);
         }
         catch (NumberFormatException e) {
             throw new IllegalArgumentException("Invalid dish-ID");
@@ -71,11 +72,11 @@ public class Dish {
     @Override
     public String toString() {
         DecimalFormat toDes=new DecimalFormat("0.00");
-        String id = Integer.toString(nr);
+        String id = Integer.toString(getDishId());
         String spaces="";
         String numSpace="";
-        if(name.length()<30){
-            for(int i=0;i<(30-name.length()); i++){
+        if(getName().length()<30){
+            for(int i=0;i<(30-getName().length()); i++){
                 spaces+=" ";
             }
         }
@@ -97,14 +98,42 @@ public class Dish {
     public String forReciept(int amount) {
         DecimalFormat toDes=new DecimalFormat("0.00");
         String spaces=" ";
-        if(name.length()<30){
-            for(int i=0;i<(30-name.length()); i++){
+        if(getName().length()<30){
+            for(int i=0;i<(30-getName().length()); i++){
                 spaces+=" ";
             }
         }
-        int total = amount * this.price;
+        int total = amount * this.getPrice();
 
-        return this.name + spaces + amount + " x " + this.price + " = " +
+        return this.getName() + spaces + amount + " x " + this.getPrice() + " = " +
                 toDes.format(total) + "\n";
+    }
+
+    /**
+     * @return the dishId
+     */
+    public int getDishId() {
+        return dishId;
+    }
+
+    /**
+     * @return the name
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * @return the description
+     */
+    public String getDescription() {
+        return description;
+    }
+
+    /**
+     * @return the price
+     */
+    public int getPrice() {
+        return price;
     }
 }

@@ -16,8 +16,8 @@ public class AdminDish extends Dish {
      */
     @Override
     public String toString(){
-        return "Id: " + this.nr
-                + " Name: " + this.name
-                + " Price: " + this.price + " kr.";
+        return "Id: " + this.getDishId()
+                + " Name: " + this.getName()
+                + " Price: " + this.getPrice() + " kr.";
     }
 }

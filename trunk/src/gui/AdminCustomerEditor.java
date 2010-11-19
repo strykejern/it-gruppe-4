@@ -363,11 +363,11 @@ public class AdminCustomerEditor extends javax.swing.JFrame implements GUIUpdate
 
         if (selected == null) return;
 
-        txtCustomerId.setText(selected.id+"");
-        txtCustomerFirstName.setText(selected.firstName);
-        txtCustomerLastName.setText(selected.lastName);
-        txtCustomerPhoneNumber.setText(selected.phoneNumber+"");
-        txtCustomerAddress.setText(selected.address);
+        txtCustomerId.setText(selected.getId()+"");
+        txtCustomerFirstName.setText(selected.getFirstName());
+        txtCustomerLastName.setText(selected.getLastName());
+        txtCustomerPhoneNumber.setText(selected.getPhoneNumber()+"");
+        txtCustomerAddress.setText(selected.getAddress());
     }//GEN-LAST:event_customerListValueChanged
 
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed

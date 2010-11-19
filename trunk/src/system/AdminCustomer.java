@@ -12,7 +12,7 @@ public class AdminCustomer extends Customer {
 
     @Override
     public String toString(){
-        return "Name: " + this.firstName + " " + this.lastName
-                + " Tel: " + this.phoneNumber;
+        return "Name: " + this.getFirstName() + " " + this.getLastName()
+                + " Tel: " + this.getPhoneNumber();
     }
 }

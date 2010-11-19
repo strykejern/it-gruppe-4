@@ -8,15 +8,11 @@ import java.util.ArrayList;
  * @author Havard
  */
 public class Order {
-
-    public boolean sameAddress = false;
-    public String deliveryAddress = null;
-    public String comment = "";
-    public boolean dishIsFinished = false;
-    public boolean takeAway = false;
-    public Customer customer = null;
-    public ArrayList<DishOrder> dishOrder;
-    public String reciept;
+    private String deliveryAddress;
+    private boolean delivery;
+    private Customer customer;
+    private ArrayList<DishOrder> dishOrder;
+    private String reciept;
 
     /* Initiates the arraylist of DishOrder objects */
     public Order() {
@@ -33,19 +29,9 @@ public class Order {
         return customer;
     }
 
-    /*NOT USED*/
-    public void addDish(DishOrder dish) {
-        dishOrder.add(dish);
-    }
-
-    /*Sets the DishOrder list as the parameter*/
-    public void setDishes(ArrayList<DishOrder> dishes) {
-        dishOrder = dishes;
-    }
-
     /*Is called if the order is to be delivered*/
     public void setToBeDelivered(){
-        takeAway = true;
+        setToBeDelivered(true);
     }
 
     /*Is called if the customer wants to have the pizza delivered to an address that is different
@@ -60,14 +46,45 @@ public class Order {
         this.reciept = reciept;
     }
 
-    /*NOT USED*/
-    public void createOrder() throws Exception {
-        if (customer == null) {
-            throw new Exception("Customer is not set");
-        }
-        if (dishOrder.isEmpty()) {
-            throw new Exception("No dish is added");
-        }
-        
+    /**
+     * @return the deliveryAddress
+     */
+    public String getDeliveryAddress() {
+        return deliveryAddress;
+    }
+
+    /**
+     * @return the takeAway
+     */
+    public boolean isToBeDelivered() {
+        return delivery;
+    }
+
+    /**
+     * @param takeAway the takeAway to set
+     */
+    public void setToBeDelivered(boolean takeAway) {
+        this.delivery = takeAway;
+    }
+
+    /**
+     * @return the dishOrder
+     */
+    public ArrayList<DishOrder> getDishOrder() {
+        return dishOrder;
+    }
+
+    /**
+     * @param dishOrder the dishOrder to set
+     */
+    public void setDishes(ArrayList<DishOrder> dishOrder) {
+        this.dishOrder = dishOrder;
+    }
+
+    /**
+     * @return the reciept
+     */
+    public String getReciept() {
+        return reciept;
     }
 }

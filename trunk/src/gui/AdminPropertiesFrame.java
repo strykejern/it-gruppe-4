@@ -61,13 +61,14 @@ public class AdminPropertiesFrame extends javax.swing.JFrame{
         txtFreeDeliveryLimit = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setMinimumSize(new java.awt.Dimension(800, 600));
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosed(java.awt.event.WindowEvent evt) {
                 formWindowClosed(evt);
             }
         });
 
-        jButton1.setFont(new java.awt.Font("Tahoma", 0, 48)); // NOI18N
+        jButton1.setFont(new java.awt.Font("Tahoma", 0, 48));
         jButton1.setText("Save");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -75,13 +76,13 @@ public class AdminPropertiesFrame extends javax.swing.JFrame{
             }
         });
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 48)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 48));
         jLabel1.setText("MVA:");
 
-        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 48)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 48));
         jLabel2.setText("Delivery price:");
 
-        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 48)); // NOI18N
+        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 48));
         jLabel3.setText("Free delivery limit:");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -108,13 +109,13 @@ public class AdminPropertiesFrame extends javax.swing.JFrame{
                 .addGap(83, 83, 83))
         );
 
-        txtMva.setFont(new java.awt.Font("Tahoma", 0, 48)); // NOI18N
+        txtMva.setFont(new java.awt.Font("Tahoma", 0, 48));
         txtMva.setText("MVA");
 
-        txtDeliveryPrice.setFont(new java.awt.Font("Tahoma", 0, 48)); // NOI18N
+        txtDeliveryPrice.setFont(new java.awt.Font("Tahoma", 0, 48));
         txtDeliveryPrice.setText("DELIVERY PRICE");
 
-        txtFreeDeliveryLimit.setFont(new java.awt.Font("Tahoma", 0, 48)); // NOI18N
+        txtFreeDeliveryLimit.setFont(new java.awt.Font("Tahoma", 0, 48));
         txtFreeDeliveryLimit.setText("FREE DELIVERY LIMIT");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);

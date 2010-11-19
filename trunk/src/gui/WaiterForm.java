@@ -102,7 +102,7 @@ public class WaiterForm extends javax.swing.JFrame implements FormListener {
         try {
             FetchedOrder order = OrderDB.getOrderById(signal);
 
-            setCustomer(order.getCustomer().id);
+            setCustomer(order.getCustomer().getId());
 
             DefaultListModel model = new DefaultListModel();
 
@@ -601,7 +601,7 @@ public class WaiterForm extends javax.swing.JFrame implements FormListener {
 
                     for (Customer cust : customers){
                         JMenuItem item = new JMenuItem(cust.toString());
-                        item.setName(cust.id + ""); // TODO: maybe a cleaner way to do this ?
+                        item.setName(cust.getId() + ""); // TODO: maybe a cleaner way to do this ?
 
                         item.setFont(txtCustomerFirstName.getFont());
 
@@ -638,10 +638,10 @@ public class WaiterForm extends javax.swing.JFrame implements FormListener {
             txtCustomerPhone.setEnabled(false);
             txtCustomerAddress.setEnabled(false);
 
-            txtCustomerFirstName.setText(customer.firstName);
-            txtCustomerLastName.setText(customer.lastName);
-            txtCustomerPhone.setText(customer.phoneNumber + "");
-            txtCustomerAddress.setText(customer.address);
+            txtCustomerFirstName.setText(customer.getFirstName());
+            txtCustomerLastName.setText(customer.getLastName());
+            txtCustomerPhone.setText(customer.getPhoneNumber() + "");
+            txtCustomerAddress.setText(customer.getAddress());
 
             currentOrder.setCustomer(customer);
         }
@@ -677,9 +677,9 @@ public class WaiterForm extends javax.swing.JFrame implements FormListener {
 
             mainLoop: for (DishOrder order : listOrders){
                 for (DishOrder compareOrder : mergedListOrders){
-                    if (order.dishID == compareOrder.dishID &&
-                            order.comments.equals(compareOrder.comments)){
-                        compareOrder.amount++;
+                    if (order.getDishID() == compareOrder.getDishID() &&
+                            order.getComment().equals(compareOrder.getComment())){
+                        compareOrder.setAmount(compareOrder.getAmount() + 1);
                         continue mainLoop;
                     }
                 }
@@ -719,11 +719,11 @@ public class WaiterForm extends javax.swing.JFrame implements FormListener {
                 }
 
                 Customer tmpCustomer = new Customer(
-                        currentOrder.getCustomer().id,
+
+                        currentOrder.getCustomer().getId(),
                         txtCustomerFirstName.getText(),
                         txtCustomerLastName.getText(),
-                        Integer.parseInt(txtCustomerPhone.getText()),
-                        txtCustomerAddress.getText());
+                        Integer.parseInt(txtCustomerPhone.getText()), txtCustomerAddress.getText());
 
                 String updateRequest = "Are you sure you want to edit customer:\n" +
                         currentOrder.getCustomer() + "\nTo:\n" +
@@ -827,16 +827,16 @@ public class WaiterForm extends javax.swing.JFrame implements FormListener {
             Object[] dishes = dishOrderList.getSelectedValues();
             if (dishes.length > 1){
                 DishOrder dish = (DishOrder)dishes[0];
-                String bufferComment = dish.comments;
+                String bufferComment = dish.getComment();
                 for (Object o : dishes){
                     dish = (DishOrder)o;
                     if (bufferComment == null){
-                        if (dish.comments != null){
+                        if (dish.getComment() != null){
                             txtDishComment.setText("Multiple comments found");
                             return;
                         }
                     }
-                    else if (!dish.comments.equals(bufferComment)){
+                    else if (!dish.getComment().equals(bufferComment)){
                         txtDishComment.setText("Multiple comments found");
                         return;
                     }
@@ -845,7 +845,7 @@ public class WaiterForm extends javax.swing.JFrame implements FormListener {
             }
             else {
                 DishOrder dish = (DishOrder)dishes[0];
-                txtDishComment.setText(dish.comments != null && dish.comments.length() > 1 ? dish.comments : "No comment");
+                txtDishComment.setText(dish.getComment() != null && dish.getComment().length() > 1 ? dish.getComment() : "No comment");
             }
         }
         else {
@@ -862,14 +862,14 @@ public class WaiterForm extends javax.swing.JFrame implements FormListener {
 
             Object[] elements = dishOrderList.getSelectedValues();
             DishOrder dish = (DishOrder)elements[0];
-            if (dish.comments == null){
+            if (dish.getComment() == null){
                 commonComment = "";
             }
             else {
-                commonComment = dish.comments;
+                commonComment = dish.getComment();
                 for (int i = 1; i < elements.length; i++) {
                     dish = (DishOrder)elements[i];
-                    if (dish.comments == null || !dish.comments.equals(commonComment)){
+                    if (dish.getComment() == null || !dish.getComment().equals(commonComment)){
                         commonComment = "";
                         break;
                     }
@@ -880,7 +880,7 @@ public class WaiterForm extends javax.swing.JFrame implements FormListener {
 
             for (Object o : elements){
                 dish = (DishOrder)o;
-                dish.setComments(comment);
+                dish.setComment(comment);
                 dishes.add(dish);
             }
 

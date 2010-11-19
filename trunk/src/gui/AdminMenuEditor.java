@@ -311,10 +311,10 @@ public class AdminMenuEditor extends javax.swing.JFrame implements GUIUpdater {
 
         if (selected == null) return;
 
-        txtMenuId.setText(selected.nr+"");
-        txtMenuName.setText(selected.name);
-        txtMenuPrice.setText(selected.price+"");
-        txtMenuComment.setText(selected.description != null ? selected.description : "");
+        txtMenuId.setText(selected.getDishId()+"");
+        txtMenuName.setText(selected.getName());
+        txtMenuPrice.setText(selected.getPrice()+"");
+        txtMenuComment.setText(selected.getDescription() != null ? selected.getDescription() : "");
     }//GEN-LAST:event_menuListValueChanged
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
