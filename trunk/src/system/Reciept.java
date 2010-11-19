@@ -37,7 +37,7 @@ public class Reciept {
 
         String print = "Reciept for: \n"
                       + order.getCustomer().getId()
-                      + "\n\nDish               Amount x Price    Total\n\n";
+                      + "\n\nDish                     SAmount x Price    Total\n\n";
         Double localMva;
 
         for (DishOrder dish : order.getDishOrder()) {
