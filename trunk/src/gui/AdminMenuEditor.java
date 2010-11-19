@@ -43,7 +43,10 @@ public class AdminMenuEditor extends javax.swing.JFrame implements GUIUpdater {
         guiUpdater = new UpdaterThread(this, 10 * 1000);
         guiUpdater.start();
     }
-
+    /**
+     * The method that runs whenever the UpdaterThread activates. Retrieves the
+     * menu from the database and puts it in menuList.
+     */
     public void updateGUI() {
         try {
             Menu menu = OrderDB.getMenu();
@@ -225,12 +228,19 @@ public class AdminMenuEditor extends javax.swing.JFrame implements GUIUpdater {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    /**
+     * Makes sure the parent is set visible upon exit. Also ends the UpdaterThread.
+     * @param evt
+     */
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
         parent.setVisible(true);
         guiUpdater.end();
     }//GEN-LAST:event_formWindowClosed
-
+    /**
+     * Creates a new Dish containing the values stored in the textfields. In case
+     * of an exception it will show a message describing the error.
+     * @param evt
+     */
     private void btnNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewActionPerformed
         try {
             int dishId = Integer.parseInt(txtMenuId.getText());
@@ -266,7 +276,10 @@ public class AdminMenuEditor extends javax.swing.JFrame implements GUIUpdater {
             JOptionPane.showMessageDialog(this, "Error creating the dish:\n" + e.getMessage());
         }
     }//GEN-LAST:event_btnNewActionPerformed
-
+    /**
+     * Updates an existing Dish with modified values.
+     * @param evt
+     */
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
         try {
             int dishId = Integer.parseInt(txtMenuId.getText());
@@ -298,14 +311,21 @@ public class AdminMenuEditor extends javax.swing.JFrame implements GUIUpdater {
             JOptionPane.showMessageDialog(this, "Error editing dish:\n" + e.getMessage());
         }
     }//GEN-LAST:event_btnEditActionPerformed
-
+    /**
+     * Clears the text fields.
+     * @param evt
+     */
     private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearActionPerformed
         txtMenuId.setText("");
         txtMenuName.setText("");
         txtMenuPrice.setText("");
         txtMenuComment.setText("");
     }//GEN-LAST:event_btnClearActionPerformed
-
+    /**
+     * Retrieves the value of the selected Dish-object, and puts the variables
+     * in the textfields.
+     * @param evt
+     */
     private void menuListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_menuListValueChanged
         Dish selected = (Dish)menuList.getSelectedValue();
 
@@ -316,7 +336,11 @@ public class AdminMenuEditor extends javax.swing.JFrame implements GUIUpdater {
         txtMenuPrice.setText(selected.getPrice()+"");
         txtMenuComment.setText(selected.getDescription() != null ? selected.getDescription() : "");
     }//GEN-LAST:event_menuListValueChanged
-
+    /**
+     * Prompts the user if he wants to remove the selected Dish in the menuList
+     * from the database.
+     * @param evt
+     */
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         Dish selected = (Dish)menuList.getSelectedValue();
 
