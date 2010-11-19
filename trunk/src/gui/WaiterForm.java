@@ -705,6 +705,9 @@ public class WaiterForm extends javax.swing.JFrame implements FormListener {
         }
     }
 
+    /*
+     * Removes the selected DishOrder from the orderlist
+     */
     private void btnRemoveFromOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveFromOrderActionPerformed
         if (!dishOrderList.isSelectionEmpty()) {
             ListModel list = dishOrderList.getModel();
@@ -717,19 +720,28 @@ public class WaiterForm extends javax.swing.JFrame implements FormListener {
         }
     }//GEN-LAST:event_btnRemoveFromOrderActionPerformed
 
+    /*
+     * Places the order given the proper values in the components
+     */
     private void btnPlaceOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPlaceOrderActionPerformed
         ListModel list = dishOrderList.getModel();
         
         if (list.getSize() > 0){
-            ArrayList<DishOrder> listOrders = new ArrayList<DishOrder>();
+            ArrayList<DishOrder> listOrders = new ArrayList<DishOrder>();       // The list containing all the DishOrders frm the right JList
 
             for (int i = 0; i < list.getSize(); i++){
                 dishOrderList.setSelectedIndex(i);
                 listOrders.add((DishOrder)dishOrderList.getSelectedValue());
             }
 
+            /* The list containing the DishOrders when the equal DishOrders
+             * are merged into a DishOrder with incremented amount */
             ArrayList<DishOrder> mergedListOrders = new ArrayList<DishOrder>();
 
+            /*
+             * Iterates over all the DishOrders and merges them in the
+             * mergedListOrders as described
+             */
             mainLoop: for (DishOrder order : listOrders){
                 for (DishOrder compareOrder : mergedListOrders){
                     if (order.getDishID() == compareOrder.getDishID() &&
@@ -741,12 +753,15 @@ public class WaiterForm extends javax.swing.JFrame implements FormListener {
                 mergedListOrders.add(order.clone());
             }
 
+            // If no customer is set, try create new customer
             if (currentOrder.getCustomer() == null){
                 try {
                     basicValidateCustomer();
 
                     Customer newCustomer = new Customer(txtCustomerFirstName.getText(), txtCustomerLastName.getText(), txtCustomerPhone.getText(), txtCustomerAddress.getText());
 
+                    /* Tries to insert the customer into the database,
+                     * and load the inserted one */
                     try {
                         int id = OrderDB.newCustomer(newCustomer);
 
@@ -754,7 +769,7 @@ public class WaiterForm extends javax.swing.JFrame implements FormListener {
                     }
                     catch (SQLException e) {
                         JOptionPane.showMessageDialog(this, "Error creating customer in the database:\n" + e.getMessage());
-                        return;
+                        return; // Abort if it failed
                     }
 
                     currentOrder.setCustomer(newCustomer);
@@ -764,6 +779,9 @@ public class WaiterForm extends javax.swing.JFrame implements FormListener {
                     return;
                 }
             }
+            /* If a customer is set, and the editCustomer variable is true,
+             * try to edit the customer currently set in currentOrder
+             */
             else if (editCustomer){
                 try {
                     basicValidateCustomer();
@@ -787,21 +805,26 @@ public class WaiterForm extends javax.swing.JFrame implements FormListener {
                 int answer = JOptionPane.showConfirmDialog(this, updateRequest, "Update customer", JOptionPane.OK_CANCEL_OPTION);
 
                 if (answer == JOptionPane.OK_OPTION){
+                    /*
+                     * Tries to edit the customer in the database
+                     */
                     try {
                         OrderDB.editCustomer(tmpCustomer, currentOrder.getCustomer().getId());
                     } catch (SQLException ex) {
                         JOptionPane.showMessageDialog(this, "Failed to edit the customer in the database:\n" + ex.getMessage());
-                        return;
+                        return; // Abort if editing fails
                     }
                 }
                 else {
                     return;
                 }
             }
-            // otherwise just keep the selected customer
+            // Otherwise just keep the selected customer
 
-            currentOrder.setDishes(mergedListOrders);
+            currentOrder.setDishes(mergedListOrders); // Load DishOrders into the order
 
+            /* Sets the parameters of the order according to the states of the
+             * controls on the row below basic customer info */
             if (checkBoxDelivery.isSelected()){
                 currentOrder.setToBeDelivered();
 
@@ -811,7 +834,9 @@ public class WaiterForm extends javax.swing.JFrame implements FormListener {
                 }
             }
 
-            
+            /*
+             * Try to actually place the order into the database
+             */
             try {
                 currentOrder.setReciept(Reciept.toString(currentOrder));
 
@@ -832,6 +857,10 @@ public class WaiterForm extends javax.swing.JFrame implements FormListener {
         }
     }//GEN-LAST:event_btnPlaceOrderActionPerformed
 
+    /*
+     * A method for checking if there is inputted text in the customer field,
+     * and not just the textfield's name
+     */
     private void basicValidateCustomer(){
         if (txtCustomerFirstName.getText().equals(txtCustomerFirstName.getName())) throw new IllegalArgumentException("You need to fill in the first name");
         if (txtCustomerLastName.getText().equals(txtCustomerLastName.getName())) throw new IllegalArgumentException("You need to fill in the last name");
@@ -839,11 +868,19 @@ public class WaiterForm extends javax.swing.JFrame implements FormListener {
         if (txtCustomerAddress.getText().equals(txtCustomerAddress.getName())) throw new IllegalArgumentException("You need to fill in the address");
     }
 
+    /*
+     * call the customerTextChanged method if you click one of the customer
+     * text fields
+     */
     private void txtCustomerFieldMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtCustomerFieldMouseClicked
         JTextField focusedTextField = (JTextField)evt.getSource();
         customerTextChanged(focusedTextField);
     }//GEN-LAST:event_txtCustomerFieldMouseClicked
 
+    /*
+     * Clears out all the customer text fields, and sets the current customer in
+     * the order to null
+     */
     private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearActionPerformed
         currentOrder.setCustomer(null);
 
@@ -865,6 +902,10 @@ public class WaiterForm extends javax.swing.JFrame implements FormListener {
         editCustomer = false;
     }//GEN-LAST:event_btnClearActionPerformed
 
+    /*
+     * Marks that the current selected customer is to be edited when the order
+     * is placed, and makes the customer text fields editable again
+     */
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
         if (currentOrder.getCustomer() != null) {
             txtCustomerFirstName.setEnabled(true);
@@ -881,13 +922,23 @@ public class WaiterForm extends javax.swing.JFrame implements FormListener {
         }
     }//GEN-LAST:event_btnEditActionPerformed
 
+    /*
+     * When DishOrders on the left list are selected, check id they have
+     * comments, and if so, show them. If it is found that some have different
+     * comments, just show that multiple comments was found.
+     */
     private void dishOrderListSelectionChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_dishOrderListSelectionChanged
         if (dishOrderList.getSelectedIndices().length > 0){
+
             btnEditComment.setEnabled(true);
             Object[] dishes = dishOrderList.getSelectedValues();
+
             if (dishes.length > 1){
+                
                 DishOrder dish = (DishOrder)dishes[0];
+                // The last checked comment, which the next one is compared to
                 String bufferComment = dish.getComment();
+
                 for (Object o : dishes){
                     dish = (DishOrder)o;
                     if (bufferComment == null){
@@ -901,11 +952,21 @@ public class WaiterForm extends javax.swing.JFrame implements FormListener {
                         return;
                     }
                 }
-                txtDishComment.setText(bufferComment != null && bufferComment.length() > 1 ? bufferComment : "No comment");
+                if (bufferComment != null && bufferComment.length() > 1){
+                    txtDishComment.setText(bufferComment);
+                }
+                else {
+                    txtDishComment.setText("No comment");
+                }
             }
             else {
                 DishOrder dish = (DishOrder)dishes[0];
-                txtDishComment.setText(dish.getComment() != null && dish.getComment().length() > 1 ? dish.getComment() : "No comment");
+                if (dish.getComment() != null && dish.getComment().length() > 1){
+                    txtDishComment.setText(dish.getComment());
+                }
+                else {
+                    txtDishComment.setText("No comment");
+                }
             }
         }
         else {
@@ -914,6 +975,10 @@ public class WaiterForm extends javax.swing.JFrame implements FormListener {
         }
     }//GEN-LAST:event_dishOrderListSelectionChanged
 
+    /*
+     * When the comment button is pressed, you get a JOptionPane which lets you
+     * edit the comments for the selected DishOrders
+     */
     private void btnEditCommentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditCommentActionPerformed
         if (dishOrderList.getSelectedIndices().length > 0){
             ArrayList<DishOrder> dishes = new ArrayList<DishOrder>();
@@ -948,6 +1013,9 @@ public class WaiterForm extends javax.swing.JFrame implements FormListener {
         }
     }//GEN-LAST:event_btnEditCommentActionPerformed
 
+    /*
+     * Opens the Frame that lets you get already placed orders
+     */
     private void btnGetLastOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGetLastOrderActionPerformed
         new WaiterGetOldOrdersChooser(this, this).setVisible(true);
         this.setVisible(false);
