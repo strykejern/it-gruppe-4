@@ -95,7 +95,6 @@ public class AdminOrderEditor extends javax.swing.JFrame implements GUIUpdater {
                                                 " " +
                                                 selectTime.getSelectedItem(),
                                                 before);
-            FetchedOrder selectedOrder = (FetchedOrder)orderList.getSelectedValue();
 
             DefaultListModel orderModel = new DefaultListModel();
 
