@@ -419,7 +419,7 @@ public class MapFrame extends javax.swing.JFrame implements GUIUpdater {
 
     /**
      * Extracts the latitude from a Document object,
-     * and returns a String containing the value
+     * and returns a String containing the value.
      * @param doc
      * @return
      */
